@@ -276,7 +276,7 @@ function StableIntegrationsBoard({ step }: { step: number }) {
               <motion.span
                 className="stable-drawer-button"
                 animate={{ opacity: hasConflict && !isFixed ? 0.58 : 1 }}
-                
+
               >
                 {hasConflict && !isFixed ? 'Drawer detached' : 'Open cart drawer'}
               </motion.span>

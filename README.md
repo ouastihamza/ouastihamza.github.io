@@ -16,7 +16,7 @@ npm run typecheck
 npm start
 ```
 
-The production build writes `out/`. `npm start` serves that directory at http://127.0.0.1:4173, with normal directory-index behavior and real 404 responses, not an SPA fallback. Use it to preview the complete site, including Shopify.
+The production build uses Next.js’s supported Webpack mode to avoid a local Turbopack CSS-worker port restriction, and writes `out/`. `npm start` serves that directory at http://127.0.0.1:4173, with normal directory-index behavior and real 404 responses, not an SPA fallback. Use it to preview the complete site, including Shopify.
 
 ## Static compatibility
 

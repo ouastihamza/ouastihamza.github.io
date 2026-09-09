@@ -229,7 +229,7 @@ function DebuggingBoard({ step }: { step: number }) {
       <div className="debugging-controls">
         <motion.span
           className={`debugging-control${isAction ? ' is-active' : ''}`}
-          
+
           animate={{ y: isAction && !isFixed ? [0, -2, 0] : 0 }}
           transition={{ duration: 0.42 }}
         >
