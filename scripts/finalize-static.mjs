@@ -1,0 +1,11 @@
+import { mkdir, readFile, writeFile, access } from 'node:fs/promises';
+const out = new URL('../out/', import.meta.url);
+const html = await readFile(new URL('portfolio-2-assets/index.html', out), 'utf8');
+if (!html.includes('/portfolio-2-assets/assets/')) throw new Error('Missing Shopify bundle references');
+await mkdir(new URL('projects/shopify-technical-studies/', out), { recursive: true });
+await writeFile(new URL('projects/shopify-technical-studies/index.html', out), html);
+await mkdir(new URL('projects/portfolio-2/', out), { recursive: true });
+await writeFile(new URL('projects/portfolio-2/index.html', out), '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Shopify Technical Studies — Hamza Ouasti</title><link rel="canonical" href="https://ouastihamza.github.io/projects/shopify-technical-studies/"><meta http-equiv="refresh" content="0;url=/projects/shopify-technical-studies/"></head><body><a href="/projects/shopify-technical-studies/">Open Shopify Technical Studies</a></body></html>');
+await writeFile(new URL('.nojekyll', out), '');
+for (const file of ['index.html', 'projects/enterprise-ai-assistant/index.html', 'projects/shopify-technical-studies/index.html', 'Hamza_Ouasti.pdf', 'favicon.svg', 'images/shopify-technical-studies.webp', 'robots.txt', 'sitemap.xml']) await access(new URL(file, out));
+console.log('Static output verified, including Shopify and CV.');
