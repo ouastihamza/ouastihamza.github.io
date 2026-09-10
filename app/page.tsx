@@ -29,7 +29,7 @@ export default function Home() {
               </a>
             </div>
           </div>
-          <div className="hero-actions actions"><a className="button primary" href="/Hamza_Ouasti.pdf" download>Download CV · PDF <ArrowUpRight size={17} /></a><a className="text-link" href="https://linkedin.com/in/ouastihamza" target="_blank" rel="noreferrer">LinkedIn <ArrowUpRight size={17} /></a></div>
+          <div className="hero-actions actions"><a className="button primary" href="/Hamza_Ouasti.pdf" download lang="fr" hrefLang="fr">CV · Français (PDF) <ArrowUpRight size={17} /></a><a className="text-link" href="/Hamza_Ouasti_CV_English.pdf" download hrefLang="en">CV · English (PDF) <ArrowUpRight size={17} /></a><a className="text-link" href="https://linkedin.com/in/ouastihamza" target="_blank" rel="noreferrer">LinkedIn <ArrowUpRight size={17} /></a></div>
           <div className="hero-bottom">
             <a href="#projects">
               SCROLL TO SELECTED WORK <ArrowDownRight size={16} />
@@ -133,7 +133,7 @@ export default function Home() {
           <h2>Contact me.</h2>
           <p>Hamza Ouasti · Paris / Villejuif, France</p>
           <a className="contact-email" href="mailto:ouastihamza27@gmail.com">ouastihamza27@gmail.com</a>
-          <div className="actions"><a className="text-link" href={GITHUB_PROFILE} target="_blank" rel="noreferrer">GitHub <ArrowUpRight size={17} /></a><a className="text-link" href="https://linkedin.com/in/ouastihamza" target="_blank" rel="noreferrer">LinkedIn <ArrowUpRight size={17} /></a><a className="text-link" href="/Hamza_Ouasti.pdf" download>Download CV · PDF <ArrowUpRight size={17} /></a></div>
+          <div className="actions"><a className="text-link" href={GITHUB_PROFILE} target="_blank" rel="noreferrer">GitHub <ArrowUpRight size={17} /></a><a className="text-link" href="https://linkedin.com/in/ouastihamza" target="_blank" rel="noreferrer">LinkedIn <ArrowUpRight size={17} /></a><a className="text-link" href="/Hamza_Ouasti.pdf" download lang="fr" hrefLang="fr">CV · Français (PDF) <ArrowUpRight size={17} /></a><a className="text-link" href="/Hamza_Ouasti_CV_English.pdf" download hrefLang="en">CV · English (PDF) <ArrowUpRight size={17} /></a></div>
         </section>
       </main>
       <Footer />
