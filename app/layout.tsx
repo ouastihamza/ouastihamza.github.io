@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { ScrollReveal } from "./scroll-reveal";
 export const metadata: Metadata = {
   metadataBase: new URL("https://ouastihamza.github.io"),
   title: "Hamza Ouasti — Software & Technical Support Engineer",
@@ -13,7 +14,13 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <noscript>
+          <style>{"[data-reveal]{opacity:1!important;transform:none!important;}"}</style>
+        </noscript>
+        {children}
+        <ScrollReveal />
+      </body>
     </html>
   );
 }

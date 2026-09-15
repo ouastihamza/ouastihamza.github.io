@@ -1,13 +1,39 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { GITHUB_PROFILE } from "./data/projects";
+import { stagger } from "./stagger";
 export { GITHUB_PROFILE } from "./data/projects";
+
 export function Header() {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    let frame = 0;
+    const updateScrolled = () => {
+      frame = 0;
+      setScrolled(window.scrollY > 8);
+    };
+    const onScroll = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(updateScrolled);
+    };
+
+    updateScrolled();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (frame) window.cancelAnimationFrame(frame);
+    };
+  }, []);
+
   return (
     <>
       <a className="skip-link" href="#main">
         Skip to content
       </a>
-      <header className="site-header wrap">
+      <header className={`site-header wrap${scrolled ? " is-scrolled" : ""}`}>
         <a className="wordmark" href="/" aria-label="Hamza Ouasti, home">
           h<span>↗</span>
         </a>
@@ -41,7 +67,7 @@ export function Footer() {
 }
 export function ArchitectureDiagram() {
   return (
-    <div className="architecture-panel">
+    <div className="architecture-panel" data-reveal>
       <p className="diagram-label">RETRIEVAL PIPELINE</p>
       <div className="diagram-flow">
         {[
@@ -49,8 +75,8 @@ export function ArchitectureDiagram() {
           ["02", "Local embeddings", "Sentence Transformers · BGE-M3"],
           ["03", "Workspace search", "ChromaDB · semantic similarity"],
           ["04", "Answer + evidence", "OpenAI · retrieved source references"],
-        ].map(([n, title, sub]) => (
-          <div className="diagram-step" key={n}>
+        ].map(([n, title, sub], index) => (
+          <div className="diagram-step" key={n} data-reveal style={stagger(index)}>
             <span>{n}</span>
             <div>
               <strong>{title}</strong>

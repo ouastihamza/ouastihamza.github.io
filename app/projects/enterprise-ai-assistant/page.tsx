@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { Header, Footer, ArchitectureDiagram, GITHUB_PROFILE } from "../../site-components";
+import { stagger } from "../../stagger";
 export const metadata: Metadata = {
   title: "Enterprise AI Assistant — Hamza Ouasti",
   alternates: { canonical: "/projects/enterprise-ai-assistant" },
@@ -18,7 +19,7 @@ export default function EnterpriseCaseStudy() {
         <a className="text-link back-link" href="/#projects">
           <ArrowLeft size={17} /> Back to selected work
         </a>
-        <header className="case-header">
+        <header className="case-header" data-reveal>
           <p className="eyebrow">PROJECT 01 / AI & INTERNAL KNOWLEDGE / 2026</p>
           <h1>
             Enterprise<br /><span>AI Assistant</span>
@@ -35,7 +36,7 @@ export default function EnterpriseCaseStudy() {
           </div>
         </header>
         <section className="case-row">
-          <div>
+          <div className="sticky-heading" data-reveal>
             <p className="eyebrow">THE PROBLEM</p>
             <h2>
               From scattered files
@@ -43,7 +44,7 @@ export default function EnterpriseCaseStudy() {
               to useful context.
             </h2>
           </div>
-          <div>
+          <div data-reveal>
             <p>
               Policies, procedures and operational documents can be difficult to navigate as a
               collection. A general chatbot has no access to that internal knowledge by default.
@@ -56,7 +57,7 @@ export default function EnterpriseCaseStudy() {
           </div>
         </section>
         <section className="case-architecture">
-          <div>
+          <div data-reveal>
             <p className="eyebrow">THE ARCHITECTURE</p>
             <h2>
               Frontend, API<br />and retrieval.
@@ -83,7 +84,7 @@ export default function EnterpriseCaseStudy() {
           <ArchitectureDiagram />
         </section>
         <section className="case-row">
-          <div>
+          <div className="sticky-heading" data-reveal>
             <p className="eyebrow">THE RETRIEVAL PIPELINE</p>
             <h2>
               Keep the source
@@ -91,7 +92,7 @@ export default function EnterpriseCaseStudy() {
               attached to the answer.
             </h2>
           </div>
-          <ol className="pipeline-list">
+          <ol className="pipeline-list" data-reveal>
             <li>
               <strong>Read and normalize</strong>
               <p>
@@ -127,49 +128,40 @@ export default function EnterpriseCaseStudy() {
           </ol>
         </section>
         <section className="case-row">
-          <div>
+          <div className="sticky-heading" data-reveal>
             <p className="eyebrow">ENGINEERING DECISIONS</p>
             <h2>
               Engineering decisions
             </h2>
           </div>
-          <div className="decision-list">
-            <article>
-              <h3>Workspace boundaries</h3>
-              <p>
-                JWT authentication identifies the user; document and assistant endpoints check
-                workspace access before processing a request. Separate Chroma collections keep
-                retrieval scoped to that workspace. The code includes a superuser exception.
-              </p>
-            </article>
-            <article>
-              <h3>Document lifecycle consistency</h3>
-              <p>
-                Source metadata must survive parsing, chunking and indexing. Deletion coordinates
-                the document registry, uploaded file, processed artifacts and vector entries, so
-                deleted content can be removed from retrieval.
-              </p>
-            </article>
-            <article>
-              <h3>Retrieval quality versus context size</h3>
-              <p>
-                Similarity filtering and an approximate context budget limit weak or excessive
-                context. Local embeddings offer control over retrieval, with a large model download
-                and CPU cost as tradeoffs.
-              </p>
-            </article>
-            <article>
-              <h3>Reproducible local services</h3>
-              <p>
-                Docker and Docker Compose define the frontend, API and PostgreSQL services. Health
-                checks sequence startup, while persistent volumes preserve database and document
-                storage.
-              </p>
-            </article>
+          <div className="decision-list" data-reveal>
+            {[
+              {
+                title: "Workspace boundaries",
+                body: "JWT authentication identifies the user; document and assistant endpoints check workspace access before processing a request. Separate Chroma collections keep retrieval scoped to that workspace. The code includes a superuser exception.",
+              },
+              {
+                title: "Document lifecycle consistency",
+                body: "Source metadata must survive parsing, chunking and indexing. Deletion coordinates the document registry, uploaded file, processed artifacts and vector entries, so deleted content can be removed from retrieval.",
+              },
+              {
+                title: "Retrieval quality versus context size",
+                body: "Similarity filtering and an approximate context budget limit weak or excessive context. Local embeddings offer control over retrieval, with a large model download and CPU cost as tradeoffs.",
+              },
+              {
+                title: "Reproducible local services",
+                body: "Docker and Docker Compose define the frontend, API and PostgreSQL services. Health checks sequence startup, while persistent volumes preserve database and document storage.",
+              },
+            ].map((decision, index) => (
+              <article key={decision.title} data-reveal style={stagger(index)}>
+                <h3>{decision.title}</h3>
+                <p>{decision.body}</p>
+              </article>
+            ))}
           </div>
         </section>
         <section className="case-row">
-          <div>
+          <div className="sticky-heading" data-reveal>
             <p className="eyebrow">TESTING & BOUNDARIES</p>
             <h2>
               Testing and
@@ -177,7 +169,7 @@ export default function EnterpriseCaseStudy() {
               clear limits.
             </h2>
           </div>
-          <div>
+          <div data-reveal>
             <p>
               The pytest suite includes authentication, workspace authorization, document
               upload/deletion and assistant endpoint tests. Its fixtures exercise PostgreSQL and
@@ -208,7 +200,7 @@ export default function EnterpriseCaseStudy() {
           </div>
         </section>
         <section className="case-row">
-          <div>
+          <div className="sticky-heading" data-reveal>
             <p className="eyebrow">FURTHER WORK</p>
             <h2>
               A platform
@@ -216,7 +208,7 @@ export default function EnterpriseCaseStudy() {
               to build on.
             </h2>
           </div>
-          <div>
+          <div data-reveal>
             <p>
               An inspected local feature branch extends the system with customer profiles and sites,
               customer-filtered retrieval, a combination of semantic and lexical search, and
@@ -233,7 +225,7 @@ export default function EnterpriseCaseStudy() {
             </p>
           </div>
         </section>
-        <div className="case-closing">
+        <div className="case-closing" data-reveal>
           <div>
             <p className="eyebrow">EXPLORE THE IMPLEMENTATION</p>
             <h2>Follow the code.</h2>
