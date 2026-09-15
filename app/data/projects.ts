@@ -71,8 +71,8 @@ export const projects: Project[] = [
     screenshotAlt: "Shopify Technical Studies interface with section navigation and Shopify technical problem-solving overview.",
   },
   {
-    id: "hydrosanity",
-    title: "Hydrosanity",
+    id: "shopify-sanity-hydrogen-starter",
+    title: "Shopify Sanity Hydrogen Starter",
     category: "HEADLESS COMMERCE / CMS",
     description:
       "Connect Shopify’s product catalog with Sanity’s editorial content, giving a storefront product pages that combine commerce data and rich content.",
@@ -90,9 +90,9 @@ export const projects: Project[] = [
     challenges:
       "Joining content by product handle, connecting cart actions, and configuring content previews across the storefront and Studio.",
     note: "Integration prototype built on the Hydrogen skeleton and Sanity Shopify Studio starters. Public code includes add-to-cart wiring; checkout has not been independently verified.",
-    githubUrl: `${GITHUB_PROFILE}/hydrosanity`,
+    githubUrl: `${GITHUB_PROFILE}/shopify-sanity-hydrogen-starter`,
     liveUrl: null,
-    repositoryName: "hydrosanity",
+    repositoryName: "shopify-sanity-hydrogen-starter",
     featured: true,
     status: "Integration prototype",
     year: 2025,
