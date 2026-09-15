@@ -2,43 +2,48 @@
 
 import { useEffect } from "react";
 
-/**
- * Reveals every [data-reveal] element once it scrolls into view, then
- * stops watching it (no re-triggering on scroll back up). Elements are
- * visible by default in CSS, so a visitor who has JS disabled — or who
- * has requested reduced motion — never sees anything hidden.
- */
+/** Content is always visible in CSS. Only animate an observed entrance;
+ * script failures and unsupported browser APIs leave the document intact. */
 export function ScrollReveal() {
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      return;
+    if (typeof IntersectionObserver === "undefined") return;
+    const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const animations = new Map<Element, Animation>();
+    const observer = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        observer.unobserve(entry.target);
+        if (preference.matches || typeof entry.target.animate !== "function") continue;
+        const stagger = Number.parseFloat(getComputedStyle(entry.target).getPropertyValue("--stagger")) || 0;
+        const animation = entry.target.animate(
+          [{ opacity: 0, translate: "0 20px" }, { opacity: 1, translate: "0 0" }],
+          { duration: 700, delay: Math.min(stagger, 3) * 70, easing: "cubic-bezier(0.16, 1, 0.3, 1)", fill: "backwards" },
+        );
+        animations.set(entry.target, animation);
+        animation.onfinish = () => animations.delete(entry.target);
+      }
+    }, { threshold: 0, rootMargin: "0px 0px -8% 0px" });
+
+    // A parent reveal already animates its contents. Never animate both.
+    for (const target of document.querySelectorAll<HTMLElement>("[data-reveal]")) {
+      if (!target.parentElement?.closest("[data-reveal]")) observer.observe(target);
     }
-
-    const targets = Array.from(document.querySelectorAll<HTMLElement>("[data-reveal]"));
-    if (targets.length === 0) {
-      return;
-    }
-
-    if (typeof IntersectionObserver === "undefined") {
-      for (const target of targets) target.classList.add("is-visible");
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (!entry.isIntersecting) continue;
-          entry.target.classList.add("is-visible");
-          observer.unobserve(entry.target);
-        }
-      },
-      { threshold: 0.12, rootMargin: "0px 0px -8% 0px" },
-    );
-
-    for (const target of targets) observer.observe(target);
-
-    return () => observer.disconnect();
+    const cancelAnimations = () => {
+      for (const animation of animations.values()) animation.cancel();
+      animations.clear();
+    };
+    const onPreferenceChange = () => {
+      if (preference.matches) cancelAnimations();
+    };
+    const onFocus = () => cancelAnimations();
+    preference.addEventListener("change", onPreferenceChange);
+    document.addEventListener("focusin", onFocus);
+    return () => {
+      observer.disconnect();
+      cancelAnimations();
+      preference.removeEventListener("change", onPreferenceChange);
+      document.removeEventListener("focusin", onFocus);
+    };
   }, []);
-
   return null;
 }

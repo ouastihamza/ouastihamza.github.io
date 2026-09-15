@@ -134,7 +134,7 @@ export default function EnterpriseCaseStudy() {
               Engineering decisions
             </h2>
           </div>
-          <div className="decision-list" data-reveal>
+          <div className="decision-list">
             {[
               {
                 title: "Workspace boundaries",

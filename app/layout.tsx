@@ -15,9 +15,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
-        <noscript>
-          <style>{"[data-reveal]{opacity:1!important;transform:none!important;}"}</style>
-        </noscript>
         {children}
         <ScrollReveal />
       </body>
