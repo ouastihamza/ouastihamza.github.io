@@ -24,7 +24,7 @@ export default function Home() {
                 Full-Stack Developer<br />Software Engineer
               </p>
               <p className="muted">
-                I build software with JavaScript, TypeScript, React and Node.js, drawing on five years in international e-commerce SaaS and complex production debugging.
+                I develop in JavaScript and TypeScript, with five years in international e-commerce SaaS and complex production debugging. I’m seeking an apprenticeship to go further in application architecture.
               </p>
               <a className="text-link" href={GITHUB_PROFILE} target="_blank" rel="noreferrer">
                 Explore my GitHub <ArrowUpRight size={18} />
@@ -42,8 +42,8 @@ export default function Home() {
         </section>
         <section id="experience" className="experience wrap">
           <div className="section-heading" data-reveal><p className="eyebrow">01 / EXPERIENCE</p><h2>Judge.me</h2></div>
-          <div className="experience-grid" data-reveal><div><h3>Tier 2 Technical Support Engineer<br />Full-Stack Developer & QA</h3><p className="muted">2021–present · Judge.me Product Reviews<br />Promoted to Tier 2 in July 2026</p><p className="experience-stat">10,000+<span>technical cases resolved</span></p></div>
-          <div><p>Judge.me is a product reviews application for e-commerce stores, built by an international team.</p><ul><li>Build fixes, scripts and customizations with JavaScript, TypeScript, React, Node.js, PHP and Liquid.</li><li>Investigate complex production incidents: reproduce bugs, trace root causes through REST and GraphQL APIs and SQL/MongoDB data, and validate fixes with product and engineering.</li><li>Work with Shopify Admin and Storefront APIs, metafields and JSON-LD. Prioritize bugs in Jira and run regression tests before release.</li><li>Write technical documentation in English and French, and deliver webinars and demonstrations.</li></ul></div></div>
+          <div className="experience-grid" data-reveal><div><h3>Tier 2 Technical Support Engineer<br />and Developer</h3><p className="muted">2021–present · Judge.me Product Reviews<br />Promoted to Tier 2 in July 2026</p><p className="experience-stat">10,000+<span>technical cases resolved</span></p></div>
+          <div><p>Judge.me is a product reviews application for e-commerce stores, built by an international team.</p><ul><li>Develop fixes and customizations in JavaScript, TypeScript, React, Node.js, PHP and Liquid, including Shopify Storefront and Admin APIs, Online Store 2.0 themes, metafields and JSON-LD.</li><li>Investigate complex production incidents: reproduce bugs, trace root causes through SQL and MongoDB data, and validate fixes with product and engineering.</li><li>Resolve technical cases across Shopify, WooCommerce, BigCommerce, Squarespace, Square and Duda, with peak workloads of 40–50 cases per week.</li><li>Delivered monthly webinars and demos for merchants, agencies and partners from 2021–2024, as ambassador for the Morocco team.</li></ul></div></div>
           <p className="freelance" data-reveal><strong>Shopify / E-commerce Developer · Freelance</strong><br /><span className="muted">2022–present · Store customization, third-party integrations, structured data and production bug fixes.</span></p>
         </section>
         <section id="projects" className="projects-section wrap">
@@ -88,10 +88,18 @@ export default function Home() {
             {projects
               .filter((project) => project.featured && project.id !== lead.id)
               .map((project, index) => (
-                <article className="project-row" id={project.id} key={project.id} data-reveal style={stagger(index)}>
+                project.compact ? (
+                  <article className="project-row" id={project.id} key={project.id} data-reveal>
+                    <p className="eyebrow">{project.year} / {project.status}</p>
+                    <h3>{project.title}</h3>
+                    <p className="project-description">{project.description}</p>
+                    <p className="architecture">{project.technologies.join(" · ")}</p>
+                  </article>
+                ) : <article className="project-row" id={project.id} key={project.id} data-reveal style={stagger(index)}>
+                  {project.secondary && <p className="eyebrow">SECONDARY WORK</p>}
                   {project.screenshot && <a className="project-screenshot" href={project.projectUrl}><Image unoptimized src={project.screenshot} alt={project.screenshotAlt || project.title} loading="lazy" width="1440" height="900" /><span>Explore the technical walkthroughs ↗</span></a>}
                   <div className="project-heading">
-                    <span className="project-number">0{index + 2}</span>
+                    {!project.secondary && <span className="project-number">0{index + 2}</span>}
                     <div>
                       <p className="eyebrow">
                         {project.category} / {project.year}
@@ -130,7 +138,7 @@ export default function Home() {
           <div className="sticky-heading" data-reveal><p className="eyebrow">03 / SKILLS</p><h2>Tools I work with</h2></div>
           <dl className="skills-list" data-reveal>{skillGroups.map(({ title, description }) => <div key={title}><dt>{title}</dt><dd>{description}</dd></div>)}</dl>
         </section>
-        <section id="about" className="practice wrap"><div className="sticky-heading" data-reveal><p className="eyebrow">04 / ABOUT & EDUCATION</p><h2>Development and diagnosis</h2></div><div data-reveal><p>My work connects application code, APIs and data. Production debugging informs how I approach software development and integrations.</p><p>Based in Villejuif, Greater Paris. I work in Arabic, French and English.</p><div id="education" className="education"><h3>Education</h3><p><strong>Master’s in Software Architecture and Development · Bac+5</strong><br />Ingetis Paris · 2026–2027<br />Apprenticeship schedule: 3 weeks in company / 1 week at school.</p><p><strong>Master — Software Engineering & Web Applications</strong><br />Faculty of Sciences and Technology, Settat · 2019–2022<br />Final project: full-stack carpooling application with Java, Angular, REST API and SQL.</p><p><strong>Preparatory programme in Mathematics & Physics, then Bachelor in General Engineering</strong><br />Yncréa Maroc, Rabat · 2016–2019</p></div><p className="authorship">Projects use open-source tools and AI-assisted development. Shopify Sanity Hydrogen Starter extends the Hydrogen and Sanity starters.</p></div></section>
+        <section id="about" className="practice wrap"><div className="sticky-heading" data-reveal><p className="eyebrow">04 / ABOUT & EDUCATION</p><h2>Development and diagnosis</h2></div><div data-reveal><p>My work connects application code, APIs and data. Production debugging informs how I approach software development and integrations.</p><p>Based in Villejuif, Greater Paris. I work in Arabic, French and English.</p><div id="education" className="education"><h3>Education</h3><p><strong>Master’s in Software Architecture and Development · Bac+5</strong><br />Ingetis Paris · 2026–2027<br />Apprenticeship schedule: 3 weeks in company / 1 week at school.</p><p><strong>Master — Software Engineering & Web Applications</strong><br />Faculty of Sciences and Technology, Settat, Morocco · 2019–2022<br />Final project: full-stack carpooling application with Java, Angular, REST API and SQL.</p><p><strong>Preparatory programme, then Bachelor in General Engineering</strong><br />Yncréa Maroc, Rabat · 2016–2019</p></div><p className="authorship">Projects use open-source tools and AI-assisted development. Headless Shopify + Sanity Starter extends the Hydrogen and Sanity starters.</p></div></section>
         <section id="contact" className="contact wrap" data-reveal>
           <p className="eyebrow">05 / CONTACT</p>
           <h2>Contact me.</h2>

@@ -12,6 +12,8 @@ export interface Project {
   liveUrl: string | null;
   repositoryName: string | null;
   featured: boolean;
+  compact?: boolean;
+  secondary?: boolean;
   status: string;
   year: number;
   detailUrl: string | null;
@@ -52,7 +54,7 @@ export const projects: Project[] = [
   },
   {
     id: "shopify-sanity-hydrogen-starter",
-    title: "Shopify Sanity Hydrogen Starter",
+    title: "Headless Shopify + Sanity Starter",
     category: "HEADLESS COMMERCE / CMS",
     description:
       "Connect Shopify’s product catalog with Sanity’s editorial content, giving a storefront product pages that combine commerce data and rich content.",
@@ -79,7 +81,26 @@ export const projects: Project[] = [
     detailUrl: null,
   },
   {
+    id: "carpooling-application",
+    title: "Carpooling application",
+    category: "MASTER’S CAPSTONE",
+    description: "Full-stack application built from scratch, with user and trip management, matching logic, a REST API and a SQL data model.",
+    architecture: "Java backend and Angular frontend with a REST API and SQL.",
+    technologies: ["Java", "Angular", "REST API", "SQL"],
+    challenges: "",
+    note: "",
+    githubUrl: null,
+    liveUrl: null,
+    repositoryName: null,
+    featured: true,
+    compact: true,
+    status: "Master’s capstone",
+    year: 2022,
+    detailUrl: null,
+  },
+  {
     id: "shopify-technical-studies",
+    secondary: true,
     title: "Shopify Technical Studies",
     category: "SHOPIFY / TECHNICAL DEMONSTRATIONS",
     description: "An interactive technical portfolio explaining structured product data, storefront debugging and resilient integrations through animated, step-by-step demonstrations.",

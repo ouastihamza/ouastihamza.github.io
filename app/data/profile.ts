@@ -1,8 +1,8 @@
 export const skillGroups = [
-  { title: "Programming", description: "JavaScript (ES6+), TypeScript, Python, PHP, SQL, HTML5, CSS3 and Liquid; Java (academic)." },
-  { title: "Frontend", description: "React, Next.js, Angular and Tailwind CSS; Vue.js (basics), responsive implementation and performance." },
-  { title: "Backend & data", description: "Node.js, Express, FastAPI, REST APIs, GraphQL, PostgreSQL, MySQL, MongoDB and data modelling." },
-  { title: "DevOps & delivery", description: "Docker, Docker Compose, Git, GitHub, GitLab, CI/CD, Vercel, Jira and pytest; AWS fundamentals." },
-  { title: "AI", description: "RAG, embeddings, Sentence Transformers, ChromaDB, LLM APIs and retrieval / response workflow design." },
-  { title: "Shopify & QA", description: "Admin and Storefront APIs, Hydrogen, metafields, JSON-LD, technical SEO, regression testing and root-cause analysis." },
+  { title: "Programming", description: "JavaScript, TypeScript, Python, PHP, SQL, HTML, CSS and Liquid." },
+  { title: "Frontend", description: "React, Next.js, Angular, Hydrogen and Tailwind CSS." },
+  { title: "Backend & data", description: "Node.js, Express, FastAPI, REST APIs, GraphQL, PostgreSQL, MySQL and MongoDB." },
+  { title: "Tooling", description: "Docker, Git, CI/CD, Vercel, Jira, pytest and DevTools." },
+  { title: "AI", description: "RAG, embeddings, ChromaDB and LLM APIs." },
+  { title: "E-commerce", description: "Shopify, Liquid, Online Store 2.0, Storefront and Admin APIs, metafields, JSON-LD, WooCommerce, BigCommerce, technical SEO and QA." },
 ];
