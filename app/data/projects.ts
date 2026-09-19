@@ -12,6 +12,8 @@ export interface Project {
   liveUrl: string | null;
   repositoryName: string | null;
   featured: boolean;
+  compact?: boolean;
+  secondary?: boolean;
   status: string;
   year: number;
   detailUrl: string | null;
@@ -41,7 +43,7 @@ export const projects: Project[] = [
     ],
     challenges:
       "Keeping retrieval within workspace boundaries, carrying source metadata through ingestion, and filtering weak matches before generation.",
-    note: "Prototype. The case study covers the public main branch.",
+    note: "Scope: document ingestion, workspace retrieval and answers with source metadata. The case study covers the public main branch.",
     githubUrl: `${GITHUB_PROFILE}/enterprise-ai-assistant`,
     liveUrl: null,
     repositoryName: "enterprise-ai-assistant",
@@ -51,28 +53,8 @@ export const projects: Project[] = [
     detailUrl: "/projects/enterprise-ai-assistant",
   },
   {
-    id: "shopify-technical-studies",
-    title: "Shopify Technical Studies",
-    category: "SHOPIFY / TECHNICAL DEMONSTRATIONS",
-    description: "An interactive technical portfolio explaining structured product data, storefront debugging and resilient integrations through animated, step-by-step demonstrations.",
-    architecture: "React and TypeScript with Framer Motion: six sections and paired merchant/technical views. Built with Vite.",
-    technologies: ["React 18", "TypeScript", "Framer Motion", "Vite", "CSS"],
-    challenges: "Coordinating scroll-driven stories, section navigation and merchant/technical views while keeping the experience readable on mobile.",
-    note: "Illustrative store data; no live Shopify connection or checkout.",
-    githubUrl: null,
-    liveUrl: null,
-    repositoryName: null,
-    featured: true,
-    status: "Interactive portfolio",
-    year: 2026,
-    detailUrl: null,
-    projectUrl: "/projects/shopify-technical-studies",
-    screenshot: "/images/shopify-technical-studies.webp",
-    screenshotAlt: "Shopify Technical Studies interface with section navigation and Shopify technical problem-solving overview.",
-  },
-  {
     id: "shopify-sanity-hydrogen-starter",
-    title: "Shopify Sanity Hydrogen Starter",
+    title: "Headless Shopify + Sanity Starter",
     category: "HEADLESS COMMERCE / CMS",
     description:
       "Connect Shopify’s product catalog with Sanity’s editorial content, giving a storefront product pages that combine commerce data and rich content.",
@@ -89,7 +71,7 @@ export const projects: Project[] = [
     ],
     challenges:
       "Joining content by product handle, connecting cart actions, and configuring content previews across the storefront and Studio.",
-    note: "Integration prototype built on the Hydrogen skeleton and Sanity Shopify Studio starters. Public code includes add-to-cart wiring; checkout has not been independently verified.",
+    note: "Scope: reusable integration starter built on Hydrogen and Sanity starters. Store-specific configuration and external catalogue sync are required; live preview and checkout have not been verified.",
     githubUrl: `${GITHUB_PROFILE}/shopify-sanity-hydrogen-starter`,
     liveUrl: null,
     repositoryName: "shopify-sanity-hydrogen-starter",
@@ -97,5 +79,44 @@ export const projects: Project[] = [
     status: "Integration prototype",
     year: 2025,
     detailUrl: null,
+  },
+  {
+    id: "carpooling-application",
+    title: "Carpooling application",
+    category: "MASTER’S CAPSTONE",
+    description: "Full-stack application built from scratch, with user and trip management, matching logic, a REST API and a SQL data model.",
+    architecture: "Java backend and Angular frontend with a REST API and SQL.",
+    technologies: ["Java", "Angular", "REST API", "SQL"],
+    challenges: "",
+    note: "",
+    githubUrl: null,
+    liveUrl: null,
+    repositoryName: null,
+    featured: true,
+    compact: true,
+    status: "Master’s capstone",
+    year: 2022,
+    detailUrl: null,
+  },
+  {
+    id: "shopify-technical-studies",
+    secondary: true,
+    title: "Shopify Technical Studies",
+    category: "SHOPIFY / TECHNICAL DEMONSTRATIONS",
+    description: "An interactive technical portfolio explaining structured product data, storefront debugging and resilient integrations through animated, step-by-step demonstrations.",
+    architecture: "React and TypeScript with Framer Motion: six sections and paired merchant/technical views. Built with Vite.",
+    technologies: ["React 18", "TypeScript", "Framer Motion", "Vite", "CSS"],
+    challenges: "Coordinating scroll-driven stories, section navigation and merchant/technical views while keeping the experience readable on mobile.",
+    note: "Scope: interactive demonstrations with illustrative store data, without a live store connection or checkout.",
+    githubUrl: null,
+    liveUrl: null,
+    repositoryName: null,
+    featured: true,
+    status: "Interactive portfolio",
+    year: 2026,
+    detailUrl: null,
+    projectUrl: "/projects/shopify-technical-studies",
+    screenshot: "/images/shopify-technical-studies.webp",
+    screenshotAlt: "Shopify Technical Studies interface with section navigation and Shopify technical problem-solving overview.",
   },
 ];
