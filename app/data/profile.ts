@@ -24,9 +24,13 @@ export const experience = {
   companyNote: "international team, remote",
   role: "Tier 2 Technical Support Engineer and Developer",
   period: "2021–present",
-  promotion: "Promoted to Tier 2 in July 2026",
+  summary:
+    "Development and production debugging in an international e-commerce SaaS: JavaScript, TypeScript, React, Node.js, PHP and Liquid, taking on the most technical production incidents.",
   about: "Judge.me is a product reviews application for e-commerce stores, built by an international team.",
-  stat: { value: "10,000+", label: "technical tickets resolved in five years" },
+  facts: [
+    { value: "10,000+", label: "technical tickets resolved in five years" },
+    { value: "Tier 2 · July 2026", label: "root cause analysis with product and engineering" },
+  ],
   highlights: [
     "Development in JavaScript, TypeScript, React, Node.js, PHP and Liquid, with advanced Shopify integrations (Storefront and Admin API, OS 2.0 themes, metafields, JSON-LD).",
     "Promoted to Tier 2 in July 2026: bug reproduction, root cause analysis, SQL and MongoDB data investigation, fixes validated with product and engineering.",

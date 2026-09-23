@@ -988,11 +988,14 @@ h3 {
 .hero-actions { margin-bottom: 35px; }
 .experience { padding-top: 65px; padding-bottom: 20px; }
 .experience-grid { display: grid; grid-template-columns: 1fr 1.15fr; gap: 65px; }
-.experience h3 { font-size: 25px; line-height: 1.3; margin-bottom: 15px; }
-.experience-grid ul { padding-left: 22px; margin: 0; color: var(--muted); }
-.experience-grid li { padding-left: 8px; margin-bottom: 18px; }
-.experience-stat { color: var(--primary); font-size: 44px; line-height: 1.2; margin-bottom: 20px; }
-.experience-stat span { display: block; font-size: 14px; color: var(--muted); margin-top: 8px; }
+.experience h3 { font-size: 25px; line-height: 1.3; margin-bottom: 12px; text-wrap: balance; }
+.experience-summary { font-size: 19px; line-height: 1.55; margin: 20px 0 28px; max-width: 34em; }
+.experience-facts { display: grid; gap: 18px; margin: 0; }
+.experience-facts dt { font-size: 24px; line-height: 1.25; color: var(--foreground); }
+.experience-facts dd { margin: 4px 0 0; font-size: 14px; color: var(--muted); }
+.experience-grid ul { display: grid; gap: 16px; margin: 20px 0 0; padding: 0; color: var(--muted); }
+.experience-grid li { position: relative; padding-left: 20px; max-width: 64ch; }
+.experience-grid li::before { content: ""; position: absolute; left: 0; top: 0.7em; width: 6px; height: 6px; background: var(--primary); }
 .freelance { padding: 22px 0; border-block: 1px solid var(--border); margin-top: 30px; }
 .skills-list { margin: 0; }
 .skills-list > div { margin-bottom: 22px; }

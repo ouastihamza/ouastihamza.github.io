@@ -55,19 +55,22 @@ export default function Home() {
           </div>
         </section>
         <section id="experience" className="experience wrap">
-          <div className="section-heading" data-reveal><p className="eyebrow">01 / EXPERIENCE</p><h2>Judge.me</h2></div>
+          <div className="section-heading" data-reveal><p className="eyebrow">01 / EXPERIENCE</p><h2>Five years at Judge.me</h2></div>
           <div className="experience-grid" data-reveal>
             <div>
               <h3>{experience.role}</h3>
               <p className="muted">
                 {experience.period} · {experience.company}, {experience.companyNote}
-                <br />
-                {experience.promotion}
               </p>
-              <p className="experience-stat">
-                {experience.stat.value}
-                <span>{experience.stat.label}</span>
-              </p>
+              <p className="experience-summary">{experience.summary}</p>
+              <dl className="experience-facts">
+                {experience.facts.map((fact) => (
+                  <div key={fact.value}>
+                    <dt>{fact.value}</dt>
+                    <dd>{fact.label}</dd>
+                  </div>
+                ))}
+              </dl>
             </div>
             <div>
               <p>{experience.about}</p>
