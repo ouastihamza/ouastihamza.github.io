@@ -174,27 +174,21 @@ nav a:not(.github-nav):hover::after {
   z-index: -1;
 }
 @media (prefers-reduced-motion: no-preference) {
-  .hero > .eyebrow,
+  /* The availability line and CV buttons stay out of the entrance so
+     they are readable on the first frame. */
   .hero-layout h1,
   .hero-aside,
-  .hero-actions,
   .hero-bottom {
     animation: hero-in var(--duration-slow) var(--ease-out) both;
   }
-  .hero > .eyebrow {
-    animation-delay: 0.02s;
-  }
   .hero-layout h1 {
-    animation-delay: 0.08s;
+    animation-delay: 0.04s;
   }
   .hero-aside {
-    animation-delay: 0.2s;
-  }
-  .hero-actions {
-    animation-delay: 0.32s;
+    animation-delay: 0.12s;
   }
   .hero-bottom {
-    animation-delay: 0.42s;
+    animation-delay: 0.2s;
   }
 }
 @keyframes hero-in {
@@ -216,12 +210,7 @@ nav a:not(.github-nav):hover::after {
   color: var(--muted);
   margin-bottom: 24px;
 }
-.hero > .eyebrow {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-.eyebrow > span {
+.availability-dot {
   display: inline-block;
   width: 7px;
   height: 7px;
@@ -1016,7 +1005,7 @@ h3 {
 nav a { min-height: 44px; display: inline-flex; align-items: center; }
 section[id], article[id] { scroll-margin-top: 24px; }
 @media(max-width:900px) { .experience-grid { gap: 30px; } .secondary-grid { gap: 32px; } .practice { gap: 32px; } }
-@media(max-width:680px) { .experience-grid { grid-template-columns: 1fr; gap: 15px; } .experience { padding-top: 45px; } .site-header { flex-wrap: wrap; padding-block: 16px; } .site-header nav { gap: 15px; flex-wrap: wrap; } .github-nav { border: 0; padding: 0; } .site-header .wordmark { font-size: 30px; } .hero-aside p:first-of-type { font-size: 21px; } .hero h1 { font-size: clamp(4rem, 18vw, 6rem); } .hero-layout { gap: 24px; } .contact-email { font-size: 21px; } }
+@media(max-width:680px) { .experience-grid { grid-template-columns: 1fr; gap: 15px; } .experience { padding-top: 45px; } .site-header { flex-wrap: wrap; padding-block: 16px; } .site-header nav { gap: 15px; flex-wrap: wrap; } .github-nav { border: 0; padding: 0; } .site-header .wordmark { font-size: 30px; } .hero-aside p:first-of-type { font-size: 21px; } .hero h1 { font-size: clamp(3.25rem, 15vw, 4.5rem); } .hero-layout { gap: 24px; } .contact-email { font-size: 21px; } }
 .education p { margin-bottom: 20px; }
 .practice p + p, .case-row p + p { margin-top: 16px; }
 .hero-aside p + p { margin-top: 12px; }
@@ -1042,5 +1031,34 @@ section[id], article[id] { scroll-margin-top: 24px; }
   transform: translateY(-3px);
 }
 
-.apprenticeship-callout { margin-bottom: 24px; color: var(--muted); font-size: 14px; }
-.apprenticeship-callout strong { color: var(--foreground); }
+.availability { margin-bottom: 36px; }
+.availability-pill {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  margin-bottom: 12px;
+  padding: 8px 14px;
+  border: 1px solid rgba(196, 243, 107, 0.35);
+  border-radius: 999px;
+  background: var(--primary-soft);
+  color: var(--foreground);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+.availability-pill strong { color: var(--primary); font-weight: 600; }
+.availability-details { color: var(--muted); font-size: 16px; }
+.button.secondary { color: var(--foreground); border-color: #5a6758; }
+.button.secondary:hover { border-color: var(--primary); }
+.hero-actions .text-link { min-height: 44px; }
+@media (min-width: 681px) {
+  .hero h1 { font-size: clamp(3.5rem, 7vw, 6.5rem); }
+}
+@media (max-width: 680px) {
+  .availability { margin-bottom: 28px; }
+  .availability-pill { border-radius: 14px; }
+  .availability-sep { display: none; }
+  .hero-actions { gap: 12px 24px; }
+  .hero-actions .button { width: 100%; justify-content: space-between; min-height: 52px; }
+}

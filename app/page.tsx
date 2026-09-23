@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { ArrowUpRight, ArrowDownRight } from "lucide-react";
-import { Header, Footer, ArchitectureDiagram, GITHUB_PROFILE } from "./site-components";
+import { Header, Footer, ArchitectureDiagram } from "./site-components";
 import { stagger } from "./stagger";
 import { education, experience, profile, skillGroups } from "./data/profile";
 import { projects, type Project } from "./data/projects";
@@ -11,28 +11,42 @@ export default function Home() {
       <Header />
       <main id="main">
         <section className="hero wrap">
-          <div className="eyebrow">
-            <span /> PARIS / ÎLE-DE-FRANCE
+          <div className="availability">
+            <p className="availability-pill">
+              <span className="availability-dot" aria-hidden="true" />
+              <strong>{profile.availability}</strong>
+              <span className="availability-sep" aria-hidden="true">·</span>
+              Work-study apprenticeship (alternance)
+            </p>
+            <p className="availability-details">
+              {profile.rhythm} · {profile.programme}
+            </p>
           </div>
           <div className="hero-layout">
             <h1>
               Hamza<br /><em>Ouasti.</em>
             </h1>
             <div className="hero-aside">
-              <ArrowDownRight size={76} strokeWidth={1} />
               <p>
                 Full-Stack Developer<br />Software Engineer
               </p>
-              <p className="muted">
-                {profile.summary}
-              </p>
-              <a className="text-link" href={GITHUB_PROFILE} target="_blank" rel="noreferrer">
-                Explore my GitHub <ArrowUpRight size={18} />
-              </a>
+              <p className="muted">{profile.summary}</p>
             </div>
           </div>
-          <p className="apprenticeship-callout"><strong>Seeking a Bac+5 apprenticeship · September 2026</strong><br />3 weeks in company / 1 week at school · Ingetis Paris</p>
-          <div className="hero-actions actions"><a className="button primary" href="/Hamza_Ouasti_CV_FR.pdf" download hrefLang="fr">CV · French (PDF) <ArrowUpRight size={17} /></a><a className="text-link" href="/Hamza_Ouasti_CV_EN.pdf" download hrefLang="en">CV · English (PDF) <ArrowUpRight size={17} /></a><a className="text-link" href="https://linkedin.com/in/ouastihamza" target="_blank" rel="noreferrer">LinkedIn <ArrowUpRight size={17} /></a></div>
+          <div className="hero-actions actions">
+            <a className="button primary" href={profile.links.cvEnglish} download hrefLang="en">
+              Download my CV (PDF) <ArrowUpRight size={17} />
+            </a>
+            <a className="button secondary" href={profile.links.cvFrench} download hrefLang="fr">
+              CV in French (PDF) <ArrowUpRight size={17} />
+            </a>
+            <a className="text-link" href={`mailto:${profile.email}`}>
+              Email me <ArrowUpRight size={17} />
+            </a>
+            <a className="text-link" href={profile.links.linkedin} target="_blank" rel="noreferrer">
+              LinkedIn <ArrowUpRight size={17} />
+            </a>
+          </div>
           <div className="hero-bottom">
             <a href="#projects">
               SCROLL TO SELECTED WORK <ArrowDownRight size={16} />
