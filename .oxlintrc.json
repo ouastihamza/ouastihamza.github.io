@@ -33,8 +33,7 @@
     "components/ui/**",
     "hooks/**",
     "public/**",
-    "app/projects/**/document.generated.ts",
-    "apps/portfolio-2/diagnostics/**"
+    "app/projects/**/document.generated.ts"
   ],
   "rules": {
     "no-array-constructor": "error",
