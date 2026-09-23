@@ -1,13 +1,14 @@
 import { ArrowUpRight } from "lucide-react";
 import { GITHUB_PROFILE } from "./data/projects";
+import { profile } from "./data/profile";
 export { GITHUB_PROFILE } from "./data/projects";
 export { Header } from "./header";
 
 export function Footer() {
   return (
     <footer className="site-footer wrap">
-      <span>© 2026 HAMZA OUASTI</span>
-      <span>PARIS / VILLEJUIF, FRANCE</span>
+      <span>© 2026 {profile.name.toUpperCase()}</span>
+      <span>{profile.location.toUpperCase()}</span>
       <a href={GITHUB_PROFILE} target="_blank" rel="noreferrer">
         GitHub <ArrowUpRight size={15} />
       </a>

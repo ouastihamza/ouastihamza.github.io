@@ -2,7 +2,7 @@ import Image from "next/image";
 import { ArrowUpRight, ArrowDownRight } from "lucide-react";
 import { Header, Footer, ArchitectureDiagram, GITHUB_PROFILE } from "./site-components";
 import { stagger } from "./stagger";
-import { skillGroups } from "./data/profile";
+import { education, experience, profile, skillGroups } from "./data/profile";
 import { projects, type Project } from "./data/projects";
 export default function Home() {
   const lead = projects[0];
@@ -24,7 +24,7 @@ export default function Home() {
                 Full-Stack Developer<br />Software Engineer
               </p>
               <p className="muted">
-                I develop in JavaScript and TypeScript, with five years in international e-commerce SaaS and complex production debugging. I’m seeking an apprenticeship to go further in application architecture.
+                {profile.summary}
               </p>
               <a className="text-link" href={GITHUB_PROFILE} target="_blank" rel="noreferrer">
                 Explore my GitHub <ArrowUpRight size={18} />
@@ -42,9 +42,35 @@ export default function Home() {
         </section>
         <section id="experience" className="experience wrap">
           <div className="section-heading" data-reveal><p className="eyebrow">01 / EXPERIENCE</p><h2>Judge.me</h2></div>
-          <div className="experience-grid" data-reveal><div><h3>Tier 2 Technical Support Engineer<br />and Developer</h3><p className="muted">2021–present · Judge.me Product Reviews<br />Promoted to Tier 2 in July 2026</p><p className="experience-stat">10,000+<span>technical cases resolved</span></p></div>
-          <div><p>Judge.me is a product reviews application for e-commerce stores, built by an international team.</p><ul><li>Develop fixes and customizations in JavaScript, TypeScript, React, Node.js, PHP and Liquid, including Shopify Storefront and Admin APIs, Online Store 2.0 themes, metafields and JSON-LD.</li><li>Investigate complex production incidents: reproduce bugs, trace root causes through SQL and MongoDB data, and validate fixes with product and engineering.</li><li>Resolve technical cases across Shopify, WooCommerce, BigCommerce, Squarespace, Square and Duda, with peak workloads of 40–50 cases per week.</li><li>Delivered monthly webinars and demos for merchants, agencies and partners from 2021–2024, as ambassador for the Morocco team.</li></ul></div></div>
-          <p className="freelance" data-reveal><strong>Shopify / E-commerce Developer · Freelance</strong><br /><span className="muted">2022–present · Store customization, third-party integrations, structured data and production bug fixes.</span></p>
+          <div className="experience-grid" data-reveal>
+            <div>
+              <h3>{experience.role}</h3>
+              <p className="muted">
+                {experience.period} · {experience.company}, {experience.companyNote}
+                <br />
+                {experience.promotion}
+              </p>
+              <p className="experience-stat">
+                {experience.stat.value}
+                <span>{experience.stat.label}</span>
+              </p>
+            </div>
+            <div>
+              <p>{experience.about}</p>
+              <ul>
+                {experience.highlights.map((highlight) => (
+                  <li key={highlight}>{highlight}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+          <p className="freelance" data-reveal>
+            <strong>{experience.freelance.role}</strong>
+            <br />
+            <span className="muted">
+              {experience.freelance.period} · {experience.freelance.clients}. {experience.freelance.description}
+            </span>
+          </p>
         </section>
         <section id="projects" className="projects-section wrap">
           <div className="section-heading" data-reveal>
@@ -138,13 +164,19 @@ export default function Home() {
           <div className="sticky-heading" data-reveal><p className="eyebrow">03 / SKILLS</p><h2>Tools I work with</h2></div>
           <dl className="skills-list" data-reveal>{skillGroups.map(({ title, description }) => <div key={title}><dt>{title}</dt><dd>{description}</dd></div>)}</dl>
         </section>
-        <section id="about" className="practice wrap"><div className="sticky-heading" data-reveal><p className="eyebrow">04 / ABOUT & EDUCATION</p><h2>Development and diagnosis</h2></div><div data-reveal><p>My work connects application code, APIs and data. Production debugging informs how I approach software development and integrations.</p><p>Based in Villejuif, Greater Paris. I work in Arabic, French and English.</p><div id="education" className="education"><h3>Education</h3><p><strong>Master’s in Software Architecture and Development · Bac+5</strong><br />Ingetis Paris · 2026–2027<br />Apprenticeship schedule: 3 weeks in company / 1 week at school.</p><p><strong>Master — Software Engineering & Web Applications</strong><br />Faculty of Sciences and Technology, Settat, Morocco · 2019–2022<br />Final project: full-stack carpooling application with Java, Angular, REST API and SQL.</p><p><strong>Preparatory programme, then Bachelor in General Engineering</strong><br />Yncréa Maroc, Rabat · 2016–2019</p></div><p className="authorship">Projects use open-source tools and AI-assisted development. Headless Shopify + Sanity Starter extends the Hydrogen and Sanity starters.</p></div></section>
+        <section id="about" className="practice wrap"><div className="sticky-heading" data-reveal><p className="eyebrow">04 / ABOUT & EDUCATION</p><h2>Development and diagnosis</h2></div><div data-reveal><p>My work connects application code, APIs and data. Production debugging informs how I approach software development and integrations.</p><p>Based in {profile.location}.</p><p>Languages: {profile.languages}.</p><div id="education" className="education"><h3>Education</h3>{education.map((entry) => (<p key={entry.title}><strong>{entry.title}</strong>{entry.details.map((detail) => (<span key={detail}><br />{detail}</span>))}</p>))}</div><p className="authorship">Projects use open-source tools and AI-assisted development. Headless Shopify + Sanity Starter extends the Hydrogen and Sanity starters.</p></div></section>
         <section id="contact" className="contact wrap" data-reveal>
           <p className="eyebrow">05 / CONTACT</p>
           <h2>Contact me.</h2>
-          <p>Hamza Ouasti · Paris / Villejuif, France</p>
-          <a className="contact-email" href="mailto:ouastihamza27@gmail.com">ouastihamza27@gmail.com</a>
-          <div className="actions"><a className="text-link" href={GITHUB_PROFILE} target="_blank" rel="noreferrer">GitHub <ArrowUpRight size={17} /></a><a className="text-link" href="https://linkedin.com/in/ouastihamza" target="_blank" rel="noreferrer">LinkedIn <ArrowUpRight size={17} /></a><a className="text-link" href="/Hamza_Ouasti_CV_FR.pdf" download hrefLang="fr">CV · French (PDF) <ArrowUpRight size={17} /></a><a className="text-link" href="/Hamza_Ouasti_CV_EN.pdf" download hrefLang="en">CV · English (PDF) <ArrowUpRight size={17} /></a></div>
+          <p>{profile.name} · {profile.location}</p>
+          <a className="contact-email" href={`mailto:${profile.email}`}>{profile.email}</a>
+          <p className="contact-phone"><a className="text-link" href={profile.phone.href}>{profile.phone.display}</a></p>
+          <div className="actions">
+            <a className="text-link" href={profile.links.github} target="_blank" rel="noreferrer">GitHub <ArrowUpRight size={17} /></a>
+            <a className="text-link" href={profile.links.linkedin} target="_blank" rel="noreferrer">LinkedIn <ArrowUpRight size={17} /></a>
+            <a className="text-link" href={profile.links.cvEnglish} download hrefLang="en">CV · English (PDF) <ArrowUpRight size={17} /></a>
+            <a className="text-link" href={profile.links.cvFrench} download hrefLang="fr">CV · French (PDF) <ArrowUpRight size={17} /></a>
+          </div>
         </section>
       </main>
       <Footer />

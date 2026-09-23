@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { GITHUB_PROFILE } from "./data/projects";
+import { profile } from "./data/profile";
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -36,9 +37,9 @@ export function Header() {
           h<span>↗</span>
         </a>
         <span className="header-name">
-          HAMZA OUASTI
+          {profile.name.toUpperCase()}
           <br />
-          <span>SOFTWARE DEVELOPER</span>
+          <span>{profile.title.toUpperCase()}</span>
         </span>
         <nav aria-label="Main navigation">
           <a href="/#experience">Experience</a>

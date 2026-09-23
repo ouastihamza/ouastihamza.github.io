@@ -1,4 +1,6 @@
-export const GITHUB_PROFILE = "https://github.com/ouastihamza";
+import { profile } from "./profile";
+
+export const GITHUB_PROFILE = profile.links.github;
 export interface Project {
   id: string;
   title: string;
