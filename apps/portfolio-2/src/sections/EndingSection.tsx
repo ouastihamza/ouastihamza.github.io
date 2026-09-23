@@ -39,7 +39,7 @@ export function EndingSection({
           <footer className="ending-footer">
             <span>Shopify Technical Studies</span>
             <span>Hamza Ouasti</span>
-            <span>Technical support & development</span>
+            <span>{profile.title} · {profile.location}</span>
           </footer>
         </div>
       </div>
