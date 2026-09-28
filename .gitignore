@@ -46,6 +46,7 @@ next-env.d.ts
 /app/projects/portfolio-2/document.generated.ts
 
 /app/projects/shopify-technical-studies/document.generated.ts
+/app/signature.generated.ts
 
 # Local credentials and generated data at any depth.
 .env
