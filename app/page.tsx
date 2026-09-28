@@ -2,14 +2,13 @@ import Image from "next/image";
 import { ArrowUpRight, ArrowDownRight } from "lucide-react";
 import { Header, Footer, ArchitectureDiagram } from "./site-components";
 import { stagger } from "./stagger";
-import { Signature, SignatureScript } from "./signature";
+import { Signature } from "./signature";
 import { education, experience, profile, skillGroups } from "./data/profile";
 import { projects, type Project } from "./data/projects";
 export default function Home() {
   const lead = projects[0];
   return (
     <>
-      <SignatureScript />
       <Header />
       <main id="main">
         <section className="hero wrap">

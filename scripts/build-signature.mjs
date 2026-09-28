@@ -1,9 +1,12 @@
 import { readFile, writeFile } from "node:fs/promises";
 import { Path, parse } from "opentype.js/dist/opentype.mjs";
 
-const WORDS = ["Hamza", "Ouasti"];
+const WORDS = ["Ouasti", "Hamza"];
+const ACCENT_WORD = 0;
 const FONT_SIZE = 100;
 const PADDING = 4;
+// Extra slant on top of the font's own, as a skew applied to the outlines.
+const SLANT = Math.tan((10 * Math.PI) / 180);
 
 const fontFile = await readFile(new URL("signature/GreatVibes-Regular.ttf", import.meta.url));
 const font = parse(fontFile.buffer.slice(fontFile.byteOffset, fontFile.byteOffset + fontFile.byteLength));
@@ -17,14 +20,15 @@ const scale = FONT_SIZE / font.unitsPerEm;
 
 function placeGlyph(glyph, offsetX) {
   const round = (value) => Math.round(value * 10) / 10;
-  const x = (value) => round(offsetX + value * scale);
-  const y = (value) => round(-value * scale);
+  const x = (vx, vy) => round(offsetX + (vx + vy * SLANT) * scale);
+  const y = (vy) => round(-vy * scale);
   const path = new Path();
   for (const cmd of glyph.path.commands) {
-    if (cmd.type === "M") path.moveTo(x(cmd.x), y(cmd.y));
-    else if (cmd.type === "L") path.lineTo(x(cmd.x), y(cmd.y));
-    else if (cmd.type === "Q") path.quadraticCurveTo(x(cmd.x1), y(cmd.y1), x(cmd.x), y(cmd.y));
-    else if (cmd.type === "C") path.curveTo(x(cmd.x1), y(cmd.y1), x(cmd.x2), y(cmd.y2), x(cmd.x), y(cmd.y));
+    if (cmd.type === "M") path.moveTo(x(cmd.x, cmd.y), y(cmd.y));
+    else if (cmd.type === "L") path.lineTo(x(cmd.x, cmd.y), y(cmd.y));
+    else if (cmd.type === "Q") path.quadraticCurveTo(x(cmd.x1, cmd.y1), y(cmd.y1), x(cmd.x, cmd.y), y(cmd.y));
+    else if (cmd.type === "C")
+      path.curveTo(x(cmd.x1, cmd.y1), y(cmd.y1), x(cmd.x2, cmd.y2), y(cmd.y2), x(cmd.x, cmd.y), y(cmd.y));
     else path.close();
   }
   return path;
@@ -56,7 +60,7 @@ paths.forEach((path, index) => {
   y2 = Math.max(y2, box.y2);
   const d = path.toPathData({ decimalPlaces: 1, optimize: false, flipY: false });
   if (d.includes("NaN")) throw new Error(`Invalid path data for "${chars[index]}"`);
-  letters.push({ char: chars[index], word, d });
+  letters.push({ char: chars[index], word, accent: word === ACCENT_WORD, d });
 });
 
 const round = (value) => Math.round(value * 10) / 10;
