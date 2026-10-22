@@ -1,5 +1,9 @@
 # Portfolio redesign: progress
 
+## Identity ring color refinement (2026-10-22)
+
+Owner approved merging and publishing this milestone. Ring segments now use off-white for the name, sage for Full-Stack Developer and muted sand for Software Engineer, with neutral separators. Lint, typecheck, build and responsive Chromium checks pass; no horizontal overflow at 390 and 1440px.
+
 ## Milestone 3 — centered portrait and circular identity (2026-10-22)
 
 Implemented in the commit containing this entry, titled `feat: center portrait with rotating identity ring`. Existing feature branch fast-forwarded to latest main before editing, preserving the About correction; main itself was not changed.

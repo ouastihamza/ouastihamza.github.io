@@ -4,7 +4,7 @@
 
 The owner rejected the split purple/green styling and requested one natural visual identity inspired by their real portrait. The original ANALYSIS.md and DESIGN_PLAN.md are historical references. This document and the latest PROGRESS.md entry describe the implemented direction.
 
-Work only on `feature/interactive-portfolio-redesign`, based on `portfolio-refresh`. Never merge, force-push, deploy or push main without a new user request. The GitHub account `ouastihamza` has push access. The owner authorized committing and pushing this milestone to the feature branch, then stopping for visual review.
+Work only on `feature/interactive-portfolio-redesign`, based on `portfolio-refresh`. Never merge, force-push, deploy or push main without a new user request. The GitHub account `ouastihamza` has push access. The owner subsequently approved the centered ring, requested distinct muted colors for the three text segments, and authorized pushing and merging this milestone into main for publication.
 
 ## Implemented
 
@@ -49,6 +49,6 @@ Chromium responsive checks cover 360, 390, 768, 1024 and 1440px; no horizontal o
 
 ## Stop here
 
-The owner wants to inspect the centered identity-ring milestone before further effects. Do not add elaborate transitions, a new font, scroll pinning, new content or further project curation without that review.
+The centered identity-ring milestone is approved for publication. Name/title ring colors are off-white, sage and muted sand. Do not add elaborate transitions, a new font, scroll pinning, new content or further project curation without that review.
 
 Keep untracked `AGENTS.md`, `CLAUDE.md`, `public/fonts/` untouched and uncommitted. Keep CV paths, project screenshots, Shopify source, static-export configuration and deployment workflow unchanged. Existing dependency advisories noted in the prior milestone are separate work.
