@@ -3,7 +3,8 @@ import Image from "next/image";
 import { ArrowUpRight, ArrowDownRight } from "lucide-react";
 import { Header, Footer, ArchitectureDiagram } from "./site-components";
 import { stagger } from "./stagger";
-import { Signature } from "./signature";
+import { HeroPortrait } from "./hero-portrait";
+import { Botanical } from "./botanical";
 import { education, experience, profile } from "./data/profile";
 import { projects, type Project } from "./data/projects";
 export default function Home() {
@@ -13,6 +14,7 @@ export default function Home() {
       <Header />
       <main id="main">
         <section className="hero wrap">
+          <Botanical className="botanical hero-botanical" />
           <div className="availability">
             <p className="availability-pill">
               <span className="availability-dot" aria-hidden="true" />
@@ -24,31 +26,27 @@ export default function Home() {
               {profile.rhythm} · {profile.programme}
             </p>
           </div>
-          <div className="hero-layout">
-            <h1 className="signature-heading">
-              <span className="sr-only">{profile.name}</span>
-              <Signature />
-            </h1>
-            <div className="hero-aside">
-              <p>
-                Full-Stack Developer<br />Software Engineer
-              </p>
-              <p className="muted">{profile.summary}</p>
+          <div className="woodland-hero-layout">
+            <div className="woodland-intro">
+              <p className="eyebrow">FULL-STACK DEVELOPER / SOFTWARE ENGINEER</p>
+              <h1>Hamza <span>Ouasti</span></h1>
+              <p className="woodland-summary">{profile.summary}</p>
+              <div className="hero-actions actions">
+                <a className="button primary" href={profile.links.cvEnglish} download hrefLang="en">
+                  Download my CV (PDF) <ArrowUpRight size={17} />
+                </a>
+                <a className="button secondary" href={profile.links.cvFrench} download hrefLang="fr">
+                  CV in French (PDF) <ArrowUpRight size={17} />
+                </a>
+                <a className="text-link" href={`mailto:${profile.email}`}>
+                  Email me <ArrowUpRight size={17} />
+                </a>
+                <a className="text-link" href={profile.links.linkedin} target="_blank" rel="noreferrer">
+                  LinkedIn <ArrowUpRight size={17} />
+                </a>
+              </div>
             </div>
-          </div>
-          <div className="hero-actions actions">
-            <a className="button primary" href={profile.links.cvEnglish} download hrefLang="en">
-              Download my CV (PDF) <ArrowUpRight size={17} />
-            </a>
-            <a className="button secondary" href={profile.links.cvFrench} download hrefLang="fr">
-              CV in French (PDF) <ArrowUpRight size={17} />
-            </a>
-            <a className="text-link" href={`mailto:${profile.email}`}>
-              Email me <ArrowUpRight size={17} />
-            </a>
-            <a className="text-link" href={profile.links.linkedin} target="_blank" rel="noreferrer">
-              LinkedIn <ArrowUpRight size={17} />
-            </a>
+            <HeroPortrait />
           </div>
           <div className="hero-bottom">
             <a href="#projects">
@@ -183,6 +181,7 @@ export default function Home() {
         <TechGrid />
         <section id="about" className="practice wrap"><div className="sticky-heading" data-reveal><p className="eyebrow">04 / ABOUT & EDUCATION</p><h2>Development and diagnosis</h2></div><div data-reveal><p>My work connects application code, APIs and data. Production debugging informs how I approach software development and integrations.</p><p>Based in {profile.location}.</p><p>Languages: {profile.languages}.</p><div id="education" className="education"><h3>Education</h3>{education.map((entry) => (<p key={entry.title}><strong>{entry.title}</strong>{entry.details.map((detail) => (<span key={detail}><br />{detail}</span>))}</p>))}</div><p className="authorship">Projects use open-source tools and AI-assisted development. Headless Shopify + Sanity Starter extends the Hydrogen and Sanity starters.</p></div></section>
         <section id="contact" className="contact wrap" data-reveal>
+          <Botanical className="botanical contact-botanical" />
           <p className="eyebrow">05 / CONTACT</p>
           <h2>Contact me.</h2>
           <p>{profile.name} · {profile.location}</p>

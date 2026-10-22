@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import "./tech-grid.css";
+import "./woodland.css";
 import { ScrollReveal } from "./scroll-reveal";
 export const metadata: Metadata = {
   metadataBase: new URL("https://ouastihamza.github.io"),

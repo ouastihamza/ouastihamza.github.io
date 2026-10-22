@@ -13,6 +13,12 @@ const technologies = [
   [siShopify, { title: "Liquid", Icon: CodeXml }, siWoocommerce, siBigcommerce],
 ];
 
+// Dark brand marks need a light backing; preserve the logo's actual color.
+function needsLightBacking(hex: string) {
+  const channels = [0, 2, 4].map((offset) => Number.parseInt(hex.slice(offset, offset + 2), 16) / 255);
+  return channels[0] * .2126 + channels[1] * .7152 + channels[2] * .0722 < .36;
+}
+
 export function TechGrid() {
   return (
     <section id="skills" className="tech-section" aria-labelledby="skills-heading">
@@ -32,7 +38,7 @@ export function TechGrid() {
               {technologies[index].map((technology, cardIndex) => (
                 <li key={technology.title} data-reveal style={stagger(cardIndex % 4)}>
                   <div className="tech-card">
-                    <span className="tech-logo" aria-hidden="true">
+                    <span className={`tech-logo${"hex" in technology && needsLightBacking(technology.hex) ? " tech-logo-neutral" : ""}`} style={"hex" in technology ? { color: `#${technology.hex}` } : undefined} aria-hidden="true">
                       {"path" in technology ? <svg viewBox="0 0 24 24" fill="currentColor" focusable="false"><path d={technology.path} /></svg> : <technology.Icon strokeWidth={1.5} />}
                     </span>
                     <span className="tech-name">{technology.title}</span>
