@@ -27,9 +27,10 @@ export default function Home() {
             </p>
           </div>
           <div className="woodland-hero-layout">
+            <HeroPortrait />
             <div className="woodland-intro">
-              <p className="eyebrow">FULL-STACK DEVELOPER / SOFTWARE ENGINEER</p>
-              <h1>Hamza <span>Ouasti</span></h1>
+              <h1 className="sr-only">Hamza Ouasti — Full-Stack Developer / Software Engineer</h1>
+              <p className="hero-role">Full-Stack Developer <span>/ Software Engineer</span></p>
               <p className="woodland-summary">{profile.summary}</p>
               <div className="hero-actions actions">
                 <a className="button primary" href={profile.links.cvEnglish} download hrefLang="en">
@@ -46,7 +47,6 @@ export default function Home() {
                 </a>
               </div>
             </div>
-            <HeroPortrait />
           </div>
           <div className="hero-bottom">
             <a href="#projects">

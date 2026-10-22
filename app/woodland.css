@@ -2,58 +2,66 @@
 body { background-image: radial-gradient(ellipse at 0 0, rgba(165,168,151,.035), transparent 48%); }
 .hero { isolation: isolate; padding-top: 32px; }
 .hero::before { display: none; }
-.woodland-hero-layout { display: grid; grid-template-columns: 1.25fr 1fr; align-items: center; gap: 48px; padding: 10px 0 44px; }
-.woodland-intro { position: relative; z-index: 2; }
-.woodland-intro .eyebrow { font-size: 11px; letter-spacing: .1em; color: var(--primary); margin-bottom: 22px; }
-.hero .woodland-intro h1 { font-size: clamp(3.5rem, 6.5vw, 6.2rem); font-weight: 500; line-height: 1; letter-spacing: -.065em; margin-bottom: 28px; }
-.woodland-intro h1 span { display: block; color: var(--fog); }
-.woodland-summary { font-size: 17px; line-height: 1.75; color: var(--muted); max-width: 510px; margin-bottom: 28px; }
-.woodland-intro .hero-actions { gap: 14px 22px; margin-bottom: 0; }
+.woodland-hero-layout { display: flex; flex-direction: column; align-items: center; gap: 34px; padding: 18px 0 42px; }
+.woodland-intro { position: relative; z-index: 2; text-align: center; max-width: 800px; }
+.hero-role { color: var(--foreground); font-size: clamp(1.25rem, 2.4vw, 1.8rem); line-height: 1.4; letter-spacing: -.035em; margin-bottom: 16px; }
+.hero-role span { color: var(--primary); }
+.woodland-summary { font-size: 16px; line-height: 1.75; color: var(--muted); max-width: 690px; margin: 0 auto 24px; }
+.woodland-intro .hero-actions { justify-content: center; gap: 14px 22px; margin-bottom: 0; }
 .woodland-intro .button { gap: 12px; padding: 12px 16px; }
-.availability { margin-bottom: 14px; }
+.availability { text-align: center; margin-bottom: 8px; }
 .availability-pill { font-size: 13px; }
 .availability-details { font-size: 13px; }
 .botanical { position: absolute; width: 180px; height: 400px; color: var(--fog); opacity: .055; pointer-events: none; z-index: -1; }
 .hero-botanical { right: 0; top: 45px; transform: translateY(var(--branch-shift, 0px)); }
 .contact { position: relative; isolation: isolate; }
 .contact-botanical { right: 2%; bottom: 18px; transform: rotate(-15deg); width: 130px; height: 320px; }
-.portrait-stage { position: relative; isolation: isolate; align-self: center; width: 100%; max-width: 490px; margin-left: auto; }
-.portrait-atmosphere { position: absolute; inset: 5% -2% -4%; background: radial-gradient(ellipse, rgba(115,152,132,.16), rgba(165,168,151,.05) 45%, transparent 70%); z-index: -1; }
-.portrait-parallax { transform: translate3d(var(--portrait-x, 0px), calc(var(--portrait-y, 0px) + var(--portrait-scroll, 0px)), 0); transition: transform .35s ease-out; }
+.portrait-stage { position: relative; isolation: isolate; width: min(490px, 100%); aspect-ratio: 1; margin-inline: auto; }
+.portrait-atmosphere { position: absolute; inset: 8%; border-radius: 50%; background: radial-gradient(ellipse, rgba(115,152,132,.16), rgba(165,168,151,.05) 48%, transparent 72%); z-index: -1; }
+.portrait-parallax { position: absolute; width: 76%; left: 12%; bottom: 12%; transform: translate3d(var(--portrait-x, 0px), calc(var(--portrait-y, 0px) + var(--portrait-scroll, 0px)), 0); transition: transform .35s ease-out; }
 .portrait-image { width: 100%; height: auto; display: block; filter: drop-shadow(0 14px 18px rgba(0,0,0,.22)); mask-image: linear-gradient(to bottom, #000 0%, #000 83%, transparent 100%); }
-.portrait-ground { position: absolute; left: 20%; right: 20%; bottom: -5px; height: 24px; border-radius: 50%; background: radial-gradient(ellipse, #060b0860, transparent 70%); z-index: -1; }
+.portrait-ground { position: absolute; left: 25%; right: 25%; bottom: 12%; height: 24px; border-radius: 50%; background: radial-gradient(ellipse, #060b0860, transparent 70%); z-index: -1; }
+.identity-orbit { position: absolute; inset: 0; transform: translateY(calc(var(--portrait-scroll, 0px) * .35)); transition: transform .35s ease-out; pointer-events: none; }
+.identity-ring { width: 100%; height: 100%; overflow: visible; transform-origin: center; }
+.identity-ring text { fill: var(--muted); font: 500 17px Arial, sans-serif; }
+.identity-ring .identity-name { fill: var(--foreground); }
+.identity-ring .identity-developer { fill: var(--primary); }
+.identity-ring .identity-engineer { fill: #d6bd91; }
+.motion-toggle { display: none; position: absolute; bottom: -16px; left: 50%; transform: translateX(-50%); align-items: center; gap: 7px; padding: 8px 12px; min-height: 44px; border: 1px solid var(--border); border-radius: 24px; background: var(--background); color: var(--muted); font-size: 11px; cursor: pointer; white-space: nowrap; }
+.motion-toggle:hover { color: var(--foreground); border-color: var(--sage); }
+.motion-toggle:focus-visible { outline: 2px solid var(--primary); outline-offset: 4px; }
+.hero[data-motion-ready] .motion-toggle { display: inline-flex; }
+.hero[data-motion-paused="true"] .identity-ring, .hero[data-motion-paused="true"] .portrait-float { animation-play-state: paused; }
+.hero[data-motion-paused="true"] .portrait-parallax, .hero[data-motion-paused="true"] .identity-orbit, .hero[data-motion-paused="true"] .hero-botanical { transform: none; }
 .lead-project, .case-architecture, .architecture-panel, .case-callout, .project-screenshot { border-radius: 12px; }
 .button { border-radius: 7px; }
 .experience-grid li::before { border-radius: 50%; background: var(--sage); }
 .education { border-left: 1px solid var(--border); padding-left: 22px; }
 .freelance { border-left: 2px solid var(--sage); padding-left: 20px; }
+@media (prefers-reduced-motion: no-preference) {
+  .hero[data-motion-ready] .identity-ring { animation: identity-orbit 80s linear infinite; }
+  .hero[data-motion-ready][data-motion-paused="true"] .identity-ring { animation-play-state: paused; }
+}
 @media (prefers-reduced-motion: no-preference) and (min-width: 681px) {
-  .portrait-float { animation: woodland-float 8s ease-in-out infinite; }
+  .hero[data-motion-ready] .portrait-float { animation: woodland-float 8s ease-in-out infinite; }
+  .hero[data-motion-ready][data-motion-paused="true"] .portrait-float { animation-play-state: paused; }
 }
-@keyframes woodland-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
-@media (max-width: 1000px) {
-  .woodland-hero-layout { gap: 25px; grid-template-columns: 1.2fr 1fr; }
-  .hero .woodland-intro h1 { font-size: clamp(3.5rem, 7.5vw, 5rem); }
-  .woodland-summary { font-size: 16px; }
-}
+@keyframes woodland-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+@keyframes identity-orbit { to { transform: rotate(360deg); } }
 @media (max-width: 680px) {
-  .hero { padding-top: 25px; }
-  .woodland-hero-layout { grid-template-columns: 1fr; gap: 22px; padding-bottom: 22px; }
-  .woodland-intro { display: contents; }
-  .woodland-intro .eyebrow { order: 0; margin-bottom: 0; }
-  .hero .woodland-intro h1 { order: 1; margin-bottom: 0; }
-  .portrait-stage { order: 2; }
-  .woodland-summary { order: 3; margin-bottom: 0; }
-  .woodland-intro .hero-actions { order: 4; }
-  .hero .woodland-intro h1 { font-size: clamp(3.4rem, 16vw, 5.5rem); }
-  .woodland-intro h1 span { display: inline; }
-  .portrait-stage { width: 86%; max-width: 360px; margin-inline: auto; }
-  .availability { margin-bottom: 26px; }
-  .availability-details { line-height: 1.6; }
-  .hero-botanical { width: 100px; top: auto; bottom: 70px; }
+  .hero { padding-top: 24px; }
+  .woodland-hero-layout { gap: 36px; padding: 12px 0 28px; }
+  .portrait-stage { width: min(390px, 100%); }
+  .hero-role { font-size: 21px; }
+  .hero-role span { display: block; }
+  .woodland-summary { font-size: 15px; }
+  .availability { margin-bottom: 14px; }
+  .availability-details { line-height: 1.6; font-size: 12px; }
+  .hero-botanical { width: 100px; top: 180px; }
   .contact-botanical { width: 75px; height: 200px; }
   .woodland-intro .hero-actions { gap: 12px 22px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .portrait-parallax, .portrait-float, .hero-botanical { transform: none !important; animation: none !important; transition: none !important; }
+  .portrait-parallax, .portrait-float, .identity-orbit, .identity-ring, .hero-botanical { transform: none !important; animation: none !important; transition: none !important; }
+  .hero[data-motion-ready] .motion-toggle { display: none; }
 }

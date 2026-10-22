@@ -4,16 +4,16 @@
 
 The owner rejected the split purple/green styling and requested one natural visual identity inspired by their real portrait. The original ANALYSIS.md and DESIGN_PLAN.md are historical references. This document and the latest PROGRESS.md entry describe the implemented direction.
 
-Work only on `feature/interactive-portfolio-redesign`, based on `portfolio-refresh`. Never merge, force-push, deploy or push main without a new user request. The GitHub account `ouastihamza` has push access. The owner authorized committing and pushing this milestone to the feature branch, then stopping for visual review.
+Work only on `feature/interactive-portfolio-redesign`, based on `portfolio-refresh`. Never merge, force-push, deploy or push main without a new user request. The GitHub account `ouastihamza` has push access. The owner subsequently approved the centered ring, requested distinct muted colors for the three text segments, and authorized pushing and merging this milestone into main for publication.
 
 ## Implemented
 
 - One forest-charcoal, sage, olive and fog palette throughout the main portfolio and Enterprise case study. Removed purple/starfield and neon-green theme colors. Original technology brand colors are preserved, with light backings for dark marks.
-- Modern text heading `Hamza Ouasti`; the handwritten Signature component is no longer rendered and its CSS/animations have been removed. The old unused signature source/build tooling remains available but is not part of the rendered site.
-- Desktop text/portrait columns. On mobile the portrait follows the name, before the longer introduction and CV actions.
+- Centered real portrait with an SVG text-on-path identity ring: name and titles rotate once every 80 seconds. Accessible H1 mirrors the decorative ring; readable role, summary and original CTAs sit below. Handwritten signature component, generator, bundled font and opentype.js dependency removed.
+- Centered composition on desktop and mobile with restrained woodland atmosphere. Ring and portrait use separate transform layers.
 - Actual transparent portrait, separate from the original photo, with soft ambient depth and a bottom fade. No generative portrait is used.
 - Sparse decorative botanical SVG outlines at hero/contact edges, 5.5% opacity, hidden from accessibility APIs.
-- Desktop 5px float; pointer movement limited to 5px horizontally and 4px vertically; scroll offset capped at 24px; branch scroll offset capped at 12px. No rotation or face distortion. Reduced motion disables movement, including when changed at runtime.
+- Desktop 4px float; pointer movement limited to 5px horizontally and 4px vertically; scroll offset capped at 24px; branch scroll offset capped at 12px. No face/body rotation or distortion. Ring rotation and float have a keyboard-accessible pause/resume control. Reduced motion disables movement, including when changed at runtime. Without JavaScript the portrait and ring remain visible and static, and the motion control is hidden.
 - Existing 31 skill cards, labels, detailed descriptions, hover tilt and progressive reveal preserved. All experience/project/education/contact content, links and CV files preserved. The standalone Shopify project keeps its own original design and code.
 
 ## Files and boundaries
@@ -25,7 +25,7 @@ Work only on `feature/interactive-portfolio-redesign`, based on `portfolio-refre
 - `app/botanical.tsx`: lightweight inline vector decoration.
 - `app/tech-grid.tsx` / `.css`: original brand colors and shared forest surfaces. Icon library remains server-side.
 - `app/page.tsx`, `app/layout.tsx`, `public/favicon.svg`: composition, stylesheet import and matching favicon.
-- No production dependency, framework or deployment changes.
+- No added dependency, framework or deployment changes; removed unused signature dependency and build hooks.
 
 ## Photo provenance and processing
 
@@ -49,6 +49,6 @@ Chromium responsive checks cover 360, 390, 768, 1024 and 1440px; no horizontal o
 
 ## Stop here
 
-The owner wants to inspect the coherent first implementation before more complex effects. Do not add elaborate transitions, a new font, scroll pinning, new content or further project curation without that review.
+The centered identity-ring milestone is approved for publication. Name/title ring colors are off-white, sage and muted sand. Do not add elaborate transitions, a new font, scroll pinning, new content or further project curation without that review.
 
 Keep untracked `AGENTS.md`, `CLAUDE.md`, `public/fonts/` untouched and uncommitted. Keep CV paths, project screenshots, Shopify source, static-export configuration and deployment workflow unchanged. Existing dependency advisories noted in the prior milestone are separate work.

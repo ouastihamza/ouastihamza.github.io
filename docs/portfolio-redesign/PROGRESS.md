@@ -1,5 +1,28 @@
 # Portfolio redesign: progress
 
+## Identity ring color refinement (2026-10-22)
+
+Owner approved merging and publishing this milestone. Ring segments now use off-white for the name, sage for Full-Stack Developer and muted sand for Software Engineer, with neutral separators. Lint, typecheck, build and responsive Chromium checks pass; no horizontal overflow at 390 and 1440px.
+
+## Milestone 3 — centered portrait and circular identity (2026-10-22)
+
+Implemented in the commit containing this entry, titled `feat: center portrait with rotating identity ring`. Existing feature branch fast-forwarded to latest main before editing, preserving the About correction; main itself was not changed.
+
+- [x] Centered desktop/mobile portrait composition, readable title/summary and original CTAs below
+- [x] SVG identity ring with name and titles, 80-second rotation and subtle scroll depth
+- [x] Approved refined transparent portrait reused byte-for-byte, with gentle float, shadow and pointer parallax
+- [x] Keyboard-accessible pause/resume; runtime reduced-motion changes and static no-JavaScript fallback
+- [x] Handwritten signature source, build generator, font and unused opentype.js dependency removed
+- [x] All other portfolio content, navigation, CVs, projects, skills and woodland styling retained
+- [x] Final lint, typecheck, production static build and git diff --check pass
+- [x] Chromium at 360, 390, 768 and 1440px: no horizontal overflow; desktop/tablet/mobile screenshots inspected
+- [x] Static production preview: keyboard pause, resume, reduced motion and restoring motion verified; no page errors
+- [x] No-JavaScript portrait loads visibly, ring is static and pause control hidden
+- [x] Both CVs, portrait, Enterprise detail and Shopify route return HTTP 200
+- [ ] Owner visual review before proceeding
+
+Preview: http://localhost:3000/ . Feature branch only; no main merge or production deployment. Browser checks are Chromium, not a claim of Safari/Firefox or assistive-technology testing.
+
 ## Milestone 2 — coherent woodland identity and real portrait (2026-10-22)
 
 Implemented in the commit containing this entry, titled `feat: unify portfolio woodland design and real portrait`. This direction supersedes the purple proposal; stop for owner visual approval before adding more complex effects.
