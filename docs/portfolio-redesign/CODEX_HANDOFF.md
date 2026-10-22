@@ -7,6 +7,20 @@ Labels used below:
 - **[Confirmed]**: checked in the repository on 2026-10-22.
 - **[Proposal]**: a plan the owner hasn't built yet. Owner approval is still needed where noted.
 
+## Current implementation status — 2026-10-22
+
+The first visual milestone is now implemented. See `PROGRESS.md` for verification evidence and remaining checks. The owner requested a local review before the next milestone: **stop here until that review**.
+
+- New files: `app/tech-grid.tsx` (server-rendered skills and logos), `app/tech-grid.css` (scoped purple/starfield styles), `app/tech-interactions.tsx` (progressive pointer enhancement).
+- `app/page.tsx` renders the new Skills section; `app/layout.tsx` imports its styles. Original skill descriptions remain intact.
+- `simple-icons@16.35.0` is pinned; no animation dependency added.
+- Existing section order and green accents outside Skills remain unchanged for this first review. Global recoloring/reordering are still open decisions.
+- Preview: http://localhost:3000/#skills (existing dev server reused). Production export preview: http://127.0.0.1:4173/.
+- Authentication is now `ouastihamza`, and write permission was verified. The owner explicitly authorized pushing this feature branch. Never push main or deploy.
+- Preexisting untracked agent documents and fonts must stay out of this milestone.
+
+The proposal below describes the longer-term direction, not authorization to implement the remaining milestones before owner review.
+
 ## 1. What this project is
 
 - **[Confirmed]** The personal portfolio of Hamza Ouasti, a Full-Stack Developer / Software Engineer in Greater Paris who is looking for a work-study apprenticeship.
@@ -95,7 +109,7 @@ Labels used below:
 ## 7. Branch
 
 - **[Confirmed]** Work on **`feature/interactive-portfolio-redesign`**.
-  - It was created from `portfolio-refresh` (`d7bf753`). If `git ls-remote origin feature/interactive-portfolio-redesign` shows nothing, it has not been pushed yet; ask the owner.
+  - It was created from `portfolio-refresh` (`d7bf753`). The owner has authorized publishing this feature branch after verification.
 - **[Confirmed]** `portfolio-refresh` holds 10 newer commits that aren't on `main` (CVs, `profile.ts`, signature hero). That's why it's the base.
 - **[Confirmed]** `main` is what's live. **Don't push or merge to `main`.** Pushing `main` deploys the site.
 
@@ -103,20 +117,19 @@ Labels used below:
 
 - **[Confirmed]** Repository analysis (`ANALYSIS.md`).
 - **[Confirmed]** Design plan (`DESIGN_PLAN.md`).
-- **[Confirmed]** Branch created locally. The first push attempt (2026-10-22) was refused by GitHub (wrong account); the owner pushes it.
+- **[Confirmed]** Branch created locally. The first push attempt used the wrong account. Codex switched to `ouastihamza` and verified push permission.
 - **[Confirmed]** Baseline on the base commit: `npm run lint`, `npm run typecheck` and `npm run build` all passed (locally on Node 20.19.6; CI uses Node 22).
-- **Nothing in the redesign is implemented.** No site code was changed.
+- **Milestone 1 implemented:** technology grid, scoped purple/starfield styling, hover glow, tilt and staggered entrance. See current status above.
 
 ## 9. Not done yet
 
-- Purple palette tokens and star background.
-- Tech grid data, component, logos and styles.
-- Card hover, glow, tilt and staggered entrance.
+- Owner visual review of the completed technology cards.
+- Decide whether to extend purple styling beyond Skills.
 - Portrait asset: photo missing, cutout not made.
 - Portrait component and motion.
 - Scroll-linked hero → skills transition and star parallax.
 - Section reorder and nav link.
-- Responsive, accessibility and performance passes. Final production build check.
+- Broader cross-browser/accessibility and Lighthouse passes. Chromium responsive/motion/fallback checks and the production build pass for milestone 1.
 
 ## 10. Files to read first
 
