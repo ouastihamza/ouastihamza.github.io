@@ -1,5 +1,9 @@
 # Portfolio redesign: progress
 
+## Mobile ring refinement (2026-10-23)
+
+Enlarged mobile ring type from 17 to 24 SVG units, applied full-circumference spacing to textPath, and raised the ring above the portrait. Rotation is now 60 seconds instead of 80. Lint, typecheck and static build pass; Chromium widths 360, 390, 768 and 1440 have no horizontal overflow. Mobile screenshot inspected; reduced-motion fallback retained.
+
 ## Identity ring color refinement (2026-10-22)
 
 Owner approved merging and publishing this milestone. Ring segments now use off-white for the name, sage for Full-Stack Developer and muted sand for Software Engineer, with neutral separators. Lint, typecheck, build and responsive Chromium checks pass; no horizontal overflow at 390 and 1440px.

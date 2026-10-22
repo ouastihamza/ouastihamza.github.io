@@ -9,7 +9,7 @@ Work only on `feature/interactive-portfolio-redesign`, based on `portfolio-refre
 ## Implemented
 
 - One forest-charcoal, sage, olive and fog palette throughout the main portfolio and Enterprise case study. Removed purple/starfield and neon-green theme colors. Original technology brand colors are preserved, with light backings for dark marks.
-- Centered real portrait with an SVG text-on-path identity ring: name and titles rotate once every 80 seconds. Accessible H1 mirrors the decorative ring; readable role, summary and original CTAs sit below. Handwritten signature component, generator, bundled font and opentype.js dependency removed.
+- Centered real portrait with an SVG text-on-path identity ring: name and titles rotate once every 60 seconds. Accessible H1 mirrors the decorative ring; readable role, summary and original CTAs sit below. Handwritten signature component, generator, bundled font and opentype.js dependency removed.
 - Centered composition on desktop and mobile with restrained woodland atmosphere. Ring and portrait use separate transform layers.
 - Actual transparent portrait, separate from the original photo, with soft ambient depth and a bottom fade. No generative portrait is used.
 - Sparse decorative botanical SVG outlines at hero/contact edges, 5.5% opacity, hidden from accessibility APIs.
@@ -52,3 +52,5 @@ Chromium responsive checks cover 360, 390, 768, 1024 and 1440px; no horizontal o
 The centered identity-ring milestone is approved for publication. Name/title ring colors are off-white, sage and muted sand. Do not add elaborate transitions, a new font, scroll pinning, new content or further project curation without that review.
 
 Keep untracked `AGENTS.md`, `CLAUDE.md`, `public/fonts/` untouched and uncommitted. Keep CV paths, project screenshots, Shopify source, static-export configuration and deployment workflow unchanged. Existing dependency advisories noted in the prior milestone are separate work.
+
+Mobile refinement (2026-10-23): ring type is 24 SVG units below 681px (desktop remains 17), with textLength applied directly to the textPath. The ring layer stays above the portrait so letters are not obscured.

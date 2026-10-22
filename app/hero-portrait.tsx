@@ -7,7 +7,7 @@ export function HeroPortrait() {
     <div className="identity-orbit" aria-hidden="true">
       <svg className="identity-ring" viewBox="0 0 500 500" focusable="false">
         <defs><path id="identity-circle" d="M 250,26 a 224,224 0 1,1 0,448 a 224,224 0 1,1 0,-448" /></defs>
-        <text textLength="1375" lengthAdjust="spacing"><textPath href="#identity-circle"><tspan className="identity-name">HAMZA OUASTI</tspan>{" · "}<tspan className="identity-developer">FULL-STACK DEVELOPER</tspan>{" · "}<tspan className="identity-engineer">SOFTWARE ENGINEER</tspan>{" · "}</textPath></text>
+        <text><textPath href="#identity-circle" textLength="1375" lengthAdjust="spacing"><tspan className="identity-name">HAMZA OUASTI</tspan>{" · "}<tspan className="identity-developer">FULL-STACK DEVELOPER</tspan>{" · "}<tspan className="identity-engineer">SOFTWARE ENGINEER</tspan>{" · "}</textPath></text>
       </svg>
     </div>
     <div className="portrait-parallax">

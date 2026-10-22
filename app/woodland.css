@@ -21,7 +21,7 @@ body { background-image: radial-gradient(ellipse at 0 0, rgba(165,168,151,.035),
 .portrait-parallax { position: absolute; width: 76%; left: 12%; bottom: 12%; transform: translate3d(var(--portrait-x, 0px), calc(var(--portrait-y, 0px) + var(--portrait-scroll, 0px)), 0); transition: transform .35s ease-out; }
 .portrait-image { width: 100%; height: auto; display: block; filter: drop-shadow(0 14px 18px rgba(0,0,0,.22)); mask-image: linear-gradient(to bottom, #000 0%, #000 83%, transparent 100%); }
 .portrait-ground { position: absolute; left: 25%; right: 25%; bottom: 12%; height: 24px; border-radius: 50%; background: radial-gradient(ellipse, #060b0860, transparent 70%); z-index: -1; }
-.identity-orbit { position: absolute; inset: 0; transform: translateY(calc(var(--portrait-scroll, 0px) * .35)); transition: transform .35s ease-out; pointer-events: none; }
+.identity-orbit { position: absolute; inset: 0; z-index: 1; transform: translateY(calc(var(--portrait-scroll, 0px) * .35)); transition: transform .35s ease-out; pointer-events: none; }
 .identity-ring { width: 100%; height: 100%; overflow: visible; transform-origin: center; }
 .identity-ring text { fill: var(--muted); font: 500 17px Arial, sans-serif; }
 .identity-ring .identity-name { fill: var(--foreground); }
@@ -39,7 +39,7 @@ body { background-image: radial-gradient(ellipse at 0 0, rgba(165,168,151,.035),
 .education { border-left: 1px solid var(--border); padding-left: 22px; }
 .freelance { border-left: 2px solid var(--sage); padding-left: 20px; }
 @media (prefers-reduced-motion: no-preference) {
-  .hero[data-motion-ready] .identity-ring { animation: identity-orbit 80s linear infinite; }
+  .hero[data-motion-ready] .identity-ring { animation: identity-orbit 60s linear infinite; }
   .hero[data-motion-ready][data-motion-paused="true"] .identity-ring { animation-play-state: paused; }
 }
 @media (prefers-reduced-motion: no-preference) and (min-width: 681px) {
@@ -52,6 +52,7 @@ body { background-image: radial-gradient(ellipse at 0 0, rgba(165,168,151,.035),
   .hero { padding-top: 24px; }
   .woodland-hero-layout { gap: 36px; padding: 12px 0 28px; }
   .portrait-stage { width: min(390px, 100%); }
+  .identity-ring text { font-size: 24px; }
   .hero-role { font-size: 21px; }
   .hero-role span { display: block; }
   .woodland-summary { font-size: 15px; }
