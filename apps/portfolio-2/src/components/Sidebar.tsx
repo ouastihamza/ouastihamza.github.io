@@ -10,7 +10,7 @@ const items: Array<{ id: SectionId; label: string; index: string }> = [
   { id: 'simulation', label: 'Rich results in Google', index: '02' },
   { id: 'storefront-debugging', label: "Storefronts that don't break", index: '03' },
   { id: 'stable-integrations', label: 'Stable integrations', index: '04' },
-  { id: 'how-i-work', label: 'How I work', index: '05' },
+  { id: 'how-i-work', label: 'How I debug', index: '05' },
   { id: 'ending', label: 'Get in touch', index: '06' },
 ];
 

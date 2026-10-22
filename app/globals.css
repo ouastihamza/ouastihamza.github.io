@@ -1,11 +1,15 @@
 :root {
-  --background: #101411;
-  --foreground: #f0f2e9;
-  --primary: #c4f36b;
-  --primary-soft: rgba(196, 243, 107, 0.14);
-  --muted: #a0aaa1;
-  --border: #343d35;
-  --card: #171d18;
+  --background: #111813;
+  --foreground: #f0f1ec;
+  --primary: #9eb9a8;
+  --primary-soft: rgba(115, 152, 132, 0.12);
+  --muted: #acb6ad;
+  --border: #36443b;
+  --card: #202c25;
+  --surface: #1c2720;
+  --sage: #739884;
+  --olive: #a5a897;
+  --fog: #dee1da;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --duration-fast: 0.2s;
   --duration-base: 0.45s;
@@ -49,7 +53,7 @@ a:focus-visible {
 }
 ::selection {
   background: var(--primary);
-  color: #101411;
+  color: #111813;
 }
 h1,
 h2,
@@ -80,7 +84,7 @@ p {
 }
 .site-header.is-scrolled {
   min-height: 74px;
-  background: rgba(16, 20, 17, 0.82);
+  background: rgba(17, 24, 19, 0.92);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border-bottom-color: var(--border);
@@ -174,27 +178,17 @@ nav a:not(.github-nav):hover::after {
   z-index: -1;
 }
 @media (prefers-reduced-motion: no-preference) {
-  .hero > .eyebrow,
-  .hero-layout h1,
+  /* The availability line and CV buttons stay out of the entrance so
+     they are readable on the first frame. */
   .hero-aside,
-  .hero-actions,
   .hero-bottom {
     animation: hero-in var(--duration-slow) var(--ease-out) both;
   }
-  .hero > .eyebrow {
-    animation-delay: 0.02s;
-  }
-  .hero-layout h1 {
-    animation-delay: 0.08s;
-  }
   .hero-aside {
-    animation-delay: 0.2s;
-  }
-  .hero-actions {
-    animation-delay: 0.32s;
+    animation-delay: 0.12s;
   }
   .hero-bottom {
-    animation-delay: 0.42s;
+    animation-delay: 0.2s;
   }
 }
 @keyframes hero-in {
@@ -216,12 +210,7 @@ nav a:not(.github-nav):hover::after {
   color: var(--muted);
   margin-bottom: 24px;
 }
-.hero > .eyebrow {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-.eyebrow > span {
+.availability-dot {
   display: inline-block;
   width: 7px;
   height: 7px;
@@ -234,6 +223,17 @@ nav a:not(.github-nav):hover::after {
   gap: 50px;
   align-items: end;
   padding: 4px 0 64px;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 h1 {
   font-size: clamp(4.5rem, 8.5vw, 8rem);
@@ -346,7 +346,7 @@ h2 {
     box-shadow var(--duration-base) var(--ease-out);
 }
 .lead-project:hover {
-  border-color: #4a5f3f;
+  border-color: var(--primary);
   box-shadow: 0 24px 48px -32px rgba(0, 0, 0, 0.6);
 }
 .project-heading {
@@ -379,7 +379,7 @@ h3 {
   margin-left: auto;
   display: inline-block;
   white-space: nowrap;
-  border: 1px solid #4a5548;
+  border: 1px solid var(--border);
   border-radius: 40px;
   padding: 4px 10px;
   color: var(--muted);
@@ -398,7 +398,7 @@ h3 {
   font-size: 14px;
   color: var(--muted);
   padding-left: 18px;
-  border-left: 2px solid #5b7543;
+  border-left: 2px solid var(--sage);
   margin-top: 28px;
 }
 .tags {
@@ -409,8 +409,8 @@ h3 {
 }
 .tags span {
   font-size: 12px;
-  background: #232c22;
-  color: #c8d2c3;
+  background: var(--surface);
+  color: var(--fog);
   padding: 4px 9px;
   border-radius: 3px;
   transition:
@@ -419,7 +419,7 @@ h3 {
 }
 .lead-project:hover .tags span,
 .project-row:hover .tags span {
-  background: #2a3527;
+  background: var(--border);
   color: var(--foreground);
 }
 .button {
@@ -440,21 +440,21 @@ h3 {
 }
 .button.primary {
   background: var(--primary);
-  color: #182013;
+  color: var(--background);
   border-color: var(--primary);
 }
 .button.primary:hover {
-  background: #d9ff93;
+  background: #b7cbbd;
   transform: translateY(-2px);
-  box-shadow: 0 12px 24px -10px rgba(196, 243, 107, 0.45);
+  box-shadow: 0 12px 24px -10px rgba(115, 152, 132, 0.2);
 }
 .button.primary:active {
   transform: translateY(0);
 }
 .architecture-panel {
-  background: #1e2b1c;
+  background: var(--surface);
   padding: 26px;
-  border: 1px solid #3b4d31;
+  border: 1px solid var(--border);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -463,7 +463,7 @@ h3 {
   font:
     12px ui-monospace,
     monospace;
-  color: #b6cba6;
+  color: var(--olive);
   letter-spacing: 0.06em;
   margin-bottom: 19px;
 }
@@ -473,13 +473,13 @@ h3 {
   gap: 19px;
   position: relative;
   padding: 16px 0;
-  border-top: 1px solid #405236;
+  border-top: 1px solid var(--border);
 }
 .diagram-step > span {
   font:
     12px ui-monospace,
     monospace;
-  color: #aace8b;
+  color: var(--primary);
   min-width: 25px;
 }
 .diagram-step strong {
@@ -490,14 +490,14 @@ h3 {
 .diagram-step small {
   display: block;
   font-size: 12px;
-  color: #b7c5ad;
+  color: var(--muted);
   margin-top: 2px;
 }
 .diagram-foot {
   font:
     12px/1.5 ui-monospace,
     monospace;
-  color: #a7b69b;
+  color: var(--muted);
   letter-spacing: 0.03em;
   margin: 19px 0 0;
 }
@@ -543,7 +543,7 @@ h3 {
   }
   .hero-layout {
     gap: 35px;
-    grid-template-columns: 1.4fr 1fr;
+    grid-template-columns: 1fr;
   }
   h1 {
     font-size: clamp(4rem, 9vw, 6rem);
@@ -692,7 +692,7 @@ h3 {
 }
 .project-note {
   font-size: 13px;
-  color: #9ba595;
+  color: var(--muted);
   margin: 20px 0 25px;
   line-height: 1.6;
 }
@@ -700,7 +700,7 @@ h3 {
   font:
     12px ui-monospace,
     monospace;
-  color: #9ba595;
+  color: var(--muted);
   margin: 18px 0 0;
 }
 .more-projects {
@@ -887,7 +887,7 @@ h3 {
 }
 .case-callout {
   padding: 25px;
-  background: #23301e;
+  background: var(--surface);
   border-left: 2px solid var(--primary);
   margin: 24px 0;
 }
@@ -989,7 +989,7 @@ h3 {
 
 .project-screenshot { display: block; margin-bottom: 32px; border: 1px solid var(--border); text-decoration: none; overflow: hidden; transition: border-color var(--duration-base) var(--ease-out); }
 .project-screenshot img { display: block; width: 100%; height: auto; transition: transform var(--duration-slow) var(--ease-out); }
-.project-screenshot span { display: block; padding: 14px 18px; font-size: 12px; color: #b6c4bc; transition: color var(--duration-fast) var(--ease-out); }
+.project-screenshot span { display: block; padding: 14px 18px; font-size: 12px; color: var(--muted); transition: color var(--duration-fast) var(--ease-out); }
 .project-screenshot:hover { border-color: var(--primary); }
 .project-screenshot:hover img { transform: scale(1.035); }
 .project-screenshot:hover span { color: var(--primary); }
@@ -999,11 +999,14 @@ h3 {
 .hero-actions { margin-bottom: 35px; }
 .experience { padding-top: 65px; padding-bottom: 20px; }
 .experience-grid { display: grid; grid-template-columns: 1fr 1.15fr; gap: 65px; }
-.experience h3 { font-size: 25px; line-height: 1.3; margin-bottom: 15px; }
-.experience-grid ul { padding-left: 22px; margin: 0; color: var(--muted); }
-.experience-grid li { padding-left: 8px; margin-bottom: 18px; }
-.experience-stat { color: var(--primary); font-size: 44px; line-height: 1.2; margin-bottom: 20px; }
-.experience-stat span { display: block; font-size: 14px; color: var(--muted); margin-top: 8px; }
+.experience h3 { font-size: 25px; line-height: 1.3; margin-bottom: 12px; text-wrap: balance; }
+.experience-summary { font-size: 19px; line-height: 1.55; margin: 20px 0 28px; max-width: 34em; }
+.experience-facts { display: grid; gap: 18px; margin: 0; }
+.experience-facts dt { font-size: 24px; line-height: 1.25; color: var(--foreground); }
+.experience-facts dd { margin: 4px 0 0; font-size: 14px; color: var(--muted); }
+.experience-grid ul { display: grid; gap: 16px; margin: 20px 0 0; padding: 0; color: var(--muted); }
+.experience-grid li { position: relative; padding-left: 20px; max-width: 64ch; }
+.experience-grid li::before { content: ""; position: absolute; left: 0; top: 0.7em; width: 6px; height: 6px; background: var(--primary); }
 .freelance { padding: 22px 0; border-block: 1px solid var(--border); margin-top: 30px; }
 .skills-list { margin: 0; }
 .skills-list > div { margin-bottom: 22px; }
@@ -1016,7 +1019,7 @@ h3 {
 nav a { min-height: 44px; display: inline-flex; align-items: center; }
 section[id], article[id] { scroll-margin-top: 24px; }
 @media(max-width:900px) { .experience-grid { gap: 30px; } .secondary-grid { gap: 32px; } .practice { gap: 32px; } }
-@media(max-width:680px) { .experience-grid { grid-template-columns: 1fr; gap: 15px; } .experience { padding-top: 45px; } .site-header { flex-wrap: wrap; padding-block: 16px; } .site-header nav { gap: 15px; flex-wrap: wrap; } .github-nav { border: 0; padding: 0; } .site-header .wordmark { font-size: 30px; } .hero-aside p:first-of-type { font-size: 21px; } .hero h1 { font-size: clamp(4rem, 18vw, 6rem); } .hero-layout { gap: 24px; } .contact-email { font-size: 21px; } }
+@media(max-width:680px) { .experience-grid { grid-template-columns: 1fr; gap: 15px; } .experience { padding-top: 45px; } .site-header { flex-wrap: wrap; padding-block: 16px; } .site-header nav { gap: 15px; flex-wrap: wrap; } .github-nav { border: 0; padding: 0; } .site-header .wordmark { font-size: 30px; } .hero-aside p:first-of-type { font-size: 21px; } .hero h1 { font-size: clamp(3.25rem, 15vw, 4.5rem); } .hero-layout { gap: 24px; } .contact-email { font-size: 21px; } }
 .education p { margin-bottom: 20px; }
 .practice p + p, .case-row p + p { margin-top: 16px; }
 .hero-aside p + p { margin-top: 12px; }
@@ -1042,5 +1045,34 @@ section[id], article[id] { scroll-margin-top: 24px; }
   transform: translateY(-3px);
 }
 
-.apprenticeship-callout { margin-bottom: 24px; color: var(--muted); font-size: 14px; }
-.apprenticeship-callout strong { color: var(--foreground); }
+.availability { margin-bottom: 36px; }
+.availability-pill {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  margin-bottom: 12px;
+  padding: 8px 14px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--primary-soft);
+  color: var(--foreground);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+.availability-pill strong { color: var(--primary); font-weight: 600; }
+.availability-details { color: var(--muted); font-size: 16px; }
+.button.secondary { color: var(--foreground); border-color: var(--border); }
+.button.secondary:hover { border-color: var(--primary); }
+.hero-actions .text-link { min-height: 44px; }
+@media (min-width: 681px) {
+  .hero h1 { font-size: clamp(3.5rem, 7vw, 6.5rem); }
+}
+@media (max-width: 680px) {
+  .availability { margin-bottom: 28px; }
+  .availability-pill { border-radius: 14px; }
+  .availability-sep { display: none; }
+  .hero-actions { gap: 12px 24px; }
+  .hero-actions .button { width: 100%; justify-content: space-between; min-height: 52px; }
+}

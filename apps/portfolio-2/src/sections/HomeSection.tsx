@@ -29,9 +29,8 @@ export function HomeSection({
               problem-solving.
             </h1>
             <p className="home-copy__body">
-              I help identify and fix the issues that make Shopify stores
-              unstable - from layout regressions and broken frontend behavior to
-              structured data gaps, accessibility problems, and app conflicts.
+              Four studies of problems I fix in production: layout regressions,
+              broken frontend behavior, structured data gaps and app conflicts.
             </p>
           </motion.div>
 
@@ -45,7 +44,7 @@ export function HomeSection({
               ease: [0.22, 1, 0.36, 1],
             }}
           >
-            <h3 className="home-card__title">What these studies cover</h3>
+            <h2 className="home-card__title">What these studies cover</h2>
             <div className="home-card__row">
               <span>Storefront debugging</span>
               <span>

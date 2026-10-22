@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { profile } from '../../../../app/data/profile';
 
 interface EndingSectionProps {
   registerScrollArea: (node: HTMLDivElement | null) => void;
@@ -28,16 +29,17 @@ export function EndingSection({
               Discuss a technical role.
             </h2>
             <p className="ending-panel__body">
-              Hamza Ouasti · Paris / Villejuif, France
+              {profile.name} · {profile.location}
             </p>
-            <p><a href="mailto:ouastihamza27@gmail.com">ouastihamza27@gmail.com</a></p>
-            <p><a href="https://linkedin.com/in/ouastihamza" target="_blank" rel="noreferrer">LinkedIn ↗</a> · <a href="https://github.com/ouastihamza" target="_blank" rel="noreferrer">GitHub ↗</a></p>
+            <p><a href={`mailto:${profile.email}`}>{profile.email}</a></p>
+            <p><a href={profile.phone.href}>{profile.phone.display}</a></p>
+            <p><a href={profile.links.linkedin} target="_blank" rel="noreferrer">LinkedIn ↗</a> · <a href={profile.links.github} target="_blank" rel="noreferrer">GitHub ↗</a></p>
           </motion.div>
 
           <footer className="ending-footer">
             <span>Shopify Technical Studies</span>
             <span>Hamza Ouasti</span>
-            <span>Technical support & development</span>
+            <span>{profile.title} · {profile.location}</span>
           </footer>
         </div>
       </div>
