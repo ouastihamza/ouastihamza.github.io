@@ -179,7 +179,7 @@ export default function Home() {
           </div>
         </section>
         <TechGrid />
-        <section id="about" className="practice wrap"><div className="sticky-heading" data-reveal><p className="eyebrow">04 / ABOUT & EDUCATION</p><h2>Development and diagnosis</h2></div><div data-reveal><p>My work connects application code, APIs and data. Production debugging informs how I approach software development and integrations.</p><p>Based in {profile.location}.</p><p>Languages: {profile.languages}.</p><div id="education" className="education"><h3>Education</h3>{education.map((entry) => (<p key={entry.title}><strong>{entry.title}</strong>{entry.details.map((detail) => (<span key={detail}><br />{detail}</span>))}</p>))}</div><p className="authorship">Projects use open-source tools and AI-assisted development. Headless Shopify + Sanity Starter extends the Hydrogen and Sanity starters.</p></div></section>
+        <section id="about" className="practice wrap"><div className="sticky-heading" data-reveal><p className="eyebrow">04 / ABOUT & EDUCATION</p><h2>About me &amp; education</h2></div><div data-reveal><p>My work connects application code, APIs and data. Production debugging informs how I approach software development and integrations.</p><p>Based in {profile.location}.</p><p>Languages: {profile.languages}.</p><div id="education" className="education"><h3>Education</h3>{education.map((entry) => (<p key={entry.title}><strong>{entry.title}</strong>{entry.details.map((detail) => (<span key={detail}><br />{detail}</span>))}</p>))}</div></div></section>
         <section id="contact" className="contact wrap" data-reveal>
           <Botanical className="botanical contact-botanical" />
           <p className="eyebrow">05 / CONTACT</p>
