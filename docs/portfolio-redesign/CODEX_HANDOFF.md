@@ -17,7 +17,9 @@ Branch: `feature/interactive-portfolio-redesign`. Milestone 4 refines the existi
 
 ## Facts awaiting approval
 
-See `CONTENT_REVIEW.md`. July 2026 versus owner-mentioned August 7, 2026 promotion; official Master's titles/dates/status; 10,000+ ticket source and period; current location; employment duration; CDI versus alternance availability. No uncertain factual values were changed. Do not replace dates or claim CDI availability without owner confirmation.
+Owner confirmed the Tier 2 promotion was July 2026 on 23 October 2026; current website wording is correct.
+
+Remaining questions in `CONTENT_REVIEW.md`: official Master's titles/dates/status; 10,000+ ticket source and period; current location; employment duration; CDI versus alternance availability. No uncertain factual values were changed. Do not replace dates or claim CDI availability without owner confirmation.
 
 ## Photo provenance and processing
 

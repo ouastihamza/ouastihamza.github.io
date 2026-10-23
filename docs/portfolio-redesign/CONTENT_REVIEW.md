@@ -4,7 +4,7 @@ Reviewed 23 October 2026 against current repository content (`app/data/profile.t
 
 | Item | Currently published/source value | Proposed correction, subject to approval |
 | --- | --- | --- |
-| Tier 2 promotion | July 2026 in both facts and highlights. Owner's latest request references August 7, 2026. | Confirm which is correct, then use one consistent month/year (or exact date if needed). Do not assume August 7 is verified. |
+| Tier 2 promotion — confirmed | July 2026 in both facts and highlights. | Owner confirmed July on 23 October 2026. Keep July 2026; the earlier August reference is superseded. No website change needed. |
 | Ingetis qualification | Master's in Software Architecture and Development · Bac+5; 2026–2027 | Confirm official qualification title, enrolment/start date and expected graduation. If ongoing, label as in progress / expected completion once confirmed. |
 | Settat Master's | Software Engineering and Web Applications; 2019–2022 | Confirm programme dates versus award year. The 2022 capstone is consistent with the current end year. |
 | Earlier education | Preparatory programme, then Bachelor in General Engineering; 2016–2019 | Confirm the exact awarded credential; retain current wording pending approval. |

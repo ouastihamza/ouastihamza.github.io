@@ -1,5 +1,9 @@
 # Portfolio redesign: progress
 
+## Owner clarification (2026-10-23)
+
+Tier 2 promotion confirmed as July 2026. Existing site copy is correct; review notes updated. Other factual questions remain pending.
+
 ## Milestone 4 — editorial polish and recruiter hierarchy (2026-10-23)
 
 Implemented in the commit containing this entry, `feat: refine portfolio hierarchy and recruiter experience`. Work is on `feature/interactive-portfolio-redesign`, fast-forwarded to the published mobile fix `ac15e03` before editing. No main merge, push or deployment for this milestone.
