@@ -1,0 +1,224 @@
+/* Publication shell; legacy study layouts remain in styles.css. */
+:root { background: #111813; --bg:#111813; --surface:#1b271f; --surface-soft:#202e24; --surface-strong:#162019; --line:#34473a; --line-strong:#526658; --text:#f0f1ec; --muted:#acb8ad; --muted-strong:#c0c9c0; --accent:#a4c2ad; --shadow-soft:none; color-scheme:dark; }
+html { scroll-padding-top:110px; }
+body { overflow:auto; background:var(--bg); color:var(--text); font:16px/1.65 Arial, Helvetica, sans-serif; }
+html,body,#root { height:auto; min-height:100%; }
+a { color:inherit; text-underline-offset:5px; }
+button,a,input,summary { -webkit-tap-highlight-color:transparent; }
+a:focus-visible,button:focus-visible,input:focus-visible,[tabindex]:focus-visible { outline:2px solid var(--accent); outline-offset:5px; }
+.publication-shell { max-width:1600px; margin:auto; }
+.publication-header { position:sticky; top:0; z-index:30; background:rgba(17,24,19,.97); border-bottom:1px solid var(--line); padding:20px clamp(20px,5vw,80px); display:flex; align-items:center; gap:36px; }
+.publication-brand { display:flex; align-items:center; gap:14px; text-decoration:none; font-size:13px; line-height:1.35; }
+.publication-brand strong { font-weight:500; color:var(--accent); }
+.brand-mark { font-size:30px; letter-spacing:-3px; color:var(--accent); }
+.publication-header nav { display:flex; gap:26px; margin-left:auto; }
+.publication-header nav a, .publication-portfolio { text-decoration:none; font-size:13px; padding-block:10px; }
+.publication-header nav a:hover,.publication-header nav a[aria-current],.publication-portfolio:hover { color:var(--accent); text-decoration:underline; }
+.publication-portfolio { border-left:1px solid var(--line); padding-left:24px; }
+.publication-skip { position:fixed; top:-100px; left:20px; padding:12px 20px; z-index:60; background:var(--accent); color:var(--bg); }
+.publication-skip:focus { top:10px; }
+#publication-main:focus { outline:none; }
+.publication-home { padding:0 clamp(20px,5vw,80px); }
+.pub-eyebrow { margin:0 0 20px; font:11px/1.5 ui-monospace,monospace; letter-spacing:.10em; color:var(--accent); }
+.publication-hero { display:grid; grid-template-columns:1.6fr 1fr; gap:72px; padding:90px 0 80px; border-bottom:1px solid var(--line); background:radial-gradient(ellipse at 20% 10%,rgba(115,152,132,.05),transparent 65%); }
+.publication-hero h1 { margin:0; font-size:clamp(42px,5.4vw,80px); font-weight:400; line-height:1.03; letter-spacing:-.055em; }
+.publication-hero h1 em { color:var(--accent); font-style:normal; }
+.publication-deck { max-width:590px; font-size:19px; line-height:1.6; color:var(--muted-strong); margin:28px 0; }
+.publication-actions { display:flex; align-items:center; flex-wrap:wrap; gap:22px; margin-top:32px; }
+.publication-actions a { font-size:13px; }
+.pub-button { display:inline-flex; gap:20px; align-items:center; background:var(--accent); color:var(--bg); padding:13px 18px; border-radius:4px; font-size:14px; font-weight:500; text-decoration:none; cursor:pointer; min-height:44px; }
+.pub-button:hover { background:#bdd0c1; }
+.publication-index { padding-top:10px; align-self:center; }
+.publication-index > a { display:flex; gap:18px; padding:20px 0; border-bottom:1px solid var(--line); text-decoration:none; align-items:baseline; }
+.publication-index > a > span { color:var(--muted); font:12px ui-monospace,monospace; }
+.publication-index > a > div { flex:1; }
+.publication-index strong { font-weight:500; }
+.publication-index small { display:block; margin-top:5px; color:var(--muted); font-size:13px; }
+.publication-index > p:last-child { color:var(--muted); font-size:12px; line-height:1.7; margin-top:25px; }
+.publication-labs { padding:72px 0; }
+.pub-section-heading { display:grid; grid-template-columns:1.3fr 1fr; gap:50px; align-items:end; margin-bottom:36px; }
+.pub-section-heading h2,.publication-columns h2,.publication-principles h2 { margin:0; font-size:clamp(30px,3.4vw,48px); font-weight:400; line-height:1.13; letter-spacing:-.04em; }
+.pub-section-heading > p { color:var(--muted); font-size:16px; max-width:380px; margin:0 0 6px; }
+.directory-controls { border-block:1px solid var(--line); padding:24px 0; display:flex; align-items:end; gap:24px; justify-content:space-between; }
+.directory-controls fieldset { padding:0; margin:0; border:0; min-width:0; }
+.directory-controls legend,.study-search { font-size:12px; color:var(--muted); }
+.audience-filters { display:flex; flex-wrap:wrap; gap:6px; margin-top:12px; }
+.audience-filters button { padding:9px 12px; border:1px solid var(--line); border-radius:4px; font-size:12px; cursor:pointer; min-height:40px; }
+.audience-filters button:hover { border-color:var(--accent); }
+.audience-filters button[aria-pressed="true"] { color:var(--bg); background:var(--accent); border-color:var(--accent); }
+.study-search { display:block; min-width:260px; }
+.study-search input { display:block; width:100%; margin-top:12px; border:1px solid var(--line); border-radius:4px; color:var(--text); background:var(--surface-strong); padding:12px; font-size:13px; min-height:44px; }
+.directory-count { display:block; color:var(--muted); font-size:12px; margin:20px 0 0; }
+.study-entry { display:grid; grid-template-columns:42px 1fr auto; gap:24px; padding:32px 0; border-bottom:1px solid var(--line); align-items:start; }
+.study-number { font:14px ui-monospace,monospace; color:var(--muted); padding-top:3px; }
+.study-entry .pub-eyebrow { margin-bottom:10px; }
+.study-entry h3 { font-size:26px; line-height:1.2; font-weight:400; letter-spacing:-.025em; margin:0 0 14px; }
+.study-entry h3 a { text-decoration:none; }
+.study-entry h3 a:hover { color:var(--accent); }
+.study-entry h3 span { font-size:20px; color:var(--accent); }
+.study-entry p { max-width:690px; color:var(--muted-strong); margin:0 0 12px; font-size:15px; }
+.study-entry .study-knowledge,.study-entry .study-audience,.study-knowledge { font-size:12px; color:var(--muted); }
+.study-open { font-size:13px; color:var(--accent); white-space:nowrap; padding:8px 0; }
+.directory-empty { padding:40px; background:var(--surface); margin-top:20px; }
+.directory-empty h3 { font-weight:400; }
+.publication-columns { display:grid; grid-template-columns:1fr 1fr; gap:80px; padding:60px 0 80px; border-block:1px solid var(--line); }
+.section-deck { font-size:16px; line-height:1.65; color:var(--muted-strong); margin:24px 0; max-width:490px; }
+.method-preview { background:var(--surface); padding:28px; border-left:2px solid var(--accent); margin-top:32px; }
+.method-preview h3 { font-size:24px; font-weight:400; line-height:1.2; margin:0 0 18px; }
+.method-preview h3 a { text-decoration:none; }
+.method-preview p:not(.pub-eyebrow) { color:var(--muted-strong); font-size:14px; }
+.publication-status { color:var(--muted); font-size:12px; line-height:1.8; margin:24px 0 0; }
+.source-directory { padding:0; margin:28px 0 0; list-style:none; }
+.source-directory li { border-top:1px solid var(--line); }
+.source-directory a { display:block; padding:16px 0; text-decoration:none; }
+.source-directory a:hover strong { color:var(--accent); }
+.source-directory strong { display:block; font-size:15px; font-weight:500; }
+.source-directory span { display:block; color:var(--muted); font-size:12px; margin-top:4px; }
+.publication-principles { padding:70px 0; max-width:750px; }
+.publication-principles h2 span { color:var(--accent); }
+.publication-principles > p:not(.pub-eyebrow) { color:var(--muted-strong); max-width:520px; margin:24px 0; }
+.publication-principles a { font-size:14px; }
+.publication-footer { display:flex; justify-content:space-between; gap:30px; border-top:1px solid var(--line); padding:30px clamp(20px,5vw,80px); align-items:center; font-size:12px; }
+.publication-footer small { color:var(--muted); }
+.publication-footer p { max-width:490px; color:var(--muted); margin:0; }
+.publication-study { padding:24px clamp(12px,3vw,48px); }
+.study-toolbar { display:flex; justify-content:space-between; gap:20px; font-size:13px; color:var(--accent); padding-bottom:16px; }
+.study-toolbar span { color:var(--muted); }
+.study-context { color:var(--muted); font-size:12px; max-width:1000px; margin:0 0 20px; }
+.publication-study .section { border:1px solid var(--line); padding:0; }
+.study-controls { display:flex; align-items:center; gap:12px; justify-content:space-between; border-block:1px solid var(--line); padding:8px 0; }
+.study-controls button { font-size:12px; cursor:pointer; min-height:44px; color:var(--accent); padding:6px; }
+.study-controls button:disabled { opacity:.4; cursor:default; }
+.study-controls output { color:var(--muted); font-size:12px; }
+.lab-caveat { padding:14px; border-left:2px solid var(--accent); color:var(--muted-strong); font-size:12px; line-height:1.65; background:var(--surface-strong); }
+.lab-caveat a { color:var(--accent); }
+.schema-card__code { overflow-x:auto; }
+@media(max-width:1100px) { .publication-hero { grid-template-columns:1fr; gap:40px; padding-top:60px; } .publication-index { max-width:650px; } .directory-controls { flex-direction:column; align-items:stretch; } .publication-columns { gap:40px; } .publication-header { gap:24px; } .publication-header nav { gap:18px; } .publication-portfolio { display:none; } }
+@media(max-width:760px) {
+  html { scroll-padding-top:145px; }
+  .publication-header { padding:16px 20px 12px; flex-wrap:wrap; gap:16px; }
+  .publication-header nav { margin:0; width:100%; justify-content:space-between; gap:8px; }
+  .publication-header nav a { padding-block:6px; }
+  .publication-hero { padding:44px 0; gap:32px; }
+  .publication-hero h1 { font-size:clamp(38px,9vw,60px); }
+  .publication-deck { font-size:17px; }
+  .publication-actions { align-items:flex-start; flex-direction:column; gap:18px; }
+  .pub-section-heading,.publication-columns { grid-template-columns:1fr; gap:28px; }
+  .publication-labs { padding:48px 0; }
+  .pub-section-heading > p { max-width:none; }
+  .study-entry { grid-template-columns:24px 1fr; gap:14px; }
+  .study-entry h3 { font-size:23px; }
+  .study-open { grid-column:2; }
+  .publication-columns { padding-block:48px; gap:56px; }
+  .publication-principles { padding-block:48px; }
+  .publication-footer { flex-direction:column; align-items:flex-start; gap:16px; }
+  .study-toolbar { flex-wrap:wrap; gap:8px; }
+  .publication-study .section { height:auto !important; }
+  .publication-study .section__scroll { height:auto; overflow:visible; }
+  .study-context { font-size:13px; }
+  .simulation-copy__guide { display:none; }
+  .lab-caveat { overflow-wrap:anywhere; }
+}
+@media(prefers-reduced-motion:reduce) { *,*::before,*::after { scroll-behavior:auto !important; } }
+
+/* Walkthroughs belong to the document: no scroll-driven steps or viewport tracks. */
+.publication-study .section { height:auto !important; }
+.publication-study .section__scroll { height:auto; overflow:visible; }
+.publication-study :is(.simulation-shell,.debugging-shell,.stable-shell) {
+ position:static; min-height:0; margin-bottom:0; align-items:start;
+}
+.publication-study :is(.simulation-copy,.debugging-copy,.stable-copy,
+.simulation-board,.debugging-board,.stable-board) { position:static; height:auto; max-height:none; }
+.publication-study :is(.simulation-board__content,.debugging-board__content,.stable-board__content,
+.merchant-results,.schema-card__code,.debugging-code,.stable-code) { height:auto; max-height:none; overflow:visible; }
+.publication-study pre { white-space:pre-wrap; overflow-wrap:anywhere; }
+.study-controls { scroll-margin-top:155px; }
+
+/* Coordinated walkthroughs: explanation on the left, preview on the right; stacked on narrow screens. */
+.walkthrough-preview { min-width:0; }
+.preview-instruction { margin:0 0 10px; font-size:12px; color:var(--muted-strong); }
+.publication-study :is(.simulation-copy,.debugging-copy,.stable-copy) { width:100%; max-width:none; gap:12px; }
+.publication-study :is(.simulation-copy__meta,.debugging-copy__meta,.stable-copy__meta) { display:none; }
+.publication-study :is(.simulation-merchant__headline,.debugging-problem__headline,.stable-problem__headline) { font-size:22px; line-height:1.2; }
+.publication-study :is(.simulation-merchant__subhead,.debugging-problem__subhead,.stable-problem__subhead) { font-size:13px; line-height:1.55; }
+.publication-study :is(.simulation-board,.debugging-board,.stable-board) { min-height:0; }
+.publication-study :is(.simulation-board,.debugging-board,.stable-board)::after { display:none; }
+/* Old nested-scroll viewport: with overscroll containment it swallowed released wheel input at step 1 and the last step. */
+.publication-study .simulation-board__viewport { overflow:visible; overscroll-behavior:auto; }
+
+/* Explanation panel. The fixed height keeps Previous / Next in place as copy length changes. */
+.publication-study :is(.simulation-copy__panel,.debugging-copy__panel,.stable-copy__panel) { padding:16px; min-height:var(--study-panel-height, 0px); }
+.publication-study :is(.simulation-copy__eyebrow,.debugging-copy__eyebrow,.stable-copy__eyebrow) { margin:0; }
+.publication-study :is(.simulation-copy__title,.debugging-copy__title,.stable-copy__title) { max-width:none; font-size:23px; line-height:1.15; letter-spacing:-0.03em; margin:8px 0 0; }
+.publication-study :is(.simulation-copy__body,.debugging-copy__body,.stable-copy__body) { max-width:none; margin:8px 0 0; font-size:14px; line-height:1.6; }
+.study-step__why { margin:10px 0 0; padding-top:10px; border-top:1px solid var(--line); font-size:13px; line-height:1.55; color:var(--muted-strong); }
+.study-step__why strong { display:block; margin-bottom:2px; color:var(--accent); font-size:11px; font-weight:500; letter-spacing:.08em; text-transform:uppercase; }
+.study-step { animation:study-step-in 200ms ease-out; }
+@keyframes study-step-in { from { opacity:0; transform:translateY(4px); } }
+
+/* The element the current step discusses. Everything else stays readable. */
+.walkthrough-preview .is-focus { outline:2px solid var(--accent); outline-offset:3px; transition:outline-color 200ms ease; }
+
+/* Structured Data merchant preview. */
+.merchant-focus { display:grid; gap:4px; padding:12px; margin-bottom:12px; border-left:3px solid var(--accent); background:var(--surface-strong); font-size:13px; min-height:72px; }
+.merchant-focus span { color:var(--muted-strong); overflow-wrap:anywhere; }
+.merchant-result-card__heading { display:flex; gap:12px; align-items:flex-start; justify-content:space-between; }
+.merchant-result-card__heading h3 { margin:0; }
+.merchant-result-card__thumb { flex:none; width:52px; height:52px; border:1px solid var(--line); background:linear-gradient(135deg,#17211a 0%,#4a5d50 100%); }
+.merchant-result-card__offer { display:flex; flex-wrap:wrap; gap:0.42rem; }
+
+/* Lifecycle and integration labs: findings sit in a reserved strip instead of covering the demo. */
+.study-findings { display:flex; flex-wrap:wrap; align-content:flex-start; gap:6px; min-height:76px; margin-top:10px; padding:8px; border:1px solid var(--line); background:var(--surface-strong); }
+.study-findings__item { padding:5px 8px; border:1px solid var(--accent-line); background:var(--accent-soft); color:var(--accent); font-size:12px; }
+.study-findings__item.is-problem { border-color:rgba(226,178,157,.28); background:rgba(124,63,44,.14); color:#e2b29d; }
+.study-findings__item.is-quiet { border-color:transparent; background:none; color:var(--muted-strong); }
+.publication-study :is(.debugging-board,.stable-board) { position:static; height:auto; overflow:visible; }
+.publication-study :is(.debugging-board__content,.stable-board__content) { overflow:visible; align-items:start; }
+.publication-study .debugging-grid { grid-template-columns:minmax(0,1fr); gap:6px; }
+.publication-study .debugging-product { grid-template-columns:36px minmax(0,1fr) auto; align-items:center; gap:10px; padding:6px 8px; transition:opacity 200ms ease, border-color 200ms ease; }
+.publication-study .debugging-product__media { aspect-ratio:auto; height:32px; }
+.publication-study .debugging-product > div { display:flex; flex-wrap:wrap; align-items:baseline; column-gap:10px; }
+.publication-study .debugging-product h4 { margin:0; }
+.publication-study .debugging-product p { margin:2px 0 0; }
+.publication-study .debugging-product.is-missing { opacity:.55; border-style:dashed; }
+.publication-study .debugging-diagnostics { align-content:start; }
+.publication-study .stable-product-media { min-height:6.5rem; }
+.publication-study :is(.debugging-code,.stable-code) { align-self:start; transition:border-color 200ms ease; }
+
+/* Supporting material below each walkthrough. */
+.study-notes { margin-top:16px; border-top:1px solid var(--line); padding-top:12px; font-size:13px; color:var(--muted-strong); }
+.study-notes summary { cursor:pointer; color:var(--accent); font-size:13px; min-height:44px; display:flex; align-items:center; }
+.study-notes p { max-width:68ch; line-height:1.6; }
+
+@media(prefers-reduced-motion:reduce) {
+ .study-step { animation:none; }
+ .walkthrough-preview .is-focus, .publication-study .debugging-product { transition:none; }
+}
+
+@media(min-width:1121px) {
+ .publication-study :is(.simulation-shell,.debugging-shell,.stable-shell) { grid-template-columns:minmax(0,.37fr) minmax(0,.63fr); padding:20px; gap:24px; }
+ .publication-study :is(.simulation-copy,.debugging-copy,.stable-copy) { position:sticky; top:100px; --study-panel-height:250px; }
+ .publication-study .simulation-merchant { gap:6px; }
+ .publication-study .simulation-scan { display:none; }
+ .publication-study .simulation-input { margin-bottom:12px; }
+ .publication-study .simulation-board__header { margin-bottom:12px; padding-block:0; }
+ .publication-study .merchant-results { gap:12px; }
+ .publication-study .merchant-result-card { padding:14px; font-size:12px; }
+ .publication-study .merchant-result-card p { font-size:12px; line-height:1.5; }
+ .publication-study .preview-card__media { height:84px; min-height:0; }
+ .publication-study .preview-card__image { height:100%; min-height:0; }
+ .publication-study .preview-card__body { gap:8px; }
+}
+@media(min-width:1280px) { .publication-study :is(.simulation-copy,.debugging-copy,.stable-copy) { --study-panel-height:226px; } }
+
+/* Stacked layout: explanation directly above the preview; the step bar stays reachable at the bottom of the screen. */
+@media(max-width:1120px) {
+ .preview-instruction { display:none; }
+ .publication-study :is(.simulation-shell,.debugging-shell,.stable-shell) { gap:8px; }
+ .publication-study :is(.simulation-copy,.debugging-copy,.stable-copy) { display:contents; }
+ .publication-study :is(.simulation-merchant,.debugging-problem,.stable-problem) { order:1; }
+ .publication-study .simulation-view-toggle { order:2; }
+ .publication-study :is(.simulation-copy__panel,.debugging-copy__panel,.stable-copy__panel) { order:3; }
+ .publication-study .walkthrough-preview { order:4; }
+ .publication-study .study-controls { order:5; position:sticky; bottom:0; z-index:5; padding-inline:12px; background:var(--surface); box-shadow:0 -8px 20px rgba(0,0,0,.35); }
+}

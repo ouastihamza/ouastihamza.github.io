@@ -1,7 +1,9 @@
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { WalkthroughPreview } from '../components/WalkthroughPreview';
+import { StudyControls } from '../components/StudyControls';
+import { StudyStep, type StudyStepCopy } from '../components/StudyStep';
+import { StudyFindings } from '../components/StudyFindings';
+import { motion } from 'framer-motion';
 import {
-  startTransition,
-  useDeferredValue,
   useEffect,
   useRef,
   useState,
@@ -13,49 +15,15 @@ interface StorefrontDebuggingSectionProps {
   viewportHeight: number;
 }
 
-interface DebuggingStep {
-  eyebrow: string;
-  title: string;
-  body: string;
-}
+type DebuggingFocus = 'grid' | 'filter' | 'broken' | 'findings' | 'code';
 
-const debuggingSteps: DebuggingStep[] = [
-  {
-    eyebrow: 'Step 01',
-    title: 'Healthy storefront state',
-    body:
-      'The collection module loads cleanly. Product cards, badges, tabs, and quick-add controls are visible and responsive.',
-  },
-  {
-    eyebrow: 'Step 02',
-    title: 'A shopper filters the collection',
-    body:
-      'One simple filter click asks the theme to replace part of the page with fresh markup.',
-  },
-  {
-    eyebrow: 'Step 03',
-    title: 'The interface disconnects',
-    body:
-      'After the update, part of the UI disappears and the quick-add behavior is no longer attached.',
-  },
-  {
-    eyebrow: 'Step 04',
-    title: 'Trace what changed',
-    body:
-      'The problem is not the first render. It is the markup replacement that removed the nodes the scripts were using.',
-  },
-  {
-    eyebrow: 'Step 05',
-    title: 'Rebind after the section update',
-    body:
-      'The safer pattern initializes behavior inside the updated section instead of assuming the old DOM is still present.',
-  },
-  {
-    eyebrow: 'Step 06',
-    title: 'Fixed state',
-    body:
-      'The same filter runs again, but the storefront remains stable after the dynamic update.',
-  },
+const debuggingSteps: (StudyStepCopy & { focus: DebuggingFocus })[] = [
+  { focus: 'grid', title: 'Healthy storefront state', look: 'Look at the product cards and their Add buttons.', why: 'This is the baseline: scripts attached on page load, and every button responds.' },
+  { focus: 'filter', title: 'A shopper filters the collection', look: 'Look at the “Filter: In stock” control.', why: 'Many themes refresh filtered results by fetching new HTML and swapping part of the page, without a full reload.' },
+  { focus: 'broken', title: 'The interface disconnects', look: 'Look at the cards: two are gone and the Add buttons are inactive.', why: 'Scripts were attached to the old elements. The swapped-in markup has no behaviour attached.' },
+  { focus: 'findings', title: 'Trace what changed', look: 'Look at the three findings under the grid.', why: 'The first page load was fine. The bug starts when markup is replaced.' },
+  { focus: 'code', title: 'Set up behaviour again after the update', look: 'Look at initProductGrid(scope). It sets up only the cards inside the given container.', why: 'Run it on the new markup after every update, so new cards get working buttons.' },
+  { focus: 'grid', title: 'Fixed state', look: 'Look at the cards after the same filter: all four respond.', why: 'Behaviour now follows the markup, however often the theme replaces it.' },
 ];
 
 export function StorefrontDebuggingSection({
@@ -65,56 +33,11 @@ export function StorefrontDebuggingSection({
 }: StorefrontDebuggingSectionProps) {
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const [activeStep, setActiveStep] = useState(0);
-  const [isMobileLayout, setIsMobileLayout] = useState(false);
-  const deferredStep = useDeferredValue(activeStep);
-  const prefersReducedMotion = useReducedMotion();
-  const segmentHeight = Math.max(Math.round(viewportHeight * 0.68), 340);
-  const renderedStep = isMobileLayout
-    ? debuggingSteps.length - 1
-    : deferredStep;
-  const activeCopy = debuggingSteps[renderedStep] ?? debuggingSteps[0];
+  const renderedStep = activeStep;
+  const stepCopy = debuggingSteps[renderedStep] ?? debuggingSteps[0];
 
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(max-width: 760px)');
-    const syncLayout = () => {
-      setIsMobileLayout(mediaQuery.matches);
-    };
 
-    syncLayout();
-    mediaQuery.addEventListener('change', syncLayout);
 
-    return () => {
-      mediaQuery.removeEventListener('change', syncLayout);
-    };
-  }, []);
-
-  useEffect(() => {
-    const node = scrollRef.current;
-
-    if (!node || isMobileLayout) {
-      return;
-    }
-
-    const syncStep = () => {
-      const nextStep = Math.min(
-        debuggingSteps.length - 1,
-        Math.floor((node.scrollTop + segmentHeight * 0.45) / segmentHeight),
-      );
-
-      startTransition(() => {
-        setActiveStep((current) =>
-          current === nextStep ? current : nextStep,
-        );
-      });
-    };
-
-    syncStep();
-    node.addEventListener('scroll', syncStep, { passive: true });
-
-    return () => {
-      node.removeEventListener('scroll', syncStep);
-    };
-  }, [isMobileLayout, segmentHeight]);
 
   useEffect(() => {
     if (isActive) {
@@ -165,54 +88,31 @@ export function StorefrontDebuggingSection({
                 </span>
               </div>
 
-              <div className="debugging-copy__panel">
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={activeCopy.eyebrow}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -16 }}
-                    transition={{
-                      duration: prefersReducedMotion ? 0.16 : 0.38,
-                      ease: [0.22, 1, 0.36, 1],
-                    }}
-                  >
-                    <p className="debugging-copy__eyebrow">
-                      {activeCopy.eyebrow}
-                    </p>
-                    <h3 className="debugging-copy__title">{activeCopy.title}</h3>
-                    <p className="debugging-copy__body">
-                      {activeCopy.body}
-                    </p>
-                  </motion.div>
-                </AnimatePresence>
-              </div>
+              <StudyStep prefix="debugging" step={renderedStep} total={debuggingSteps.length} copy={stepCopy} />
+              <StudyControls step={activeStep} total={debuggingSteps.length} onStep={setActiveStep} />
             </div>
 
-            <DebuggingBoard step={renderedStep} />
+            <WalkthroughPreview step={activeStep} total={debuggingSteps.length} onStep={setActiveStep}><DebuggingBoard step={renderedStep} focus={stepCopy.focus} /></WalkthroughPreview>
           </div>
 
-          <div className="debugging-story__track" aria-hidden="true">
-            {debuggingSteps.map((step) => (
-              <div
-                key={step.eyebrow}
-                className="debugging-story__segment"
-                style={{ minHeight: segmentHeight }}
-              />
-            ))}
-          </div>
+          <details className="study-notes">
+            <summary>Notes and sources</summary>
+            <p>The theme editor emits <code>shopify:section:load</code>. It is not a general storefront event. For live storefront replacements, such as filtering, call initialization from your own render lifecycle after the new markup is inserted. The code sketch omits binding and cleanup details.</p>
+            <p><a href="https://shopify.dev/docs/storefronts/themes/best-practices/editor/integrate-sections-and-blocks" target="_blank" rel="noreferrer">Shopify: integrate sections and blocks with the theme editor ↗</a></p>
+          </details>
         </div>
       </div>
     </section>
   );
 }
 
-function DebuggingBoard({ step }: { step: number }) {
+function DebuggingBoard({ step, focus }: { step: number; focus: DebuggingFocus }) {
   const isAction = step >= 1;
   const isBroken = step >= 2 && step < 5;
   const showDiagnosis = step >= 3 && step < 5;
   const showCode = step >= 4;
   const isFixed = step >= 5;
+  const on = (target: DebuggingFocus) => (focus === target ? ' is-focus' : '');
 
   return (
     <div className={`debugging-board${isBroken ? ' is-broken' : ''}${isFixed ? ' is-fixed' : ''}`}>
@@ -228,115 +128,52 @@ function DebuggingBoard({ step }: { step: number }) {
 
       <div className="debugging-controls">
         <motion.span
-          className={`debugging-control${isAction ? ' is-active' : ''}`}
-
+          className={`debugging-control${isAction ? ' is-active' : ''}${on('filter')}`}
           animate={{ y: isAction && !isFixed ? [0, -2, 0] : 0 }}
           transition={{ duration: 0.42 }}
         >
           Filter: In stock
         </motion.span>
-        <span className="debugging-control" >
-          Sort: Best sellers
-        </span>
-        <span className="debugging-control" >
-          Quick add
-        </span>
+        <span className="debugging-control">Sort: Best sellers</span>
+        <span className="debugging-control">Quick add</span>
       </div>
 
       <div className="debugging-board__content">
         <div className="debugging-grid-wrap">
-          <motion.div
-            className="debugging-grid"
-            animate={{
-              opacity: isBroken ? 0.62 : 1,
-              y: isBroken ? 6 : 0,
-            }}
-            transition={{ duration: 0.36, ease: [0.22, 1, 0.36, 1] }}
-          >
-            {['Linen Shirt', 'Canvas Tote', 'Travel Pouch', 'Daily Cap'].map(
-              (product, index) => (
-                <motion.article
-                  className={`debugging-product${isBroken && index > 1 ? ' is-missing' : ''}`}
-                  key={product}
-                  animate={{
-                    opacity: isBroken && index > 1 ? 0 : 1,
-                    scale: isBroken && index > 1 ? 0.96 : 1,
-                  }}
-                  transition={{ duration: 0.28, delay: index * 0.04 }}
-                >
+          <div className={`debugging-grid${on('grid')}${on('broken')}`}>
+            {['Linen Shirt', 'Canvas Tote', 'Travel Pouch', 'Daily Cap'].map((product, index) => {
+              const removed = isBroken && index > 1;
+              return (
+                <article className={`debugging-product${removed ? ' is-missing' : ''}`} key={product}>
                   <div className="debugging-product__media" />
                   <div>
                     <h4>{product}</h4>
-                    <p>{isFixed ? 'Button rebound' : 'Quick add ready'}</p>
+                    <p>{removed ? 'Removed by the update' : isFixed ? 'Button set up again' : 'Quick add ready'}</p>
                   </div>
                   <span className="debugging-product__button">
                     {isBroken ? 'Inactive' : 'Add'}
                   </span>
-                </motion.article>
-              ),
-            )}
-          </motion.div>
+                </article>
+              );
+            })}
+          </div>
 
-          <AnimatePresence>
-            {isBroken && (
-              <motion.div
-                className="debugging-breakage"
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.32 }}
-              >
-                <span>UI state mismatch</span>
-                <span>Events detached</span>
-                <span>Cards removed</span>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          <AnimatePresence>
-            {showDiagnosis && (
-              <motion.div
-                className="debugging-callouts"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.34 }}
-              >
-                <svg
-                  aria-hidden="true"
-                  className="debugging-callouts__lines"
-                  viewBox="0 0 100 100"
-                  preserveAspectRatio="none"
-                >
-                  <path d="M 27 25 C 42 18, 52 18, 64 22" />
-                  <path d="M 68 52 C 54 51, 43 54, 33 64" />
-                  <path d="M 69 76 C 57 72, 45 75, 36 84" />
-                </svg>
-                <span className="debugging-callout debugging-callout--dom">
-                  DOM replaced
-                </span>
-                <span className="debugging-callout debugging-callout--bindings">
-                  bindings lost
-                </span>
-                <span className="debugging-callout debugging-callout--nodes">
-                  old nodes removed
-                </span>
-              </motion.div>
-            )}
-          </AnimatePresence>
+          <StudyFindings className={on('findings')} items={
+            isBroken
+              ? [['problem', 'UI state mismatch'], ['problem', 'Events detached'], ['problem', 'Cards removed'],
+                ...(showDiagnosis ? [['note', 'DOM replaced'], ['note', 'Bindings lost'], ['note', 'Old nodes removed']] as const : [])]
+              : [['quiet', isFixed ? 'All cards respond after the update' : 'No issues detected']]
+          } />
         </div>
 
         <div className="debugging-diagnostics">
-          <motion.div
-            className={`debugging-code${showCode ? ' is-visible' : ''}`}
-            animate={{ opacity: showCode ? 1 : 0.28 }}
-          >
+          <div className={`debugging-code${showCode ? ' is-visible' : ''}${on('code')}`}>
             <div className="debugging-code__header">
-              <span>Safer rebind logic</span>
+              <span>Theme-editor example · illustrative</span>
             </div>
-            {/* oxlint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- Scrollable code needs keyboard focus. */}
-            <pre tabIndex={0} aria-label="Code walkthrough">
-	{`document.addEventListener('shopify:section:load', (event) => {
+            <pre aria-label="Code walkthrough">
+{`// Theme editor only; not a general storefront event.
+document.addEventListener('shopify:section:load', (event) => {
   initProductGrid(event.target);
 });
 
@@ -344,7 +181,7 @@ function initProductGrid(scope = document) {
   scope.querySelectorAll('[data-product-card]').forEach(bindCard);
 }`}
             </pre>
-          </motion.div>
+          </div>
         </div>
       </div>
     </div>

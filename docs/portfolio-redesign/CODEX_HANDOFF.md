@@ -1,4 +1,61 @@
+## 2026-10-23 — Wheel stall fix and view switching
+
+- Bug (owner, real trackpad/mouse in Chrome): with the pointer held still, the wheel sometimes did nothing, neither a step change nor page scroll, until the mouse moved.
+- Root cause, reproduced in Playwright: the gesture lock only reset after 220ms of wheel silence. A steady wheel spin (notches 60–180ms apart) changed one step, then every later notch was cancelled for as long as the spin lasted. Moving the mouse "fixed" it only by creating a pause.
+- Second cause, found by the new regression test: in Technical View, the old nested-scroll `.simulation-board__viewport` (`overflow: hidden`, `overscroll-behavior: contain`, content 10px taller than the box) acted as a scroll boundary. At step 1 and the last step the preview released the wheel, but the page still did not scroll. `publication.css` now resets it to `overflow: visible; overscroll-behavior: auto`.
+- Ruled out: wheel events delivered to removed nodes (none observed, including over content rebuilt between steps), and the "explanation on screen" check (it releases the wheel to the page, never cancels it). Real trackpad scroll phases cannot be emulated headlessly, so latching is also guarded against defensively.
+- Fix in `WalkthroughPreview.tsx`:
+  - Input that keeps arriving at notch strength (40px or more, not fading), or rises for three events in a row, counts as a new push. A steady spin changes a step about every 550ms. Fading trackpad momentum is still absorbed as one gesture.
+  - As a last resort, input is never held back for more than 3s after a step; after that it scrolls the page.
+  - One window-level listener hit-tests the pointer against the preview, and falls back to `elementFromPoint` if the event target is no longer in the page.
+  - Findings badges (`StudyFindings`) keep fixed positional slots, so step changes update text instead of replacing nodes under the pointer.
+- Change: switching between Merchant View and Technical View restarts the walkthrough at step 1 (reverses "switching keeps the step"). Clicking the active view does nothing.
+- Test: new still-pointer block in `tests/shopify-scroll.browser.js`. For every lab and view, with the pointer fixed over changing content: a 30-notch steady spin and repeated flicks through every step and back. Fails if any wheel event hits a removed node, or input runs without moving the step or the page for more than 1s (spin) or 3.2s (flicks, whose fading tail is absorbed). Events where the step is at an end and the page is already at its limit are excluded. Each view also fails if any preview element sets `overscroll-behavior`. View-switch checks now expect step 1.
+- Limitation: a non-passive wheel listener on window makes every page wheel event wait for the main thread. The page is light and no jank was observed, but it is a trade-off for latching safety.
+
+## 2026-10-23 — Dual scrolling and coordinated walkthrough layout
+
+Supersedes the scrolling repair below on wheel behaviour: the owner revised the brief to ask for intentional dual scrolling.
+
+- Wheel model (`apps/portfolio-2/src/components/WalkthroughPreview.tsx`, shared by all three labs):
+  - Desktop with a fine pointer (1121px and wider) only. Wheel over the preview moves one step; wheel anywhere else scrolls the page.
+  - One step per gesture: 40px of wheel travel accepts a step, then the gesture is consumed until 220ms of wheel silence and at least 550ms since the last step. Line and page delta modes are normalised.
+  - Step 1 and the last step release the wheel to the page. Momentum from the gesture that reached the boundary is still consumed, so the page does not jump.
+  - Inputs, selects, textareas, contenteditable, textbox/combobox/listbox roles, `[data-wheel-passthrough]` and nested scroll areas keep their own wheel. Ctrl+wheel and horizontal scrolling are ignored. Steps never change while the explanation is off screen.
+  - One non-passive listener per preview, removed on unmount; current step read through a ref, so no stale state.
+- Layout: desktop is 37% explanation / 63% preview. Explanation panel has a fixed height (250px, 226px from 1280px) so Previous / Next never move. Stacked layouts (1120px and narrower) put the explanation directly above the preview (8px gap) and keep the step bar at the bottom of the screen while the lab is in view; no wheel interception, no nested scrolling.
+- Clarity: shared `StudyStep` component shows step number, title, what to look at and "Why this matters". Structured Data has separate Merchant and Technical copy for all 13 steps; switching views kept the step (changed below: now restarts at step 1). Every step highlights its exact element with one `is-focus` outline; inactive areas stay readable.
+- Lifecycle and integration labs: absolute overlays replaced by a reserved findings strip, product cards compacted, long caveats moved into "Notes and sources" disclosures below each lab. Structured Data merchant preview gained a product thumbnail for the image step; the enhanced result now repeats the real description instead of placeholder copy.
+- Audit: only Structured Data (13 steps), Storefront DOM lifecycle (6) and Integration coexistence (7) exist. No performance, webhook, metafield or metaobject labs exist yet; nothing was created for them.
+- Verification: lint, root typecheck, Vite typecheck, production build and `git diff --check` pass. `tests/shopify-scroll.browser.js` passes with no console errors: 1366×768, 1440×900, 1920×1080 × three labs (both Structured Data views), touch 375×812, 390×844, 768×1024, plus exclusion fixtures. It checks wheel inside/outside, trackpad flick and momentum, boundaries, buttons, keyboard, reduced motion, view switching, explanation + highlight + controls visible together on every step, controls and preview not moving, layout shift score under 0.1, mobile gap, sticky step bar, no nested scrolling and no overflow. Screenshots reviewed at all sizes.
+- Not tested: physical trackpads and mouse wheels, Safari, Firefox, screen readers. Momentum is simulated with decaying wheel events.
+- The test now runs every check and throws once with all failures. Run it as before (browser_run_code on port 4173), or with any Playwright runner that passes a page.
+- Stop for owner review. Content expansion (older brief milestones 2–5) not started. Do not merge or deploy.
+
+## 2026-10-23 — Scrolling repair, milestone 1 (wheel behaviour superseded above)
+
+- Reproduced on the static build: wheel at (700,400) advanced Structured Data 1 → 2 while window.scrollY remained 0.
+- Root cause: all three labs derived activeStep from nested section scrollTop, with tall invisible tracks, sticky shells and negative viewport margins. No remaining wheel interceptor was required to produce the bug.
+- Removed the three scroll-to-state listeners and invisible tracks. Previous/Next alone selects steps. Explanations and counters now use the same immediate state, with polite announcements instead of delayed exit transitions.
+- All publication sections now use document flow, including author notes/contact. Removed nested viewport sizing and sticky lab surfaces; retained the publication header. No wheel/touch prevention added. Structured Data tab arrow handling and the skip-link preventDefault remain intentional.
+- Source inventory: only Structured Data (13), Storefront DOM lifecycle (6), and integration coexistence (7) walkthroughs exist. No performance, metafield, webhook/event labs, article library, modal, carousel or collapsed mobile menu is implemented. Guides/Intelligence are index/reference sections.
+- Passed lint, root typecheck, Vite typecheck and full static production build. Chromium regression: 375/768/1280/1440 × all three labs, every forward/back step, wheel over five target areas + reversals, PageDown/PageUp, Enter/Tab, boundary buttons, reduced-motion changes, direct routes and browser back. No console/page errors. Technical View final step has no horizontal overflow or nested vertical scrolling at all four widths.
+- Additional actual browser checks: touch-emulated swipes on each lab (document moved >680px; step unchanged); home/guides/intelligence/labs/author/contact routes have no nested vertical scroll regions. Reviewed desktop technical, mobile merchant and tablet lifecycle screenshots. Physical devices, Safari/Firefox and screen readers not tested.
+- Regression source: tests/shopify-scroll.browser.js. With the static server on 4173, pass its file contents as the Playwright browser_run_code `code` argument (async function accepting page). It asserts failures and returns 12 results, and writes screenshots under /private/tmp.
+- Preview: http://127.0.0.1:4173/projects/shopify-technical-studies/#simulation — reload existing tabs to load the rebuilt bundle.
+- Stop here for owner scrolling review. Content research, new guides, news and broader visual polishing remain milestones 2–5. Do not merge or deploy.
+
 # Codex handoff: woodland portfolio redesign
+
+## Active work — Shopify Commerce Engineering Milestone 1
+
+Work on `feature/interactive-portfolio-redesign` only. The newest request prohibits main merge/deployment and requires stopping after Milestone 1 for visual review. Previous publication approval below applies only to the already-published main portfolio polish.
+
+The standalone Vite app now has a dark editorial homepage and hash-addressable studies. See `docs/shopify-commerce-engineering/AUDIT.md` and `EDITORIAL_WORKFLOW.md`; `apps/portfolio-2/README.integration.md` documents exact build/preview paths. Do not mistake the Next dev homepage at port 3000 for the Vite source preview.
+
+Preview the built integrated route at http://127.0.0.1:4173/projects/shopify-technical-studies/ or use Vite hot reload at http://127.0.0.1:5173/portfolio-2-assets/ . All original study components are retained; mobile step access and final desktop steps fixed. Guides and intelligence are explicitly limited to the existing methodology and official-source directory. No new articles, platform news summaries, live store access or scheduled automation is implemented.
+
+Validation: lint, root/Vite typecheck and production static build pass. Chromium 1440/768/390/360px home and three studies have no horizontal overflow, console errors or failed requests. Keyboard, reduced motion, deep link/refresh/history, filters and alias checked. Stop for review before Milestone 2.
 
 ## Current milestone — approved for publication
 

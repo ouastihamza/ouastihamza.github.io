@@ -1,84 +1,26 @@
-import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { audiences, studies, officialSources, type Audience } from '../data/publication';
 
-interface HomeSectionProps {
-  registerScrollArea: (node: HTMLDivElement | null) => void;
-  viewportHeight: number;
-}
-
-export function HomeSection({
-  registerScrollArea,
-  viewportHeight,
-}: HomeSectionProps) {
-  return (
-    <section
-      aria-labelledby="home-title"
-      className="section section--home"
-      style={{ height: viewportHeight }}
-    >
-      <div className="section__scroll" ref={registerScrollArea}>
-        <div className="home-layout">
-          <motion.div
-            className="home-copy"
-            initial={{ opacity: 0, y: 28 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.72, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <p className="section-label">SHOPIFY TECHNICAL PORTFOLIO</p>
-            <h1 id="home-title" className="home-copy__title">
-              Shopify storefront debugging, theme customization, and technical
-              problem-solving.
-            </h1>
-            <p className="home-copy__body">
-              Four studies of problems I fix in production: layout regressions,
-              broken frontend behavior, structured data gaps and app conflicts.
-            </p>
-          </motion.div>
-
-          <motion.div
-            className="home-card"
-            initial={{ opacity: 0, y: 32 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 0.84,
-              delay: 0.1,
-              ease: [0.22, 1, 0.36, 1],
-            }}
-          >
-            <h2 className="home-card__title">What these studies cover</h2>
-            <div className="home-card__row">
-              <span>Storefront debugging</span>
-              <span>
-                Frontend issues, dynamic rendering, broken UI states, and
-                interaction bugs.
-              </span>
-            </div>
-            <div className="home-card__row">
-              <span>SEO &amp; structured data</span>
-              <span>
-                Product schema, search visibility, metadata, and
-                machine-readable storefront data.
-              </span>
-            </div>
-            <div className="home-card__row">
-              <span>Theme customization</span>
-              <span>
-                Liquid, CSS, JavaScript, responsive layouts, and section-level
-                improvements.
-              </span>
-            </div>
-            <div className="home-card__row">
-              <span>Accessibility &amp; usability</span>
-              <span>
-                Semantic markup, focus states, labels, keyboard behavior, and
-                clearer interactions.
-              </span>
-            </div>
-            <div className="home-card__footnote">
-              Use the sidebar or scroll to explore the case studies.
-            </div>
-          </motion.div>
-        </div>
-      </div>
+export function HomeSection() {
+  const [audience, setAudience] = useState<Audience>('All readers');
+  const [query, setQuery] = useState('');
+  const filtered = studies.filter(study => (audience === 'All readers' || (study.audiences as readonly string[]).includes(audience)) && `${study.title} ${study.topic} ${study.description}`.toLowerCase().includes(query.trim().toLowerCase()));
+  return <div className="publication-home">
+    <section className="publication-hero" aria-labelledby="publication-title">
+      <div><p className="pub-eyebrow">INDEPENDENT FIELD NOTES / BY HAMZA OUASTI</p><h1 id="publication-title">Shopify Commerce<br /><em>Engineering.</em></h1><p className="publication-deck">Technical insights, practical guides, and platform updates for people building and scaling commerce on Shopify.</p><div className="publication-actions"><a className="pub-button" href="#labs">Explore the technical labs <span aria-hidden="true">↘</span></a><a href="#intelligence">Follow the primary sources ↗</a></div></div>
+      <aside className="publication-index" aria-label="Publication areas"><p className="pub-eyebrow">THE FIELD GUIDE</p><a href="#guides"><span>01</span><div><strong>Engineering guides</strong><small>Decisions, diagnosis and verification</small></div>↗</a><a href="#intelligence"><span>02</span><div><strong>Commerce intelligence</strong><small>Sources before conclusions</small></div>↗</a><a href="#labs"><span>03</span><div><strong>Interactive labs</strong><small>Follow the behavior, inspect the cause</small></div>↗</a><p>Continuing <strong>Shopify Technical Studies</strong>.<br />The original walkthroughs, with a clearer path into the work.</p></aside>
     </section>
-  );
+    <section className="publication-labs" id="labs" aria-labelledby="labs-title">
+      <div className="pub-section-heading"><div><p className="pub-eyebrow">01 / INTERACTIVE LABS</p><h2 id="labs-title">Understand the system.<br />Then change it.</h2></div><p>Three existing walkthroughs. Illustrative data, explicit assumptions and no live-store credentials.</p></div>
+      <div className="directory-controls"><fieldset><legend>Find a starting point for your role</legend><div className="audience-filters">{audiences.map(item => <button key={item} type="button" aria-pressed={audience === item} onClick={() => setAudience(item)}>{item}</button>)}</div></fieldset><label className="study-search">Search the labs<input type="search" value={query} onChange={event => setQuery(event.target.value)} placeholder="Try structured data or integrations" /></label></div>
+      <output className="directory-count">{filtered.length} {filtered.length === 1 ? 'walkthrough' : 'walkthroughs'} available</output>
+      <div className="study-directory">{filtered.map(study => <article className="study-entry" key={study.id}><span className="study-number">{study.number}</span><div><p className="pub-eyebrow">{study.topic} · {study.steps} steps</p><h3><a href={`#${study.id}`}>{study.title} <span aria-hidden="true">↗</span></a></h3><p>{study.description}</p><p className="study-knowledge"><strong>Useful knowledge:</strong> {study.knowledge}</p><p className="study-audience">For {study.audiences.join(' · ')}</p></div><a className="study-open" href={`#${study.id}`} aria-label={`Open ${study.title}`}>Open study ↗</a></article>)}</div>
+      {filtered.length === 0 && <div className="directory-empty"><h3>No matching walkthroughs yet.</h3><p>Try a broader term or another audience.</p><button className="pub-button" onClick={() => { setAudience('All readers'); setQuery(''); }}>Reset filters</button></div>}
+    </section>
+    <div className="publication-columns">
+      <section id="guides" aria-labelledby="guides-title"><p className="pub-eyebrow">02 / ENGINEERING GUIDES</p><h2 id="guides-title">A method before<br />a workaround.</h2><p className="section-deck">Start with the investigation approach behind these studies.</p><article className="method-preview"><p className="pub-eyebrow">AUTHOR’S APPROACH · ALL READERS</p><h3><a href="#how-i-work">Reproduce. Diagnose. Validate. ↗</a></h3><p>Scope a problem, isolate its cause, and document the checks that will catch a regression.</p><p className="study-knowledge">No prerequisite · a short methodology note</p></article><p className="publication-status">The researched guide library is in preparation. This first release retains the original methodology note; it does not yet include the planned API, performance or enterprise guides.</p></section>
+      <section id="intelligence" aria-labelledby="intelligence-title"><p className="pub-eyebrow">03 / SHOPIFY & COMMERCE INTELLIGENCE</p><h2 id="intelligence-title">Stay close to<br />the source.</h2><p className="section-deck">Official reading channels for platform decisions. These are source links, not a curated news feed.</p><ul className="source-directory">{officialSources.map(source => <li key={source.url}><a href={source.url} target="_blank" rel="noreferrer"><strong>{source.title} ↗</strong><span>{source.description}</span></a></li>)}</ul><p className="publication-status">Source links checked 23 October 2026. Reviewed summaries, impact analysis and recommendations will follow in a separate milestone.</p></section>
+    </div>
+    <section className="publication-principles"><p className="pub-eyebrow">EDITORIAL PRINCIPLE</p><h2>Explain what is known.<br /><span>Label what is illustrated.</span></h2><p>Platform facts belong beside primary sources. Examples should reveal a mechanism—not imply a result that has never been measured.</p><a href="#ending">About the author & contact ↗</a></section>
+  </div>;
 }
