@@ -133,3 +133,90 @@ a:focus-visible,button:focus-visible,input:focus-visible,[tabindex]:focus-visibl
 .merchant-results,.schema-card__code,.debugging-code,.stable-code) { height:auto; max-height:none; overflow:visible; }
 .publication-study pre { white-space:pre-wrap; overflow-wrap:anywhere; }
 .study-controls { scroll-margin-top:155px; }
+
+/* Coordinated walkthroughs: explanation on the left, preview on the right; stacked on narrow screens. */
+.walkthrough-preview { min-width:0; }
+.preview-instruction { margin:0 0 10px; font-size:12px; color:var(--muted-strong); }
+.publication-study :is(.simulation-copy,.debugging-copy,.stable-copy) { width:100%; max-width:none; gap:12px; }
+.publication-study :is(.simulation-copy__meta,.debugging-copy__meta,.stable-copy__meta) { display:none; }
+.publication-study :is(.simulation-merchant__headline,.debugging-problem__headline,.stable-problem__headline) { font-size:22px; line-height:1.2; }
+.publication-study :is(.simulation-merchant__subhead,.debugging-problem__subhead,.stable-problem__subhead) { font-size:13px; line-height:1.55; }
+.publication-study :is(.simulation-board,.debugging-board,.stable-board) { min-height:0; }
+.publication-study :is(.simulation-board,.debugging-board,.stable-board)::after { display:none; }
+
+/* Explanation panel. The fixed height keeps Previous / Next in place as copy length changes. */
+.publication-study :is(.simulation-copy__panel,.debugging-copy__panel,.stable-copy__panel) { padding:16px; min-height:var(--study-panel-height, 0px); }
+.publication-study :is(.simulation-copy__eyebrow,.debugging-copy__eyebrow,.stable-copy__eyebrow) { margin:0; }
+.publication-study :is(.simulation-copy__title,.debugging-copy__title,.stable-copy__title) { max-width:none; font-size:23px; line-height:1.15; letter-spacing:-0.03em; margin:8px 0 0; }
+.publication-study :is(.simulation-copy__body,.debugging-copy__body,.stable-copy__body) { max-width:none; margin:8px 0 0; font-size:14px; line-height:1.6; }
+.study-step__why { margin:10px 0 0; padding-top:10px; border-top:1px solid var(--line); font-size:13px; line-height:1.55; color:var(--muted-strong); }
+.study-step__why strong { display:block; margin-bottom:2px; color:var(--accent); font-size:11px; font-weight:500; letter-spacing:.08em; text-transform:uppercase; }
+.study-step { animation:study-step-in 200ms ease-out; }
+@keyframes study-step-in { from { opacity:0; transform:translateY(4px); } }
+
+/* The element the current step discusses. Everything else stays readable. */
+.walkthrough-preview .is-focus { outline:2px solid var(--accent); outline-offset:3px; transition:outline-color 200ms ease; }
+
+/* Structured Data merchant preview. */
+.merchant-focus { display:grid; gap:4px; padding:12px; margin-bottom:12px; border-left:3px solid var(--accent); background:var(--surface-strong); font-size:13px; min-height:72px; }
+.merchant-focus span { color:var(--muted-strong); overflow-wrap:anywhere; }
+.merchant-result-card__heading { display:flex; gap:12px; align-items:flex-start; justify-content:space-between; }
+.merchant-result-card__heading h3 { margin:0; }
+.merchant-result-card__thumb { flex:none; width:52px; height:52px; border:1px solid var(--line); background:linear-gradient(135deg,#17211a 0%,#4a5d50 100%); }
+.merchant-result-card__offer { display:flex; flex-wrap:wrap; gap:0.42rem; }
+
+/* Lifecycle and integration labs: findings sit in a reserved strip instead of covering the demo. */
+.study-findings { display:flex; flex-wrap:wrap; align-content:flex-start; gap:6px; min-height:76px; margin-top:10px; padding:8px; border:1px solid var(--line); background:var(--surface-strong); }
+.study-findings__item { padding:5px 8px; border:1px solid var(--accent-line); background:var(--accent-soft); color:var(--accent); font-size:12px; }
+.study-findings__item.is-problem { border-color:rgba(226,178,157,.28); background:rgba(124,63,44,.14); color:#e2b29d; }
+.study-findings__item.is-quiet { border-color:transparent; background:none; color:var(--muted-strong); }
+.publication-study :is(.debugging-board,.stable-board) { position:static; height:auto; overflow:visible; }
+.publication-study :is(.debugging-board__content,.stable-board__content) { overflow:visible; align-items:start; }
+.publication-study .debugging-grid { grid-template-columns:minmax(0,1fr); gap:6px; }
+.publication-study .debugging-product { grid-template-columns:36px minmax(0,1fr) auto; align-items:center; gap:10px; padding:6px 8px; transition:opacity 200ms ease, border-color 200ms ease; }
+.publication-study .debugging-product__media { aspect-ratio:auto; height:32px; }
+.publication-study .debugging-product > div { display:flex; flex-wrap:wrap; align-items:baseline; column-gap:10px; }
+.publication-study .debugging-product h4 { margin:0; }
+.publication-study .debugging-product p { margin:2px 0 0; }
+.publication-study .debugging-product.is-missing { opacity:.55; border-style:dashed; }
+.publication-study .debugging-diagnostics { align-content:start; }
+.publication-study .stable-product-media { min-height:6.5rem; }
+.publication-study :is(.debugging-code,.stable-code) { align-self:start; transition:border-color 200ms ease; }
+
+/* Supporting material below each walkthrough. */
+.study-notes { margin-top:16px; border-top:1px solid var(--line); padding-top:12px; font-size:13px; color:var(--muted-strong); }
+.study-notes summary { cursor:pointer; color:var(--accent); font-size:13px; min-height:44px; display:flex; align-items:center; }
+.study-notes p { max-width:68ch; line-height:1.6; }
+
+@media(prefers-reduced-motion:reduce) {
+ .study-step { animation:none; }
+ .walkthrough-preview .is-focus, .publication-study .debugging-product { transition:none; }
+}
+
+@media(min-width:1121px) {
+ .publication-study :is(.simulation-shell,.debugging-shell,.stable-shell) { grid-template-columns:minmax(0,.37fr) minmax(0,.63fr); padding:20px; gap:24px; }
+ .publication-study :is(.simulation-copy,.debugging-copy,.stable-copy) { position:sticky; top:100px; --study-panel-height:250px; }
+ .publication-study .simulation-merchant { gap:6px; }
+ .publication-study .simulation-scan { display:none; }
+ .publication-study .simulation-input { margin-bottom:12px; }
+ .publication-study .simulation-board__header { margin-bottom:12px; padding-block:0; }
+ .publication-study .merchant-results { gap:12px; }
+ .publication-study .merchant-result-card { padding:14px; font-size:12px; }
+ .publication-study .merchant-result-card p { font-size:12px; line-height:1.5; }
+ .publication-study .preview-card__media { height:84px; min-height:0; }
+ .publication-study .preview-card__image { height:100%; min-height:0; }
+ .publication-study .preview-card__body { gap:8px; }
+}
+@media(min-width:1280px) { .publication-study :is(.simulation-copy,.debugging-copy,.stable-copy) { --study-panel-height:226px; } }
+
+/* Stacked layout: explanation directly above the preview; the step bar stays reachable at the bottom of the screen. */
+@media(max-width:1120px) {
+ .preview-instruction { display:none; }
+ .publication-study :is(.simulation-shell,.debugging-shell,.stable-shell) { gap:8px; }
+ .publication-study :is(.simulation-copy,.debugging-copy,.stable-copy) { display:contents; }
+ .publication-study :is(.simulation-merchant,.debugging-problem,.stable-problem) { order:1; }
+ .publication-study .simulation-view-toggle { order:2; }
+ .publication-study :is(.simulation-copy__panel,.debugging-copy__panel,.stable-copy__panel) { order:3; }
+ .publication-study .walkthrough-preview { order:4; }
+ .publication-study .study-controls { order:5; position:sticky; bottom:0; z-index:5; padding-inline:12px; background:var(--surface); box-shadow:0 -8px 20px rgba(0,0,0,.35); }
+}

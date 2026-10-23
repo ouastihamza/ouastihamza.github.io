@@ -1,4 +1,23 @@
-## 2026-10-23 — Scrolling repair, milestone 1
+## 2026-10-23 — Dual scrolling and coordinated walkthrough layout
+
+Supersedes the scrolling repair below on wheel behaviour: the owner revised the brief to ask for intentional dual scrolling.
+
+- Wheel model (`apps/portfolio-2/src/components/WalkthroughPreview.tsx`, shared by all three labs):
+  - Desktop with a fine pointer (1121px and wider) only. Wheel over the preview moves one step; wheel anywhere else scrolls the page.
+  - One step per gesture: 40px of wheel travel accepts a step, then the gesture is consumed until 220ms of wheel silence and at least 550ms since the last step. Line and page delta modes are normalised.
+  - Step 1 and the last step release the wheel to the page. Momentum from the gesture that reached the boundary is still consumed, so the page does not jump.
+  - Inputs, selects, textareas, contenteditable, textbox/combobox/listbox roles, `[data-wheel-passthrough]` and nested scroll areas keep their own wheel. Ctrl+wheel and horizontal scrolling are ignored. Steps never change while the explanation is off screen.
+  - One non-passive listener per preview, removed on unmount; current step read through a ref, so no stale state.
+- Layout: desktop is 37% explanation / 63% preview. Explanation panel has a fixed height (250px, 226px from 1280px) so Previous / Next never move. Stacked layouts (1120px and narrower) put the explanation directly above the preview (8px gap) and keep the step bar at the bottom of the screen while the lab is in view; no wheel interception, no nested scrolling.
+- Clarity: shared `StudyStep` component shows step number, title, what to look at and "Why this matters". Structured Data has separate Merchant and Technical copy for all 13 steps; switching views keeps the step. Every step highlights its exact element with one `is-focus` outline; inactive areas stay readable.
+- Lifecycle and integration labs: absolute overlays replaced by a reserved findings strip, product cards compacted, long caveats moved into "Notes and sources" disclosures below each lab. Structured Data merchant preview gained a product thumbnail for the image step; the enhanced result now repeats the real description instead of placeholder copy.
+- Audit: only Structured Data (13 steps), Storefront DOM lifecycle (6) and Integration coexistence (7) exist. No performance, webhook, metafield or metaobject labs exist yet; nothing was created for them.
+- Verification: lint, root typecheck, Vite typecheck, production build and `git diff --check` pass. `tests/shopify-scroll.browser.js` passes with no console errors: 1366×768, 1440×900, 1920×1080 × three labs (both Structured Data views), touch 375×812, 390×844, 768×1024, plus exclusion fixtures. It checks wheel inside/outside, trackpad flick and momentum, boundaries, buttons, keyboard, reduced motion, view switching, explanation + highlight + controls visible together on every step, controls and preview not moving, layout shift score under 0.1, mobile gap, sticky step bar, no nested scrolling and no overflow. Screenshots reviewed at all sizes.
+- Not tested: physical trackpads and mouse wheels, Safari, Firefox, screen readers. Momentum is simulated with decaying wheel events.
+- The test now runs every check and throws once with all failures. Run it as before (browser_run_code on port 4173), or with any Playwright runner that passes a page.
+- Stop for owner review. Content expansion (older brief milestones 2–5) not started. Do not merge or deploy.
+
+## 2026-10-23 — Scrolling repair, milestone 1 (wheel behaviour superseded above)
 
 - Reproduced on the static build: wheel at (700,400) advanced Structured Data 1 → 2 while window.scrollY remained 0.
 - Root cause: all three labs derived activeStep from nested section scrollTop, with tall invisible tracks, sticky shells and negative viewport margins. No remaining wheel interceptor was required to produce the bug.

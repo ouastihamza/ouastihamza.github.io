@@ -1,63 +1,125 @@
-// Playwright browser_run_code evaluates this function with its managed page.
+// Execute this function with Playwright browser_run_code against the static build (port 4173).
+// It runs every check, then throws once with all failures; on success it returns the per-area results.
 /* eslint-disable no-unused-expressions */
 async (page) => {
-  const base = 'http://127.0.0.1:4173/projects/shopify-technical-studies/';
-  const results = [];
-  const errors = [];
-  page.on('pageerror', error => errors.push(error.message));
-  page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
-  const assert = (condition, message) => { if (!condition) throw new Error(message); };
-  for (const width of [375, 768, 1280, 1440]) {
-    await page.setViewportSize({ width, height: 900 });
-    for (const [route, total, prefix] of [['simulation',13,'simulation'],['storefront-debugging',6,'debugging'],['stable-integrations',7,'stable']]) {
-      await page.goto(base + '?qa=' + width + '#' + route);
-      await page.reload();
-      await page.waitForTimeout(350);
-      const output = page.locator('.study-controls output');
-      const step = async n => assert(await output.textContent() === `Step ${n} of ${total}`, `${width}/${route}: expected step ${n}`);
-      await step(1);
-      assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), `${width}/${route}: horizontal overflow`);
-      // Wheel over background, explanatory copy, preview, controls and buttons.
-      for (const selector of ['.study-context', `.${prefix}-copy`, `.${prefix}-board`, '.study-controls', '.study-controls button:last-child']) {
-        const target = page.locator(selector).first();
-        await target.scrollIntoViewIfNeeded();
-        const box = await target.boundingBox();
-        await page.mouse.move(Math.min(width-5,box.x+box.width/2),Math.min(850,Math.max(170,box.y+20)));
-        const before = await page.evaluate(() => window.scrollY);
-        const max = await page.evaluate(() => document.documentElement.scrollHeight-innerHeight);
-        const delta = before < max-20 ? 180 : -180;
-        await page.mouse.wheel(0,delta); await page.waitForTimeout(200);
-        const after = await page.evaluate(() => window.scrollY);
-        assert(delta > 0 ? after > before : after < before, `${width}/${route}/${selector}: wheel trapped`);
-        await step(1);
-        await page.mouse.wheel(0,-delta); await page.waitForTimeout(150); await step(1);
-      }
-      for (let n=2;n<=total;n++) {
-        await page.getByRole('button',{name:'Next →',exact:true}).click();
-        await step(n);
-        assert((await page.locator(`.${prefix}-copy__eyebrow`).textContent()).trim() === `Step ${String(n).padStart(2,'0')}`, `${route}: copy out of sync`);
-      }
-      assert(await page.getByRole('button',{name:'Next →',exact:true}).isDisabled(), 'Next boundary');
-      for (let n=total-1;n>=1;n--) { await page.getByRole('button',{name:'← Previous',exact:true}).click(); await step(n); }
-      assert(await page.getByRole('button',{name:'← Previous',exact:true}).isDisabled(), 'Previous boundary');
-      await page.getByRole('button',{name:'Next →',exact:true}).focus();
-      await page.keyboard.press('Enter'); await step(2);
-      await page.keyboard.press('Tab');
-      await page.locator('#publication-main').focus();
-      await page.evaluate(()=>window.scrollTo(0,0));
-      await page.keyboard.press('PageDown');await page.waitForTimeout(300);
-      assert(await page.evaluate(()=>scrollY)>0,'PageDown did not scroll');await step(2);
-      await page.keyboard.press('PageUp');await page.waitForTimeout(300);await step(2);
-      await page.emulateMedia({reducedMotion:'reduce'});await page.getByRole('button',{name:'Next →',exact:true}).click();await step(3);
-      await page.emulateMedia({reducedMotion:'no-preference'});await step(3);
-      await page.evaluate(()=>window.scrollTo(0,0));
-      await page.screenshot({path:`/private/tmp/scroll-${route}-${width}.png`,fullPage:true});
-      await page.getByRole('link',{name:'← All walkthroughs'}).click();
-      await page.waitForTimeout(150);assert(page.url().endsWith('#labs'),'Labs link');
-      await page.goBack();await page.waitForTimeout(200);assert(page.url().endsWith('#'+route),'Browser back');
-      results.push(`${width}/${route}: passed`);
+ const base='http://127.0.0.1:4173/projects/shopify-technical-studies/';
+ const labs=[['simulation',13],['storefront-debugging',6],['stable-integrations',7]];
+ const errors=[];const results=[];const fails=[];let ctx='';
+ page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
+ const check=(ok,msg)=>{if(!ok)fails.push(`${ctx}: ${msg}`);};
+ const pause=ms=>page.waitForTimeout(ms);
+ const scrollY=()=>page.evaluate(()=>Math.round(window.scrollY));
+ const next=()=>page.getByRole('button',{name:'Next →',exact:true});
+ const prev=()=>page.getByRole('button',{name:'← Previous',exact:true});
+ // A trackpad flick: one strong event followed by decaying momentum, 16ms apart.
+ const flick=async(dir)=>{for(let i=0;i<36;i++){await page.mouse.wheel(0,dir*Math.max(2,Math.round(70*0.9**i)));await pause(16);}};
+ // Explanation, every highlighted preview element and the step controls must share the viewport.
+ const together=()=>page.evaluate(()=>{const inView=el=>{const r=el.getBoundingClientRect();return r.height>0&&r.top>=0&&r.bottom<=innerHeight;};
+  const focus=[...document.querySelectorAll('.walkthrough-preview .is-focus,.walkthrough-preview .schema-card__line.is-active')];
+  return {explanation:inView(document.querySelector('[aria-live="polite"]')),controls:inView(document.querySelector('.study-controls')),focus:focus.length>0&&focus.every(inView),
+   controlsTop:Math.round(document.querySelector('.study-controls').getBoundingClientRect().top),previewTop:Math.round(document.querySelector('.walkthrough-preview').getBoundingClientRect().top)};});
+
+ for(const [width,height] of [[1366,768],[1440,900],[1920,1080]]) {
+  await page.setViewportSize({width,height});
+  for(const [route,total] of labs) {
+   ctx=`${width}x${height}/${route}`;
+   await page.goto(`${base}?dual=${width}#${route}`);await page.reload();await pause(400);
+   await page.evaluate(()=>{window.__cls=0;new PerformanceObserver(list=>{for(const e of list.getEntries())if(!e.hadRecentInput)window.__cls+=e.value;}).observe({type:'layout-shift'});});
+   const step=async(n,label)=>check(await page.locator('output').textContent()===`Step ${n} of ${total}`,`${label}: expected step ${n}, saw "${await page.locator('output').textContent()}"`);
+   const aim=async()=>{const b=await page.locator('.walkthrough-preview').boundingBox();await page.mouse.move(b.x+b.width/2,Math.min(height-40,b.y+160));};
+
+   // 1, 4: one deliberate wheel inside the preview advances exactly one step and does not move the page.
+   await aim();const y=await scrollY();
+   await page.mouse.wheel(0,100);await pause(60);await step(2,'wheel down inside preview');
+   for(let i=0;i<8;i++){await page.mouse.wheel(0,20);await pause(30);}
+   await step(2,'continued gesture skipped a step');check(await scrollY()===y,'accepted gesture moved the page');
+   // 3: wheel up after a pause returns one step.
+   await pause(650);await page.mouse.wheel(0,-100);await pause(80);await step(1,'wheel up inside preview');
+   // Trackpad momentum: one flick, one step, no page movement.
+   await pause(650);await flick(1);await step(2,'trackpad flick down');check(await scrollY()===y,'flick moved the page');
+   // Momentum that reaches step 1 must not continue into page scrolling.
+   await pause(650);await flick(-1);await step(1,'trackpad flick up to step 1');check(await scrollY()===y,'momentum at step 1 scrolled the page');
+   // 2: wheel outside the preview scrolls the document and never changes the step.
+   await pause(650);await page.mouse.move(20,Math.round(height/2));await page.mouse.wheel(0,160);await pause(250);
+   await step(1,'wheel outside preview');const scrolledTo=await scrollY();
+   check(scrolledTo>0||await page.evaluate(()=>document.documentElement.scrollHeight<=innerHeight),'wheel outside preview did not scroll the page');
+   // 5: a new upward gesture at step 1 belongs to the page.
+   await aim();await page.mouse.wheel(0,-160);await pause(250);await step(1,'wheel up at step 1');
+   check(scrolledTo===0||await scrollY()<scrolledTo,'step 1 trapped upward scrolling');
+
+   // 6, 9, 12: buttons walk every step; explanation, highlight and controls stay together, and nothing shifts.
+   const views=route==='simulation'?['Merchant View','Technical View']:[null];let firstTop=null;
+   for(const view of views){
+    if(view){await page.getByRole('tab',{name:view}).click();await pause(450);}
+    await page.evaluate(()=>window.scrollTo(0,0));await pause(100);
+    for(let n=1;n<=total;n++){
+     if(n>1){await next().click();await pause(260);}
+     await step(n,`Next button${view?' in '+view:''}`);
+     const v=await together();const where=`${view??''} step ${n}`;
+     check(v.explanation,`${where}: explanation outside viewport`);check(v.focus,`${where}: highlighted element missing or outside viewport`);check(v.controls,`${where}: controls outside viewport`);
+     firstTop??=v;check(Math.abs(v.controlsTop-firstTop.controlsTop)<=1,`${where}: controls moved ${v.controlsTop-firstTop.controlsTop}px`);check(Math.abs(v.previewTop-firstTop.previewTop)<=1,`${where}: preview moved`);
     }
+    if(view==='Merchant View')for(let n=total;n>1;n--)await prev().click();
+   }
+   const cls=await page.evaluate(()=>window.__cls);check(cls<0.1,`layout shift score ${cls.toFixed(3)}`);
+
+   // 5: a new downward gesture at the final step belongs to the page.
+   await page.evaluate(()=>window.scrollTo(0,0));await pause(650);await aim();await page.mouse.wheel(0,160);await pause(250);
+   await step(total,'wheel down at final step');check(await scrollY()>0||await page.evaluate(()=>document.documentElement.scrollHeight<=innerHeight),'final step trapped downward scrolling');
+   // 11: keyboard and reduced motion.
+   await prev().focus();await page.keyboard.press('Enter');await step(total-1,'Enter on Previous');
+   await next().focus();await page.keyboard.press('Space');await step(total,'Space on Next');
+   await page.emulateMedia({reducedMotion:'reduce'});await prev().click();await step(total-1,'Previous with reduced motion');
+   check(await page.evaluate(()=>getComputedStyle(document.querySelector('.study-step')).animationName)==='none','step animation runs with reduced motion');
+   await page.emulateMedia({reducedMotion:'no-preference'});
+   // 7: switching views keeps the step.
+   if(route==='simulation'){await page.getByRole('tab',{name:'Merchant View'}).click();await pause(450);await step(total-1,'switch to Merchant View');await page.getByRole('tab',{name:'Technical View'}).click();await pause(450);await step(total-1,'switch to Technical View');}
+   await page.evaluate(()=>window.scrollTo(0,0));await pause(300);
+   check(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'horizontal overflow');
+   await page.screenshot({path:`/private/tmp/dual-${route}-${width}.png`});
+   results.push(`${ctx}: done`);
   }
-  assert(errors.length===0,errors.join('\n'));
-  return {results,errors};
+ }
+
+ // 8: inputs, editors and nested scroll areas keep their own wheel. The demos have none, so fixtures stand in.
+ ctx='exclusions';await page.setViewportSize({width:1440,height:900});
+ await page.goto(`${base}?exclusions#simulation`);await pause(400);await next().click();
+ const owned=await page.evaluate(()=>{const region=document.querySelector('.walkthrough-preview');
+  return ['input','select','textarea','div[contenteditable]'].map(spec=>{const [tag,attr]=spec.split('[');const el=document.createElement(tag);if(attr)el.setAttribute('contenteditable','true');region.append(el);
+   const event=new WheelEvent('wheel',{deltaY:100,bubbles:true,cancelable:true});el.dispatchEvent(event);el.remove();return event.defaultPrevented?spec:null;}).filter(Boolean);});
+ check(owned.length===0,`wheel intercepted on ${owned.join(', ')}`);
+ await page.evaluate(()=>{const el=document.createElement('div');el.id='scroll-fixture';el.style.cssText='position:fixed;top:300px;right:120px;width:180px;height:100px;overflow:auto;z-index:100;background:#24382a';el.innerHTML='<div style="height:800px">Scrollable test fixture</div>';document.querySelector('.walkthrough-preview').append(el);});
+ await page.mouse.move(1300,340);await page.mouse.wheel(0,100);await pause(250);
+ check(await page.locator('#scroll-fixture').evaluate(el=>el.scrollTop)>0,'nested scroll area intercepted');
+ check((await page.locator('output').innerText()).startsWith('Step 2'),'fixtures changed the step');
+ results.push('exclusions: done');
+
+ // 10: touch scrolls the page naturally; controls stay reachable; no wheel interception or nested scrolling.
+ for(const [width,height] of [[375,812],[390,844],[768,1024]]) {
+  const context=await page.context().browser().newContext({viewport:{width,height},isMobile:width<500,hasTouch:true});
+  const mobile=await context.newPage();const cdp=await context.newCDPSession(mobile);
+  mobile.on('pageerror',e=>errors.push(e.message));
+  for(const [route] of labs) {
+   ctx=`touch ${width}x${height}/${route}`;
+   await mobile.goto(`${base}#${route}`);await mobile.waitForTimeout(400);const before=await mobile.locator('output').innerText();
+   await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:Math.round(width/2),y:height-150}]});
+   for(let y=height-200;y>=250;y-=50){await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:Math.round(width/2),y}]});await mobile.waitForTimeout(25);}
+   await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await mobile.waitForTimeout(300);
+   check(await mobile.evaluate(()=>scrollY)>0,'touch swipe did not scroll the page');check(await mobile.locator('output').innerText()===before,'touch swipe changed the step');
+   const layout=await mobile.evaluate(()=>{const r=s=>document.querySelector(s).getBoundingClientRect();const panel=r('[class$="copy__panel"]'),preview=r('.walkthrough-preview'),controls=r('.study-controls');
+    const nested=[...document.querySelectorAll('.publication-study *')].filter(el=>{const c=getComputedStyle(el);return /(auto|scroll)/.test(c.overflowY)&&el.scrollHeight>el.clientHeight+1;}).length;
+    const wheel=new WheelEvent('wheel',{deltaY:100,bubbles:true,cancelable:true});document.querySelector('.walkthrough-preview').dispatchEvent(wheel);
+    return {gap:Math.round(preview.top-panel.bottom),controlsVisible:controls.top>=0&&controls.bottom<=innerHeight,nested,wheelPrevented:wheel.defaultPrevented};});
+   check(layout.gap>=0&&layout.gap<=16,`preview starts ${layout.gap}px below the explanation`);
+   check(layout.controlsVisible,'step controls not visible while reading the preview');check(layout.nested===0,`${layout.nested} nested scroll containers`);
+   check(!layout.wheelPrevented,'wheel intercepted on touch layout');
+   await mobile.getByRole('button',{name:'Next →',exact:true}).click();check((await mobile.locator('output').innerText()).startsWith('Step 2'),'Next on touch layout');
+   check(await mobile.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'horizontal overflow');
+   await mobile.screenshot({path:`/private/tmp/dual-${route}-${width}.png`});results.push(`${ctx}: done`);
+  }
+  await context.close();
+ }
+ ctx='console';check(errors.length===0,errors.join('\n'));
+ if(fails.length)throw Error(`${fails.length} failed checks:\n${fails.join('\n')}`);
+ return {results,errors};
 }
