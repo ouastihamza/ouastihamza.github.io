@@ -1,5 +1,9 @@
 # Portfolio redesign: progress
 
+## Shopify thumbnail correction (2026-10-23)
+
+Replaced the stale white project-card screenshot with a real 1440×900 browser capture of the new dark publication homepage. New asset filename avoids reusing a cached thumbnail. Updated alt text and static asset verification; no publication or main merge.
+
 ## Shopify Commerce Engineering — Milestone 1 (2026-10-23)
 
 Implemented in the commit containing this entry: `feat: establish Shopify commerce engineering publication`. Existing feature branch fast-forwarded to published portfolio main before work. No merge or deployment for this milestone.

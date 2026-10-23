@@ -118,7 +118,7 @@ export const projects: Project[] = [
     year: 2026,
     detailUrl: null,
     projectUrl: "/projects/shopify-technical-studies",
-    screenshot: "/images/shopify-technical-studies.webp",
-    screenshotAlt: "Shopify Technical Studies interface with section navigation and Shopify technical problem-solving overview.",
+    screenshot: "/images/shopify-commerce-engineering.webp",
+    screenshotAlt: "Shopify Commerce Engineering dark green homepage with editorial navigation and interactive labs directory.",
   },
 ];
