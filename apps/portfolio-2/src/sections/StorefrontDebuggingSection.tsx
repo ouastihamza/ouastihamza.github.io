@@ -1,3 +1,4 @@
+import { StudyControls } from '../components/StudyControls';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import {
   startTransition,
@@ -69,9 +70,7 @@ export function StorefrontDebuggingSection({
   const deferredStep = useDeferredValue(activeStep);
   const prefersReducedMotion = useReducedMotion();
   const segmentHeight = Math.max(Math.round(viewportHeight * 0.68), 340);
-  const renderedStep = isMobileLayout
-    ? debuggingSteps.length - 1
-    : deferredStep;
+  const renderedStep = deferredStep;
   const activeCopy = debuggingSteps[renderedStep] ?? debuggingSteps[0];
 
   useEffect(() => {
@@ -165,6 +164,7 @@ export function StorefrontDebuggingSection({
                 </span>
               </div>
 
+              <StudyControls step={activeStep} total={debuggingSteps.length} onStep={next => { setActiveStep(next); if (!isMobileLayout && scrollRef.current) scrollRef.current.scrollTop = next * segmentHeight; }} />
               <div className="debugging-copy__panel">
                 <AnimatePresence mode="wait">
                   <motion.div
@@ -192,7 +192,7 @@ export function StorefrontDebuggingSection({
             <DebuggingBoard step={renderedStep} />
           </div>
 
-          <div className="debugging-story__track" aria-hidden="true">
+          <div className="debugging-story__track" style={{ paddingBottom: viewportHeight }} aria-hidden="true">
             {debuggingSteps.map((step) => (
               <div
                 key={step.eyebrow}
@@ -332,11 +332,12 @@ function DebuggingBoard({ step }: { step: number }) {
             animate={{ opacity: showCode ? 1 : 0.28 }}
           >
             <div className="debugging-code__header">
-              <span>Safer rebind logic</span>
+              <span>Theme-editor example · illustrative</span>
             </div>
             {/* oxlint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- Scrollable code needs keyboard focus. */}
             <pre tabIndex={0} aria-label="Code walkthrough">
-	{`document.addEventListener('shopify:section:load', (event) => {
+	{`// Theme editor only; not a general storefront event.
+document.addEventListener('shopify:section:load', (event) => {
   initProductGrid(event.target);
 });
 
@@ -344,6 +345,7 @@ function initProductGrid(scope = document) {
   scope.querySelectorAll('[data-product-card]').forEach(bindCard);
 }`}
             </pre>
+            <p className="lab-caveat">The theme editor emits <code>shopify:section:load</code>. For live storefront replacements, invoke initialization in your own render lifecycle. This sketch omits binding and cleanup implementation. <a href="https://shopify.dev/docs/storefronts/themes/best-practices/editor/integrate-sections-and-blocks" target="_blank" rel="noreferrer">Official event scope ↗</a></p>
           </motion.div>
         </div>
       </div>

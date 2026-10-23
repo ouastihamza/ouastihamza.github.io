@@ -1,3 +1,4 @@
+import { StudyControls } from '../components/StudyControls';
 import {
   AnimatePresence,
   motion,
@@ -36,7 +37,7 @@ interface StepDefinition {
 }
 
 const sourceUrl =
-  'https://ateliercommerce.com/products/linen-travel-bag';
+  'https://example.com/products/linen-travel-bag';
 
 const fieldSequence: FieldKey[] = [
   'aggregateRating',
@@ -152,7 +153,7 @@ export function SimulationSection({
   const deferredStep = useDeferredValue(activeStep);
   const prefersReducedMotion = useReducedMotion();
   const segmentHeight = Math.max(Math.round(viewportHeight * 0.72), 360);
-  const renderedStep = isMobileLayout ? steps.length - 1 : deferredStep;
+  const renderedStep = deferredStep;
   const isTechnicalView = simulationView === 'technical';
 
   const showPreview = renderedStep >= 2;
@@ -188,7 +189,7 @@ export function SimulationSection({
 
   useEffect(() => {
     const node = scrollRef.current;
-    if (!node) {
+    if (!node || isMobileLayout) {
       return;
     }
 
@@ -211,7 +212,7 @@ export function SimulationSection({
     return () => {
       node.removeEventListener('scroll', syncStep);
     };
-  }, [segmentHeight]);
+  }, [segmentHeight, isMobileLayout]);
 
   useEffect(() => {
     if (isActive) {
@@ -234,7 +235,7 @@ export function SimulationSection({
       return;
     }
 
-    if (activeStep > 0 || isMobileLayout) {
+    if (activeStep > 0 || isMobileLayout || prefersReducedMotion) {
       setTypedLength(sourceUrl.length);
       return;
     }
@@ -253,7 +254,7 @@ export function SimulationSection({
     return () => {
       window.clearTimeout(timeout);
     };
-  }, [activeStep, isActive, isMobileLayout, typedLength]);
+  }, [activeStep, isActive, isMobileLayout, typedLength, prefersReducedMotion]);
 
   useEffect(() => {
     const board = boardRef.current;
@@ -346,7 +347,7 @@ export function SimulationSection({
               <div className="simulation-merchant">
                 <p className="simulation-merchant__eyebrow">The Problem</p>
                 <h2 className="simulation-merchant__headline">
-                  Your competitors show star ratings in Google. Yours don&apos;t.
+                  How does product information become structured data?
                 </h2>
                 <p className="simulation-merchant__subhead">
                   Structured data is the layer that helps search engines read
@@ -394,6 +395,7 @@ export function SimulationSection({
                 </span>
               </div>
 
+              <StudyControls step={activeStep} total={steps.length} onStep={next => { setActiveStep(next); if (!isMobileLayout && scrollRef.current) scrollRef.current.scrollTop = next * segmentHeight; }} />
               <div className="simulation-copy__panel">
                 <AnimatePresence mode="wait">
                   <motion.div
@@ -425,7 +427,7 @@ export function SimulationSection({
                       }}
                     />
                   </span>
-                  <p>Scroll inside the section to advance the explanation.</p>
+                  <p>Use Previous / Next, or scroll through the desktop walkthrough.</p>
                 </div>
               </div>
             </div>
@@ -445,6 +447,7 @@ export function SimulationSection({
                     }}
                   >
                     <MerchantResultPreview />
+                    <p className="lab-caveat">Illustration only. No URL is fetched or validated. Valid structured data does not guarantee rich results. <a href="https://developers.google.com/search/docs/appearance/structured-data/product-snippet" target="_blank" rel="noreferrer">Google’s product snippet guidance ↗</a></p>
                   </motion.div>
                 ) : (
                   <motion.div
@@ -464,16 +467,16 @@ export function SimulationSection({
                       </p>
                       <span className="simulation-board__status">
                         {renderedStep < 1
-                          ? 'Waiting for source'
+                          ? 'Illustrative source'
                           : renderedStep < 2
-                            ? 'Checking page signals'
-                            : 'Schema preview aligned'}
+                            ? 'Example sequence'
+                            : 'Illustrative schema preview'}
                       </span>
                     </div>
 
                     <div className="simulation-input">
                       <span className="simulation-input__label">Product URL</span>
-                      <div className="simulation-input__field" aria-live="polite">
+                      <div className="simulation-input__field" aria-label="Illustrative product URL">
                         <span>{sourceUrl.slice(0, typedLength)}</span>
                         <span
                           className={`simulation-input__cursor${
@@ -493,8 +496,8 @@ export function SimulationSection({
                           transition={{ duration: 0.36 }}
                         >
                           <div className="simulation-scan__header">
-                            <span>Checking structured product signals</span>
-                            <span>{renderedStep < 2 ? 'Scanning' : 'Validated'}</span>
+                            <span>Loading the illustrative product example</span>
+                            <span>{renderedStep < 2 ? 'Example sequence' : 'Example loaded'}</span>
                           </div>
                           <div className="simulation-scan__track">
                             <motion.span
@@ -505,7 +508,7 @@ export function SimulationSection({
                               }}
                               transition={{
                                 duration: renderedStep < 2 ? 1.8 : 0.5,
-                                repeat: renderedStep < 2 ? Infinity : 0,
+                                repeat: 0,
                                 ease: 'easeInOut',
                               }}
                             />
@@ -700,7 +703,7 @@ export function SimulationSection({
                       <span className="code-key">&quot;image&quot;</span>
                       <span className="code-punctuation">: </span>
                       <span className="code-value">
-                        [&quot;https://ateliercommerce.com/cdn/linen-travel-bag.jpg&quot;]
+                        [&quot;https://example.com/cdn/linen-travel-bag.jpg&quot;]
                       </span>
                       <span className="code-punctuation">,</span>
                     </CodeLine>
@@ -876,7 +879,7 @@ export function SimulationSection({
             </div>
           </div>
 
-          <div className="simulation-story__track" aria-hidden="true">
+          <div className="simulation-story__track" style={{ paddingBottom: viewportHeight }} aria-hidden="true">
             {steps.map((step) => (
               <div
                 key={step.eyebrow}
@@ -913,14 +916,14 @@ function MerchantResultPreview() {
     <>
       <div className="simulation-board__header">
         <p className="simulation-board__eyebrow">Merchant Search Preview</p>
-        <span className="simulation-board__status">Before / after result</span>
+        <span className="simulation-board__status">Illustrative search layouts</span>
       </div>
 
       <div className="merchant-results">
         <article className="merchant-result-card">
-          <p className="merchant-result-card__label">Before structured data</p>
+          <p className="merchant-result-card__label">Example without enhanced display</p>
           <div className="merchant-result-card__url">
-            ateliercommerce.com/products/linen-travel-bag
+            example.com/products/linen-travel-bag
           </div>
           <h3>Linen Travel Bag - Atelier Commerce</h3>
           <p>
@@ -933,9 +936,9 @@ function MerchantResultPreview() {
         </article>
 
         <article className="merchant-result-card merchant-result-card--after">
-          <p className="merchant-result-card__label">After product signals align</p>
+          <p className="merchant-result-card__label">Possible enhanced display</p>
           <div className="merchant-result-card__url">
-            ateliercommerce.com/products/linen-travel-bag
+            example.com/products/linen-travel-bag
           </div>
           <h3>Linen Travel Bag - Atelier Commerce</h3>
           <div className="merchant-result-card__rating">
@@ -950,7 +953,7 @@ function MerchantResultPreview() {
           <div className="merchant-result-card__chips">
             <span>$248.00</span>
             <span>In stock</span>
-            <span>Product result eligible</span>
+            <span>Eligibility is not validated</span>
           </div>
         </article>
       </div>

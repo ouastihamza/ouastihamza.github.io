@@ -1,5 +1,18 @@
 # Portfolio redesign: progress
 
+## Shopify Commerce Engineering — Milestone 1 (2026-10-23)
+
+Implemented in the commit containing this entry: `feat: establish Shopify commerce engineering publication`. Existing feature branch fast-forwarded to published portfolio main before work. No merge or deployment for this milestone.
+
+- Audited all six original sections and confirmed independent React 18/Vite static sub-app architecture.
+- Dark editorial homepage, audience/search directory, official-source directory and independent-publication identity. Shopify Technical Studies name and canonical URL retained for continuity.
+- Original three technical stories, merchant/technical tabs, diagrams, methodology and contact retained. Native hash navigation replaces outer scroll interception; final steps accessible on all widths.
+- High-priority caveats added for theme-editor-only event and non-guaranteed Google results; deeper content modernization remains pending.
+- Root lint/typecheck/build and Vite typecheck/build pass. Chromium desktop/tablet/mobile, filters, empty state, keyboard controls, direct loads/refresh, history and legacy redirect verified. Zero overflow/console errors in final static checks.
+- Detailed findings: `docs/shopify-commerce-engineering/AUDIT.md`; maintenance boundaries: `EDITORIAL_WORKFLOW.md`.
+- Static preview: http://127.0.0.1:4173/projects/shopify-technical-studies/ . Hot reload: http://127.0.0.1:5173/portfolio-2-assets/ .
+- Stop for owner visual review. News feed, researched guides, editable labs, automation and static article URLs are not implemented.
+
 ## Publication approval (2026-10-23)
 
 Owner approved publishing the polish milestone and requested removal of the pause/resume button. Removed its UI, React state and unused CSS; automatic reduced-motion support remains. Prior milestone review-only restrictions are superseded by this approval.

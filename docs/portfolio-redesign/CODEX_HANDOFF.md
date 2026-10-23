@@ -1,5 +1,15 @@
 # Codex handoff: woodland portfolio redesign
 
+## Active work — Shopify Commerce Engineering Milestone 1
+
+Work on `feature/interactive-portfolio-redesign` only. The newest request prohibits main merge/deployment and requires stopping after Milestone 1 for visual review. Previous publication approval below applies only to the already-published main portfolio polish.
+
+The standalone Vite app now has a dark editorial homepage and hash-addressable studies. See `docs/shopify-commerce-engineering/AUDIT.md` and `EDITORIAL_WORKFLOW.md`; `apps/portfolio-2/README.integration.md` documents exact build/preview paths. Do not mistake the Next dev homepage at port 3000 for the Vite source preview.
+
+Preview the built integrated route at http://127.0.0.1:4173/projects/shopify-technical-studies/ or use Vite hot reload at http://127.0.0.1:5173/portfolio-2-assets/ . All original study components are retained; mobile step access and final desktop steps fixed. Guides and intelligence are explicitly limited to the existing methodology and official-source directory. No new articles, platform news summaries, live store access or scheduled automation is implemented.
+
+Validation: lint, root/Vite typecheck and production static build pass. Chromium 1440/768/390/360px home and three studies have no horizontal overflow, console errors or failed requests. Keyboard, reduced motion, deep link/refresh/history, filters and alias checked. Stop for review before Milestone 2.
+
 ## Current milestone — approved for publication
 
 Branch: `feature/interactive-portfolio-redesign`. Milestone 4 refines the existing woodland identity and content hierarchy. The owner approved publication on 23 October 2026 and requested removal of the pause/resume button. Merge this completed polish into main and publish via the existing GitHub Pages workflow.

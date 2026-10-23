@@ -1,3 +1,4 @@
+import { StudyControls } from '../components/StudyControls';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import {
   startTransition,
@@ -69,9 +70,7 @@ export function StableIntegrationsSection({
   const deferredStep = useDeferredValue(activeStep);
   const prefersReducedMotion = useReducedMotion();
   const segmentHeight = Math.max(Math.round(viewportHeight * 0.68), 340);
-  const renderedStep = isMobileLayout
-    ? integrationSteps.length - 1
-    : deferredStep;
+  const renderedStep = deferredStep;
   const activeCopy = integrationSteps[renderedStep] ?? integrationSteps[0];
 
   useEffect(() => {
@@ -169,6 +168,7 @@ export function StableIntegrationsSection({
                 </span>
               </div>
 
+              <StudyControls step={activeStep} total={integrationSteps.length} onStep={next => { setActiveStep(next); if (!isMobileLayout && scrollRef.current) scrollRef.current.scrollTop = next * segmentHeight; }} />
               <div className="stable-copy__panel">
                 <AnimatePresence mode="wait">
                   <motion.div
@@ -192,7 +192,7 @@ export function StableIntegrationsSection({
             <StableIntegrationsBoard step={renderedStep} />
           </div>
 
-          <div className="stable-story__track" aria-hidden="true">
+          <div className="stable-story__track" style={{ paddingBottom: viewportHeight }} aria-hidden="true">
             {integrationSteps.map((step) => (
               <div
                 key={step.eyebrow}
@@ -364,7 +364,7 @@ function StableIntegrationsBoard({ step }: { step: number }) {
     bindIntegration(node);
   });
 }`}
-          </pre>
+          </pre><p className="lab-caveat">Illustrative guard, not a complete integration. Production code also needs error handling, cleanup and a clear lifecycle; set ready only after binding succeeds.</p>
         </motion.div>
       </div>
     </div>
