@@ -1,3 +1,16 @@
+## 2026-10-23 — Scrolling repair, milestone 1
+
+- Reproduced on the static build: wheel at (700,400) advanced Structured Data 1 → 2 while window.scrollY remained 0.
+- Root cause: all three labs derived activeStep from nested section scrollTop, with tall invisible tracks, sticky shells and negative viewport margins. No remaining wheel interceptor was required to produce the bug.
+- Removed the three scroll-to-state listeners and invisible tracks. Previous/Next alone selects steps. Explanations and counters now use the same immediate state, with polite announcements instead of delayed exit transitions.
+- All publication sections now use document flow, including author notes/contact. Removed nested viewport sizing and sticky lab surfaces; retained the publication header. No wheel/touch prevention added. Structured Data tab arrow handling and the skip-link preventDefault remain intentional.
+- Source inventory: only Structured Data (13), Storefront DOM lifecycle (6), and integration coexistence (7) walkthroughs exist. No performance, metafield, webhook/event labs, article library, modal, carousel or collapsed mobile menu is implemented. Guides/Intelligence are index/reference sections.
+- Passed lint, root typecheck, Vite typecheck and full static production build. Chromium regression: 375/768/1280/1440 × all three labs, every forward/back step, wheel over five target areas + reversals, PageDown/PageUp, Enter/Tab, boundary buttons, reduced-motion changes, direct routes and browser back. No console/page errors. Technical View final step has no horizontal overflow or nested vertical scrolling at all four widths.
+- Additional actual browser checks: touch-emulated swipes on each lab (document moved >680px; step unchanged); home/guides/intelligence/labs/author/contact routes have no nested vertical scroll regions. Reviewed desktop technical, mobile merchant and tablet lifecycle screenshots. Physical devices, Safari/Firefox and screen readers not tested.
+- Regression source: tests/shopify-scroll.browser.js. With the static server on 4173, pass its file contents as the Playwright browser_run_code `code` argument (async function accepting page). It asserts failures and returns 12 results, and writes screenshots under /private/tmp.
+- Preview: http://127.0.0.1:4173/projects/shopify-technical-studies/#simulation — reload existing tabs to load the rebuilt bundle.
+- Stop here for owner scrolling review. Content research, new guides, news and broader visual polishing remain milestones 2–5. Do not merge or deploy.
+
 # Codex handoff: woodland portfolio redesign
 
 ## Active work — Shopify Commerce Engineering Milestone 1

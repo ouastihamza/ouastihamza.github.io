@@ -1,8 +1,6 @@
 import { StudyControls } from '../components/StudyControls';
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import {
-  startTransition,
-  useDeferredValue,
   useEffect,
   useRef,
   useState,
@@ -66,54 +64,11 @@ export function StableIntegrationsSection({
 }: StableIntegrationsSectionProps) {
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const [activeStep, setActiveStep] = useState(0);
-  const [isMobileLayout, setIsMobileLayout] = useState(false);
-  const deferredStep = useDeferredValue(activeStep);
-  const prefersReducedMotion = useReducedMotion();
-  const segmentHeight = Math.max(Math.round(viewportHeight * 0.68), 340);
-  const renderedStep = deferredStep;
+  const renderedStep = activeStep;
   const activeCopy = integrationSteps[renderedStep] ?? integrationSteps[0];
 
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(max-width: 760px)');
-    const syncLayout = () => {
-      setIsMobileLayout(mediaQuery.matches);
-    };
 
-    syncLayout();
-    mediaQuery.addEventListener('change', syncLayout);
 
-    return () => {
-      mediaQuery.removeEventListener('change', syncLayout);
-    };
-  }, []);
-
-  useEffect(() => {
-    const node = scrollRef.current;
-
-    if (!node || isMobileLayout) {
-      return;
-    }
-
-    const syncStep = () => {
-      const nextStep = Math.min(
-        integrationSteps.length - 1,
-        Math.floor((node.scrollTop + segmentHeight * 0.45) / segmentHeight),
-      );
-
-      startTransition(() => {
-        setActiveStep((current) =>
-          current === nextStep ? current : nextStep,
-        );
-      });
-    };
-
-    syncStep();
-    node.addEventListener('scroll', syncStep, { passive: true });
-
-    return () => {
-      node.removeEventListener('scroll', syncStep);
-    };
-  }, [isMobileLayout, segmentHeight]);
 
   useEffect(() => {
     if (isActive) {
@@ -168,39 +123,21 @@ export function StableIntegrationsSection({
                 </span>
               </div>
 
-              <StudyControls step={activeStep} total={integrationSteps.length} onStep={next => { setActiveStep(next); if (!isMobileLayout && scrollRef.current) scrollRef.current.scrollTop = next * segmentHeight; }} />
+              <StudyControls step={activeStep} total={integrationSteps.length} onStep={setActiveStep} />
               <div className="stable-copy__panel">
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={activeCopy.eyebrow}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -16 }}
-                    transition={{
-                      duration: prefersReducedMotion ? 0.16 : 0.38,
-                      ease: [0.22, 1, 0.36, 1],
-                    }}
-                  >
+                <div aria-live="polite" aria-atomic="true">
                     <p className="stable-copy__eyebrow">{activeCopy.eyebrow}</p>
                     <h3 className="stable-copy__title">{activeCopy.title}</h3>
                     <p className="stable-copy__body">{activeCopy.body}</p>
-                  </motion.div>
-                </AnimatePresence>
+                  </div>
+
               </div>
             </div>
 
             <StableIntegrationsBoard step={renderedStep} />
           </div>
 
-          <div className="stable-story__track" style={{ paddingBottom: viewportHeight }} aria-hidden="true">
-            {integrationSteps.map((step) => (
-              <div
-                key={step.eyebrow}
-                className="stable-story__segment"
-                style={{ minHeight: segmentHeight }}
-              />
-            ))}
-          </div>
+
         </div>
       </div>
     </section>

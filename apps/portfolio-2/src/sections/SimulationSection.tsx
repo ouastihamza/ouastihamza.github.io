@@ -5,9 +5,7 @@ import {
   useReducedMotion,
 } from 'framer-motion';
 import {
-  startTransition,
   type ReactNode,
-  useDeferredValue,
   useEffect,
   useRef,
   useState,
@@ -150,10 +148,8 @@ export function SimulationSection({
   const [paths, setPaths] = useState<Partial<Record<FieldKey, string>>>({});
   const [boardSize, setBoardSize] = useState({ width: 1, height: 1 });
   const [isMobileLayout, setIsMobileLayout] = useState(false);
-  const deferredStep = useDeferredValue(activeStep);
   const prefersReducedMotion = useReducedMotion();
-  const segmentHeight = Math.max(Math.round(viewportHeight * 0.72), 360);
-  const renderedStep = deferredStep;
+  const renderedStep = activeStep;
   const isTechnicalView = simulationView === 'technical';
 
   const showPreview = renderedStep >= 2;
@@ -187,32 +183,6 @@ export function SimulationSection({
     };
   }, []);
 
-  useEffect(() => {
-    const node = scrollRef.current;
-    if (!node || isMobileLayout) {
-      return;
-    }
-
-    const syncStep = () => {
-      const nextStep = Math.min(
-        steps.length - 1,
-        Math.floor((node.scrollTop + segmentHeight * 0.45) / segmentHeight),
-      );
-
-      startTransition(() => {
-        setActiveStep((current) =>
-          current === nextStep ? current : nextStep,
-        );
-      });
-    };
-
-    syncStep();
-    node.addEventListener('scroll', syncStep, { passive: true });
-
-    return () => {
-      node.removeEventListener('scroll', syncStep);
-    };
-  }, [segmentHeight, isMobileLayout]);
 
   useEffect(() => {
     if (isActive) {
@@ -326,7 +296,7 @@ export function SimulationSection({
       resizeObserver.disconnect();
       window.removeEventListener('resize', updatePaths);
     };
-  }, [deferredStep, isMobileLayout, isTechnicalView, showCode, viewportHeight]);
+  }, [activeStep, isMobileLayout, isTechnicalView, showCode, viewportHeight]);
 
   return (
     <section
@@ -395,19 +365,9 @@ export function SimulationSection({
                 </span>
               </div>
 
-              <StudyControls step={activeStep} total={steps.length} onStep={next => { setActiveStep(next); if (!isMobileLayout && scrollRef.current) scrollRef.current.scrollTop = next * segmentHeight; }} />
+              <StudyControls step={activeStep} total={steps.length} onStep={setActiveStep} />
               <div className="simulation-copy__panel">
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={activeCopy.eyebrow}
-                    initial={{ opacity: 0, y: 22 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -18 }}
-                    transition={{
-                      duration: prefersReducedMotion ? 0.16 : 0.42,
-                      ease: [0.22, 1, 0.36, 1],
-                    }}
-                  >
+                <div aria-live="polite" aria-atomic="true">
                     <p className="simulation-copy__eyebrow">
                       {activeCopy.eyebrow}
                     </p>
@@ -415,8 +375,8 @@ export function SimulationSection({
                       {activeCopy.title}
                     </h2>
                     <p className="simulation-copy__body">{activeCopy.body}</p>
-                  </motion.div>
-                </AnimatePresence>
+                  </div>
+
 
                 <div className="simulation-copy__guide">
                   <span className="simulation-copy__guide-track">
@@ -427,7 +387,7 @@ export function SimulationSection({
                       }}
                     />
                   </span>
-                  <p>Use Previous / Next, or scroll through the desktop walkthrough.</p>
+                  <p>Use Previous / Next to explore each step. Scrolling keeps your current step.</p>
                 </div>
               </div>
             </div>
@@ -879,15 +839,7 @@ export function SimulationSection({
             </div>
           </div>
 
-          <div className="simulation-story__track" style={{ paddingBottom: viewportHeight }} aria-hidden="true">
-            {steps.map((step) => (
-              <div
-                key={step.eyebrow}
-                className="simulation-story__segment"
-                style={{ minHeight: segmentHeight }}
-              />
-            ))}
-          </div>
+
 
           <div className="simulation-outcome">
             <p className="simulation-outcome__eyebrow">Outcome</p>

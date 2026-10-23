@@ -120,3 +120,16 @@ a:focus-visible,button:focus-visible,input:focus-visible,[tabindex]:focus-visibl
   .lab-caveat { overflow-wrap:anywhere; }
 }
 @media(prefers-reduced-motion:reduce) { *,*::before,*::after { scroll-behavior:auto !important; } }
+
+/* Walkthroughs belong to the document: no scroll-driven steps or viewport tracks. */
+.publication-study .section { height:auto !important; }
+.publication-study .section__scroll { height:auto; overflow:visible; }
+.publication-study :is(.simulation-shell,.debugging-shell,.stable-shell) {
+ position:static; min-height:0; margin-bottom:0; align-items:start;
+}
+.publication-study :is(.simulation-copy,.debugging-copy,.stable-copy,
+.simulation-board,.debugging-board,.stable-board) { position:static; height:auto; max-height:none; }
+.publication-study :is(.simulation-board__content,.debugging-board__content,.stable-board__content,
+.merchant-results,.schema-card__code,.debugging-code,.stable-code) { height:auto; max-height:none; overflow:visible; }
+.publication-study pre { white-space:pre-wrap; overflow-wrap:anywhere; }
+.study-controls { scroll-margin-top:155px; }

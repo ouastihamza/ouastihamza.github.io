@@ -33,7 +33,7 @@ export default function App() {
     return () => cancelAnimationFrame(frame);
   }, [route, isStudy]);
   const registerScrollArea = (node: HTMLDivElement | null) => {
-    if (node) { node.tabIndex = 0; node.setAttribute('role', 'region'); node.setAttribute('aria-label', 'Scrollable walkthrough'); }
+    if (node) { node.setAttribute('role', 'region'); node.setAttribute('aria-label', 'Walkthrough content'); }
   };
   const props = { viewportHeight: Math.max(520, height), registerScrollArea };
   return <MotionConfig reducedMotion="user"><div className="publication-shell">

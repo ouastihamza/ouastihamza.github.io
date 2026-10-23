@@ -7,3 +7,7 @@ Milestone 1 adds a dark editorial homepage, source directory, audience/search fi
 Preview: `npm run build` at repository root, then `npm start` and open `http://127.0.0.1:4173/projects/shopify-technical-studies/`. For hot reload: `npm --prefix apps/portfolio-2 run dev -- --host 127.0.0.1 --port 5173`, then `/portfolio-2-assets/`. The parent Next dev server does not rebuild the standalone Vite bundle automatically.
 
 No live inspector, performance analyzer or news feed is claimed. All depicted store data is illustrative. See `docs/shopify-commerce-engineering/AUDIT.md` and `EDITORIAL_WORKFLOW.md` for accuracy findings and deferred work. Work remains on the feature branch for visual review; no main merge/deployment.
+
+## Scrolling regression (2026-10-23)
+
+All walkthrough steps now change only through Previous/Next; the document owns vertical scrolling at every width. Run `tests/shopify-scroll.browser.js` through Playwright browser_run_code against the built static server on port 4173. It covers all three labs at four widths and throws on failed assertions. Full result and limitations are in the redesign PROGRESS.md. Earlier descriptions of desktop scroll-driven steps are superseded.
