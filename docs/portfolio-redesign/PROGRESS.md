@@ -1,5 +1,38 @@
 # Portfolio redesign: progress
 
+## Publication approval (2026-10-23)
+
+Owner approved publishing the polish milestone and requested removal of the pause/resume button. Removed its UI, React state and unused CSS; automatic reduced-motion support remains. Prior milestone review-only restrictions are superseded by this approval.
+
+## Owner clarification (2026-10-23)
+
+Tier 2 promotion confirmed as July 2026. Existing site copy is correct; review notes updated. Other factual questions remain pending.
+
+## Milestone 4 — editorial polish and recruiter hierarchy (2026-10-23)
+
+Implemented in the commit containing this entry, `feat: refine portfolio hierarchy and recruiter experience`. Work is on `feature/interactive-portfolio-redesign`, fast-forwarded to the published mobile fix `ac15e03` before editing. No main merge, push or deployment for this milestone.
+
+- [x] Existing woodland palette, actual portrait, all projects, CVs and case-study content preserved
+- [x] Larger portrait/ring composition, stronger type, subtle independent scroll translation and 12-degree maximum ring offset; pause control moved out of the ring after mobile QA caught an overlap
+- [x] Development-led introduction and metadata; existing availability information reduced in visual prominence, not changed factually
+- [x] Shared editorial heading/body/metadata rhythm and improved muted text contrast
+- [x] Judge.me role/company, three source-supported highlights, supporting tags and expandable original context; separate freelance panel
+- [x] Enterprise and Shopify/Sanity project panels have distinct surface treatments, concise implementation focus, primary technologies and expandable technical details
+- [x] Real Technical Studies screenshot retained; new commerce architecture graphic explicitly labelled, not a fake application screenshot
+- [x] 14 core skill cards initially; all 31 cards and full descriptions accessible via native disclosure, including without JavaScript
+- [x] Logo sizing / dark-mark contrast refinements; delegated hover interactions preserved, one shared core-grid reveal avoids repeated entrances
+- [x] Skills/About navigation, active-section state including Contact at page bottom, stable header height and mobile two-row link grid
+- [x] Lint, typecheck, production build and git diff --check pass
+- [x] Chromium 1440, 768, 390 and 360px: no horizontal overflow; desktop/tablet/mobile and section screenshots inspected
+- [x] Keyboard skip link, disclosure Enter toggling, 14-to-31 inventory, pause/resume and navigation verified
+- [x] Runtime reduced-motion changes disable movement; no-JS fallback keeps portrait, static ring and expandable inventory
+- [x] Static production homepage, Enterprise and Shopify routes / refreshes, both CV links pass; no console/page errors recorded
+- [x] Original vs updated screenshots compared: availability moved below introduction, portrait enlarged, long experience copy grouped, Shopify starter now visually distinct, skills condensed from six open groups to two desktop rows
+- [x] CONTENT_REVIEW.md lists factual approval questions; no uncertain dates, statistics, location or CDI availability invented
+- [ ] Owner visual approval and factual corrections
+
+Local preview: http://localhost:3000/ . Static preview: http://127.0.0.1:4173/ . Screenshots from this session are in `/private/tmp/polish-*`; these are QA artifacts, not website assets. Checked Chromium; no Safari/Firefox, screen-reader or formal Lighthouse performance score is claimed. Image dimensions and constant header height reserve layout space; decorative movement uses transforms and the existing rAF listeners, not scroll pinning or a new animation dependency.
+
 ## Mobile ring refinement (2026-10-23)
 
 Enlarged mobile ring type from 17 to 24 SVG units, applied full-circumference spacing to textPath, and raised the ring above the portrait. Rotation is now 60 seconds instead of 80. Lint, typecheck and static build pass; Chromium widths 360, 390, 768 and 1440 have no horizontal overflow. Mobile screenshot inspected; reduced-motion fallback retained.
