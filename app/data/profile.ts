@@ -12,7 +12,7 @@ export const profile = {
     cvFrench: "/Hamza_Ouasti_CV_FR.pdf",
   },
   summary:
-    "Five years in an international e-commerce SaaS, writing JavaScript and TypeScript and taking on the most technical production incidents. I am looking for an apprenticeship to go further on application architecture.",
+    "I build full-stack applications and e-commerce integrations, connecting interfaces, APIs and data. Advanced production troubleshooting shapes how I develop, test and improve software.",
   availability: "Available now",
   rhythm: "3 weeks in company / 1 week at school",
   programme: "Master's in Software Architecture and Development, Ingetis Paris",

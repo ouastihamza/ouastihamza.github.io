@@ -17,9 +17,10 @@ export function PortraitMotion() {
     const render = () => {
       frame = 0;
       if (reduce.matches || paused) return;
-      const rect = hero.getBoundingClientRect();
+      const rect = stage.getBoundingClientRect();
       const progress = Math.max(0, Math.min(1, -rect.top / rect.height));
-      stage.style.setProperty("--portrait-scroll", `${progress * -24}px`);
+      stage.style.setProperty("--portrait-scroll", `${progress * -18}px`);
+      stage.style.setProperty("--ring-scroll", `${progress * 12}deg`);
       stage.style.setProperty("--portrait-x", `${x}px`);
       stage.style.setProperty("--portrait-y", `${y}px`);
       hero.style.setProperty("--branch-shift", `${progress * 12}px`);
@@ -35,7 +36,7 @@ export function PortraitMotion() {
     const leave = () => { x = 0; y = 0; schedule(); };
     const reset = () => {
       cancelAnimationFrame(frame); frame = 0; x = 0; y = 0;
-      for (const key of ["--portrait-x", "--portrait-y", "--portrait-scroll"]) stage.style.removeProperty(key);
+      for (const key of ["--portrait-x", "--portrait-y", "--portrait-scroll", "--ring-scroll"]) stage.style.removeProperty(key);
       hero.style.removeProperty("--branch-shift");
       schedule();
     };
@@ -52,7 +53,7 @@ export function PortraitMotion() {
       window.removeEventListener("scroll", schedule);
       reduce.removeEventListener("change", reset);
       pointer.removeEventListener("change", reset);
-      for (const key of ["--portrait-x", "--portrait-y", "--portrait-scroll"]) stage.style.removeProperty(key);
+      for (const key of ["--portrait-x", "--portrait-y", "--portrait-scroll", "--ring-scroll"]) stage.style.removeProperty(key);
       hero.style.removeProperty("--branch-shift");
     };
   }, [paused]);

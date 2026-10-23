@@ -1,31 +1,23 @@
 # Codex handoff: woodland portfolio redesign
 
-## Current direction — supersedes the purple proposal
+## Current milestone — stop for owner review
 
-The owner rejected the split purple/green styling and requested one natural visual identity inspired by their real portrait. The original ANALYSIS.md and DESIGN_PLAN.md are historical references. This document and the latest PROGRESS.md entry describe the implemented direction.
-
-Work only on `feature/interactive-portfolio-redesign`, based on `portfolio-refresh`. Never merge, force-push, deploy or push main without a new user request. The GitHub account `ouastihamza` has push access. The owner subsequently approved the centered ring, requested distinct muted colors for the three text segments, and authorized pushing and merging this milestone into main for publication.
+Branch: `feature/interactive-portfolio-redesign`. Milestone 4 refines the existing woodland identity and content hierarchy. The owner explicitly requested a feature-branch commit only: do not merge, push or deploy to main. Main remains at `ac15e03`. Previous publication approvals were for earlier milestones, not this one.
 
 ## Implemented
 
-- One forest-charcoal, sage, olive and fog palette throughout the main portfolio and Enterprise case study. Removed purple/starfield and neon-green theme colors. Original technology brand colors are preserved, with light backings for dark marks.
-- Centered real portrait with an SVG text-on-path identity ring: name and titles rotate once every 60 seconds. Accessible H1 mirrors the decorative ring; readable role, summary and original CTAs sit below. Handwritten signature component, generator, bundled font and opentype.js dependency removed.
-- Centered composition on desktop and mobile with restrained woodland atmosphere. Ring and portrait use separate transform layers.
-- Actual transparent portrait, separate from the original photo, with soft ambient depth and a bottom fade. No generative portrait is used.
-- Sparse decorative botanical SVG outlines at hero/contact edges, 5.5% opacity, hidden from accessibility APIs.
-- Desktop 4px float; pointer movement limited to 5px horizontally and 4px vertically; scroll offset capped at 24px; branch scroll offset capped at 12px. No face/body rotation or distortion. Ring rotation and float have a keyboard-accessible pause/resume control. Reduced motion disables movement, including when changed at runtime. Without JavaScript the portrait and ring remain visible and static, and the motion control is hidden.
-- Existing 31 skill cards, labels, detailed descriptions, hover tilt and progressive reveal preserved. All experience/project/education/contact content, links and CV files preserved. The standalone Shopify project keeps its own original design and code.
+- Real centered portrait and kinetic identity ring preserved. Desktop stage is 520px maximum, portrait 80% of stage; ring typography 22 SVG units desktop / 24 mobile, full-circle spacing. Name/title colors preserved.
+- 60-second rotation, independent scroll offset up to 12 degrees and portrait translation up to 18px. Pause control moved to hero utility row to avoid obscuring letters. Reduced-motion and no-JS fallbacks preserved.
+- Introduction/metadata emphasize full-stack work, integrations and advanced troubleshooting. Existing apprenticeship claim and schedule remain as secondary content.
+- Three concise Judge.me highlights and a separate freelance card. All original experience details remain in a native disclosure.
+- Distinct Enterprise and Shopify/Sanity panels; full architecture, technologies, scope and caveats remain in disclosures / case study. New Shopify/Sanity visual is a labelled architecture diagram, not a screenshot. Existing Technical Studies screenshot and app unchanged.
+- 14 core skill cards initially, remaining 17 inside a native “View all skills” disclosure, plus all six original descriptions. Server-rendered logo data, no new client boundary or dependency. Hover enhancement remains delegated; grid-level reveal avoids excessive repeated animation.
+- Skills/About navigation, active-section state and stable-height sticky header. Narrow screens use a two-row link grid next to the wordmark.
+- `app/editorial.css` owns the new presentation/disclosure layouts. `woodland.css` owns portrait/motion. Shared tokens remain in `globals.css`.
 
-## Files and boundaries
+## Facts awaiting approval
 
-- `app/globals.css`: shared palette and existing styles, obsolete signature CSS removed.
-- `app/woodland.css`: hero composition, portrait layers, botanical placement and shared surface refinements.
-- `app/hero-portrait.tsx`: server-rendered photo and decorative layers.
-- `app/portrait-motion.tsx`: small client enhancement; passive listeners, rAF throttling, complete cleanup and live motion-preference handling.
-- `app/botanical.tsx`: lightweight inline vector decoration.
-- `app/tech-grid.tsx` / `.css`: original brand colors and shared forest surfaces. Icon library remains server-side.
-- `app/page.tsx`, `app/layout.tsx`, `public/favicon.svg`: composition, stylesheet import and matching favicon.
-- No added dependency, framework or deployment changes; removed unused signature dependency and build hooks.
+See `CONTENT_REVIEW.md`. July 2026 versus owner-mentioned August 7, 2026 promotion; official Master's titles/dates/status; 10,000+ ticket source and period; current location; employment duration; CDI versus alternance availability. No uncertain factual values were changed. Do not replace dates or claim CDI availability without owner confirmation.
 
 ## Photo provenance and processing
 
@@ -39,18 +31,14 @@ A built-in image-editing attempt was rejected because it changed facial detail. 
 
 Measured median source samples: sweatshirt `#67927f`, moss `#464e2e`, sky `#d5dce0`, woodland `#9a9b81`, scarf `#020816`. UI tokens deliberately adjust those colors for dark surfaces and text contrast: background `#111813`, surface `#1c2720`, card `#202c25`, sage `#739884`, text accent `#9eb9a8`, olive `#a5a897`, fog `#dee1da`, text `#f0f1ec`, muted `#acb6ad`.
 
-## Preview and verification
+## Verification and preview
 
-Use Node >=22.13. `npm run lint`, `npm run typecheck`, `npm run build`.
-Dev: http://localhost:3000/ — started with `npm run dev -- --webpack --port 3000`.
-Static export: http://127.0.0.1:4173/ via `npm start`.
+Node >=22.13. Run `npm run lint`, `npm run typecheck`, `npm run build`.
+Development preview: http://localhost:3000/ (existing webpack dev server).
+Static export preview: http://127.0.0.1:4173/ .
 
-Chromium responsive checks cover 360, 390, 768, 1024 and 1440px; no horizontal overflow. Desktop/tablet/mobile and all main sections were visually inspected. Motion, preference switching, no-JS fallback, CV/image responses and project routes were checked. No page errors found. Safari/Firefox, assistive-technology testing and Lighthouse benchmarking are not claimed.
+Chromium widths 360, 390, 768 and 1440px passed overflow checks. Inspected desktop/tablet/mobile screenshots against the baseline. Keyboard disclosures and skip link, active navigation, pause/resume, live reduced-motion changes and no-JS fallback tested. Static homepage, Enterprise and Shopify routes/refreshes plus CV downloads pass without recorded console/page errors. No cross-engine, screen-reader or Lighthouse benchmark claims.
 
-## Stop here
+## Boundaries
 
-The centered identity-ring milestone is approved for publication. Name/title ring colors are off-white, sage and muted sand. Do not add elaborate transitions, a new font, scroll pinning, new content or further project curation without that review.
-
-Keep untracked `AGENTS.md`, `CLAUDE.md`, `public/fonts/` untouched and uncommitted. Keep CV paths, project screenshots, Shopify source, static-export configuration and deployment workflow unchanged. Existing dependency advisories noted in the prior milestone are separate work.
-
-Mobile refinement (2026-10-23): ring type is 24 SVG units below 681px (desktop remains 17), with textLength applied directly to the textPath. The ring layer stays above the portrait so letters are not obscured.
+Keep untracked `AGENTS.md`, `CLAUDE.md`, `public/fonts/` untouched and uncommitted. Do not modify portrait bytes, CVs, Shopify app source, project selection or deployment workflow. Stop for owner review of this milestone and factual correction list.

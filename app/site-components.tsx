@@ -39,3 +39,13 @@ export function ArchitectureDiagram() {
     </div>
   );
 }
+
+export function CommerceDiagram() {
+  return <aside className="commerce-diagram" aria-label="Shopify and Sanity integration architecture">
+    <p className="eyebrow">COMMERCE + EDITORIAL</p>
+    <div className="commerce-sources"><div><strong>Shopify</strong><span>Products &amp; cart</span><small>Storefront GraphQL</small></div><span aria-hidden="true">+</span><div><strong>Sanity</strong><span>Editorial content</span><small>GROQ</small></div></div>
+    <span className="commerce-connector" aria-hidden="true">↓</span>
+    <div className="commerce-destination"><strong>Hydrogen storefront</strong><span>Product data meets editorial content</span></div>
+    <p className="diagram-caption">Integration architecture · not a live storefront preview</p>
+  </aside>;
+}

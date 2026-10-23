@@ -1,9 +1,10 @@
 import { TechGrid } from "./tech-grid";
 import Image from "next/image";
 import { ArrowUpRight, ArrowDownRight } from "lucide-react";
-import { Header, Footer, ArchitectureDiagram } from "./site-components";
+import { Header, Footer, ArchitectureDiagram, CommerceDiagram } from "./site-components";
 import { stagger } from "./stagger";
 import { HeroPortrait } from "./hero-portrait";
+import { PortraitMotion } from "./portrait-motion";
 import { Botanical } from "./botanical";
 import { education, experience, profile } from "./data/profile";
 import { projects, type Project } from "./data/projects";
@@ -15,23 +16,23 @@ export default function Home() {
       <main id="main">
         <section className="hero wrap">
           <Botanical className="botanical hero-botanical" />
-          <div className="availability">
-            <p className="availability-pill">
-              <span className="availability-dot" aria-hidden="true" />
-              <strong>{profile.availability}</strong>
-              <span className="availability-sep" aria-hidden="true">·</span>
-              Work-study apprenticeship (alternance)
-            </p>
-            <p className="availability-details">
-              {profile.rhythm} · {profile.programme}
-            </p>
-          </div>
           <div className="woodland-hero-layout">
             <HeroPortrait />
             <div className="woodland-intro">
               <h1 className="sr-only">Hamza Ouasti — Full-Stack Developer / Software Engineer</h1>
               <p className="hero-role">Full-Stack Developer <span>/ Software Engineer</span></p>
               <p className="woodland-summary">{profile.summary}</p>
+              <div className="availability hero-availability">
+                <p className="availability-pill">
+                  <span className="availability-dot" aria-hidden="true" />
+                  <strong>{profile.availability}</strong>
+                  <span className="availability-sep" aria-hidden="true">·</span>
+                  Work-study apprenticeship (alternance)
+                </p>
+                <p className="availability-details">
+                  {profile.rhythm} · {profile.programme}
+                </p>
+              </div>
               <div className="hero-actions actions">
                 <a className="button primary" href={profile.links.cvEnglish} download hrefLang="en">
                   Download my CV (PDF) <ArrowUpRight size={17} />
@@ -52,43 +53,38 @@ export default function Home() {
             <a href="#projects">
               SCROLL TO SELECTED WORK <ArrowDownRight size={16} />
             </a>
+            <PortraitMotion />
             <span>JAVASCRIPT / TYPESCRIPT / REACT / NODE.JS</span>
           </div>
         </section>
         <section id="experience" className="experience wrap">
-          <div className="section-heading" data-reveal><p className="eyebrow">01 / EXPERIENCE</p><h2>Five years at Judge.me</h2></div>
-          <div className="experience-grid" data-reveal>
-            <div>
-              <h3>{experience.role}</h3>
-              <p className="muted">
-                {experience.period} · {experience.company}, {experience.companyNote}
-              </p>
-              <p className="experience-summary">{experience.summary}</p>
-              <dl className="experience-facts">
-                {experience.facts.map((fact) => (
-                  <div key={fact.value}>
-                    <dt>{fact.value}</dt>
-                    <dd>{fact.label}</dd>
-                  </div>
-                ))}
-              </dl>
+          <div className="section-heading" data-reveal><p className="eyebrow">01 / EXPERIENCE</p><h2>Development in production.</h2></div>
+          <article className="experience-panel" data-reveal>
+            <div className="experience-identity">
+              <p className="eyebrow">{experience.period} · REMOTE</p>
+              <h3>{experience.company}</h3>
+              <p className="experience-role">{experience.role}</p>
+              <p className="muted">{experience.about}</p>
             </div>
-            <div>
-              <p>{experience.about}</p>
-              <ul>
-                {experience.highlights.map((highlight) => (
-                  <li key={highlight}>{highlight}</li>
-                ))}
+            <div className="experience-outcomes">
+              <p className="experience-summary">Application development, commerce integrations and advanced production troubleshooting in an international SaaS team.</p>
+              <ul className="outcome-list">
+                <li><strong>Connect storefronts and services.</strong> Develop JavaScript and TypeScript integrations with Shopify APIs, themes, metafields and structured product data.</li>
+                <li><strong>Trace issues to their source.</strong> Reproduce bugs, investigate SQL and MongoDB data, and validate fixes with product and engineering.</li>
+                <li><strong>Make technical work understandable.</strong> Delivered monthly webinars and demos for merchants, agencies and partners (2021–2024).</li>
               </ul>
+              <div className="tags"><span>JavaScript / TypeScript</span><span>React / Node.js</span><span>Shopify APIs</span><span>SQL / MongoDB</span></div>
+              <details className="disclosure"><summary>Role history &amp; additional context</summary>
+                <p>{experience.summary}</p>
+                <dl className="experience-facts">{experience.facts.map(fact => <div key={fact.value}><dt>{fact.value}</dt><dd>{fact.label}</dd></div>)}</dl>
+                <ul>{experience.highlights.map(item => <li key={item}>{item}</li>)}</ul>
+              </details>
             </div>
-          </div>
-          <p className="freelance" data-reveal>
-            <strong>{experience.freelance.role}</strong>
-            <br />
-            <span className="muted">
-              {experience.freelance.period} · {experience.freelance.clients}. {experience.freelance.description}
-            </span>
-          </p>
+          </article>
+          <article className="freelance-card" data-reveal>
+            <div><p className="eyebrow">INDEPENDENT WORK · {experience.freelance.period}</p><h3>{experience.freelance.role}</h3></div>
+            <div><p>{experience.freelance.description}</p><p className="muted">{experience.freelance.clients}.</p></div>
+          </article>
         </section>
         <section id="projects" className="projects-section wrap">
           <div className="section-heading" data-reveal>
@@ -111,17 +107,15 @@ export default function Home() {
             <div className="lead-grid">
               <div className="project-copy">
                 <p className="project-description">{lead.description}</p>
-                <p className="architecture">{lead.architecture}</p>
+                <p className="contribution"><strong>Implementation focus</strong> Document ingestion, workspace-scoped retrieval and source-grounded answers.</p>
                 <div className="tags">
-                  {lead.technologies.map((t) => (
+                  {lead.technologies.slice(0, 5).map((t) => (
                     <span key={t}>{t}</span>
                   ))}
                 </div>
-                <div className="engineering-focus">
-                  <h4>Engineering focus</h4>
-                  <p>{lead.challenges}</p>
-                </div>
-                <p className="project-note">{lead.note}</p>
+                <details className="disclosure"><summary>Architecture &amp; engineering decisions</summary>
+                  <p>{lead.architecture}</p><p>{lead.challenges}</p><p>{lead.technologies.join(" · ")}</p><p className="project-note">{lead.note}</p>
+                </details>
                 <ProjectLinks project={lead} />
                 <p className="repository-name">{lead.repositoryName}</p>
               </div>
@@ -139,7 +133,7 @@ export default function Home() {
                     <p className="project-description">{project.description}</p>
                     <p className="architecture">{project.technologies.join(" · ")}</p>
                   </article>
-                ) : <article className="project-row" id={project.id} key={project.id} data-reveal style={stagger(index)}>
+                ) : <article className={`project-row ${project.secondary ? "secondary-work" : "commerce-project"}`} id={project.id} key={project.id} data-reveal style={stagger(index)}>
                   {project.secondary && <p className="eyebrow">SECONDARY WORK</p>}
                   {project.screenshot && <a className="project-screenshot" href={project.projectUrl}><Image unoptimized src={project.screenshot} alt={project.screenshotAlt || project.title} loading="lazy" width="1440" height="900" /><span>Explore the technical walkthroughs ↗</span></a>}
                   <div className="project-heading">
@@ -155,24 +149,15 @@ export default function Home() {
                   <div className="secondary-grid">
                     <div>
                       <p className="project-description">{project.description}</p>
-                      <p className="architecture">{project.architecture}</p>
+                      {!project.secondary && <p className="contribution"><strong>Implementation focus</strong> Product-handle matching, cart actions and CMS preview configuration.</p>}
+                      <div className="tags">{project.technologies.slice(0, 4).map(t => <span key={t}>{t}</span>)}</div>
+                      <details className="disclosure"><summary>Technical details &amp; scope</summary><p>{project.architecture}</p><p>{project.challenges}</p><p>{project.technologies.join(" · ")}</p><p>{project.note}</p></details>
                       <ProjectLinks project={project} />
                       {project.repositoryName && (
                         <p className="repository-name">{project.repositoryName}</p>
                       )}
                     </div>
-                    <div className="project-specs">
-                      <div className="tags">
-                        {project.technologies.map((t) => (
-                          <span key={t}>{t}</span>
-                        ))}
-                      </div>
-                      <div className="engineering-focus">
-                        <h4>Engineering focus</h4>
-                        <p>{project.challenges}</p>
-                      </div>
-                      <p className="project-note">{project.note}</p>
-                    </div>
+                    {!project.secondary && <CommerceDiagram />}
                   </div>
                 </article>
               ))}
