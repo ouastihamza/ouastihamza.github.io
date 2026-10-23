@@ -52,6 +52,9 @@ async (page) => {
    for(const view of views){
     if(view){await page.getByRole('tab',{name:view}).click();await pause(450);}
     await page.evaluate(()=>window.scrollTo(0,0));await pause(100);
+    // A scroll boundary inside the preview would swallow wheel input the preview releases to the page.
+    const boundaries=await page.evaluate(()=>[...document.querySelectorAll('.walkthrough-preview *')].filter(el=>getComputedStyle(el).overscrollBehaviorY!=='auto').map(el=>String(el.className).split(' ')[0]));
+    check(boundaries.length===0,`${view??''} overscroll boundary inside preview: ${boundaries.join(', ')}`);
     for(let n=1;n<=total;n++){
      if(n>1){await next().click();await pause(260);}
      await step(n,`Next button${view?' in '+view:''}`);
@@ -59,7 +62,6 @@ async (page) => {
      check(v.explanation,`${where}: explanation outside viewport`);check(v.focus,`${where}: highlighted element missing or outside viewport`);check(v.controls,`${where}: controls outside viewport`);
      firstTop??=v;check(Math.abs(v.controlsTop-firstTop.controlsTop)<=1,`${where}: controls moved ${v.controlsTop-firstTop.controlsTop}px`);check(Math.abs(v.previewTop-firstTop.previewTop)<=1,`${where}: preview moved`);
     }
-    if(view==='Merchant View')for(let n=total;n>1;n--)await prev().click();
    }
    const cls=await page.evaluate(()=>window.__cls);check(cls<0.1,`layout shift score ${cls.toFixed(3)}`);
 
@@ -72,11 +74,42 @@ async (page) => {
    await page.emulateMedia({reducedMotion:'reduce'});await prev().click();await step(total-1,'Previous with reduced motion');
    check(await page.evaluate(()=>getComputedStyle(document.querySelector('.study-step')).animationName)==='none','step animation runs with reduced motion');
    await page.emulateMedia({reducedMotion:'no-preference'});
-   // 7: switching views keeps the step.
-   if(route==='simulation'){await page.getByRole('tab',{name:'Merchant View'}).click();await pause(450);await step(total-1,'switch to Merchant View');await page.getByRole('tab',{name:'Technical View'}).click();await pause(450);await step(total-1,'switch to Technical View');}
+   // 7: each view is its own walkthrough, so switching restarts at step 1.
+   if(route==='simulation'){await page.getByRole('tab',{name:'Merchant View'}).click();await pause(450);await step(1,'switch to Merchant View');
+    await next().click();await next().click();await step(3,'Next after switching');await page.getByRole('tab',{name:'Technical View'}).click();await pause(450);await step(1,'switch to Technical View');
+    await page.getByRole('tab',{name:'Technical View'}).click();await pause(200);await step(1,'clicking the active view');}
    await page.evaluate(()=>window.scrollTo(0,0));await pause(300);
    check(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'horizontal overflow');
    await page.screenshot({path:`/private/tmp/dual-${route}-${width}.png`});
+   results.push(`${ctx}: done`);
+  }
+ }
+
+ // Pointer held still over content that changes between steps: wheel must never stop working.
+ // Covers a steady mouse-wheel spin (notches 120ms apart, never a gesture gap) and repeated trackpad flicks.
+ await page.setViewportSize({width:1440,height:900});
+ const spots=[['simulation','Merchant View','.merchant-result-card h3'],['simulation','Technical View','.preview-card__heading'],['storefront-debugging',null,'.study-findings'],['stable-integrations',null,'.study-findings']];
+ for(const [route,view,selector] of spots){
+  const total=labs.find(l=>l[0]===route)[1];
+  for(const kind of ['spin','flicks']){
+   ctx=`still pointer ${route}${view?'/'+view:''}/${kind}`;
+   await page.goto(`${base}?still=${Date.now()}#${route}`);await pause(400);
+   if(view){await page.getByRole('tab',{name:view}).click();await pause(450);}
+   await page.evaluate(total=>{window.__wheel=[];addEventListener('wheel',e=>{const n=Number(document.querySelector('output').textContent.match(/\d+/)[0]);const maxY=document.documentElement.scrollHeight-innerHeight;
+    // Nothing can move when the step is at an end and the page is already at its limit in the same direction.
+    const blocked=(e.deltaY>0&&n===total&&scrollY>=maxY-1)||(e.deltaY<0&&n===1&&scrollY<=0);
+    window.__wheel.push({t:performance.now(),detached:!e.target.isConnected,step:n,y:scrollY,blocked});},{capture:true});},total);
+   const box=await page.locator(selector).first().boundingBox();await page.mouse.move(box.x+box.width/2,box.y+Math.min(box.height/2,20));
+   if(kind==='spin'){for(let i=0;i<30;i++){await page.mouse.wheel(0,100);await pause(120);}}
+   else for(const dir of [1,-1])for(let g=0;g<total+1;g++){await flick(dir);await pause(700);}
+   const log=await page.evaluate(()=>window.__wheel);
+   let stall=0,since=log[0].t;
+   for(let i=1;i<log.length;i++){if(log[i].blocked||log[i].step!==log[i-1].step||Math.abs(log[i].y-log[i-1].y)>0)since=log[i].t;else stall=Math.max(stall,log[i].t-since);}
+   check(log.every(e=>!e.detached),'wheel delivered to a removed node');
+   check(stall<(kind==='spin'?1000:3200),`input for ${Math.round(stall)}ms moved neither the step nor the page`);
+   const steps=new Set(log.map(e=>e.step)).size;
+   if(kind==='spin')check(steps>=4,`steady spin reached only ${steps} steps`);
+   else{check(steps===total,`flicks visited ${steps} of ${total} steps`);check(await page.locator('output').textContent()===`Step 1 of ${total}`,'flicks did not return to step 1');}
    results.push(`${ctx}: done`);
   }
  }

@@ -1,6 +1,7 @@
 import { WalkthroughPreview } from '../components/WalkthroughPreview';
 import { StudyControls } from '../components/StudyControls';
 import { StudyStep, type StudyStepCopy } from '../components/StudyStep';
+import { StudyFindings } from '../components/StudyFindings';
 import { motion } from 'framer-motion';
 import {
   useEffect,
@@ -157,24 +158,12 @@ function DebuggingBoard({ step, focus }: { step: number; focus: DebuggingFocus }
             })}
           </div>
 
-          <div className={`study-findings${on('findings')}`} aria-label="Findings">
-            {isBroken ? (
-              <>
-                <span className="study-findings__item is-problem">UI state mismatch</span>
-                <span className="study-findings__item is-problem">Events detached</span>
-                <span className="study-findings__item is-problem">Cards removed</span>
-                {showDiagnosis && (
-                  <>
-                    <span className="study-findings__item">DOM replaced</span>
-                    <span className="study-findings__item">Bindings lost</span>
-                    <span className="study-findings__item">Old nodes removed</span>
-                  </>
-                )}
-              </>
-            ) : (
-              <span className="study-findings__item is-quiet">{isFixed ? 'All cards respond after the update' : 'No issues detected'}</span>
-            )}
-          </div>
+          <StudyFindings className={on('findings')} items={
+            isBroken
+              ? [['problem', 'UI state mismatch'], ['problem', 'Events detached'], ['problem', 'Cards removed'],
+                ...(showDiagnosis ? [['note', 'DOM replaced'], ['note', 'Bindings lost'], ['note', 'Old nodes removed']] as const : [])]
+              : [['quiet', isFixed ? 'All cards respond after the update' : 'No issues detected']]
+          } />
         </div>
 
         <div className="debugging-diagnostics">

@@ -1,6 +1,7 @@
 import { WalkthroughPreview } from '../components/WalkthroughPreview';
 import { StudyControls } from '../components/StudyControls';
 import { StudyStep, type StudyStepCopy } from '../components/StudyStep';
+import { StudyFindings } from '../components/StudyFindings';
 import {
   useEffect,
   useRef,
@@ -157,29 +158,12 @@ function StableIntegrationsBoard({ step, focus }: { step: number; focus: Integra
             </div>
           </div>
 
-          <div className={`study-findings${on('findings')}`} aria-label="Findings">
-            {showWrongBlame ? (
-              <>
-                <span className="study-findings__item">Visible symptom</span>
-                <span className="study-findings__item is-problem">Reviews app blamed first</span>
-                <span className="study-findings__item">Actual source is upstream</span>
-              </>
-            ) : showDiagnosis ? (
-              <>
-                <span className="study-findings__item">Shared selectors</span>
-                <span className="study-findings__item">Event collision</span>
-                <span className="study-findings__item">Async rendering conflict</span>
-              </>
-            ) : hasConflict ? (
-              <>
-                <span className="study-findings__item is-problem">Duplicated promo block</span>
-                <span className="study-findings__item is-problem">Reviews disappear</span>
-                <span className="study-findings__item is-problem">Drawer no longer opens</span>
-              </>
-            ) : (
-              <span className="study-findings__item is-quiet">{isFixed ? 'All apps work together' : 'No conflicts detected'}</span>
-            )}
-          </div>
+          <StudyFindings className={on('findings')} items={
+            showWrongBlame ? [['note', 'Visible symptom'], ['problem', 'Reviews app blamed first'], ['note', 'Actual source is upstream']]
+              : showDiagnosis ? [['note', 'Shared selectors'], ['note', 'Event collision'], ['note', 'Async rendering conflict']]
+                : hasConflict ? [['problem', 'Duplicated promo block'], ['problem', 'Reviews disappear'], ['problem', 'Drawer no longer opens']]
+                  : [['quiet', isFixed ? 'All apps work together' : 'No conflicts detected']]
+          } />
         </div>
 
         <div className={`stable-code${showCode ? ' is-visible' : ''}${on('code')}`}>

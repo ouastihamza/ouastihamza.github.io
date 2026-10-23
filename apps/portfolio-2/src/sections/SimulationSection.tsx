@@ -148,6 +148,12 @@ export function SimulationSection({
 
   const stepCopy = (steps[renderedStep] ?? steps[0])[simulationView];
   const technicalFocus = isTechnicalView ? steps[renderedStep].technical.focus : null;
+  // Each view is its own walkthrough, so switching restarts at step 1.
+  const selectView = (view: SimulationView) => {
+    if (view === simulationView) return;
+    setSimulationView(view);
+    setActiveStep(0);
+  };
   const focus = (target: TechnicalFocus) => (technicalFocus === target ? ' is-focus' : '');
 
   useEffect(() => {
@@ -321,7 +327,7 @@ export function SimulationSection({
                       if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
                       event.preventDefault();
                       const next = event.key === 'Home' ? 'merchant' : event.key === 'End' ? 'technical' : view === 'merchant' ? 'technical' : 'merchant';
-                      setSimulationView(next);
+                      selectView(next);
                       document.getElementById(`view-${next}`)?.focus();
                     }}
                     aria-selected={simulationView === view}
@@ -329,7 +335,7 @@ export function SimulationSection({
                       simulationView === view ? ' is-active' : ''
                     }`}
                     key={view}
-                    onClick={() => setSimulationView(view)}
+                    onClick={() => selectView(view)}
                     role="tab"
                     type="button"
                   >

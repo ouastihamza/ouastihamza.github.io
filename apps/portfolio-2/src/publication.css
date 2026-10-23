@@ -143,6 +143,8 @@ a:focus-visible,button:focus-visible,input:focus-visible,[tabindex]:focus-visibl
 .publication-study :is(.simulation-merchant__subhead,.debugging-problem__subhead,.stable-problem__subhead) { font-size:13px; line-height:1.55; }
 .publication-study :is(.simulation-board,.debugging-board,.stable-board) { min-height:0; }
 .publication-study :is(.simulation-board,.debugging-board,.stable-board)::after { display:none; }
+/* Old nested-scroll viewport: with overscroll containment it swallowed released wheel input at step 1 and the last step. */
+.publication-study .simulation-board__viewport { overflow:visible; overscroll-behavior:auto; }
 
 /* Explanation panel. The fixed height keeps Previous / Next in place as copy length changes. */
 .publication-study :is(.simulation-copy__panel,.debugging-copy__panel,.stable-copy__panel) { padding:16px; min-height:var(--study-panel-height, 0px); }
