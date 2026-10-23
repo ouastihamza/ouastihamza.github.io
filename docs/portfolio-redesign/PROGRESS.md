@@ -1,5 +1,9 @@
 # Portfolio redesign: progress
 
+## Publication approval (2026-10-23)
+
+Owner approved publishing the polish milestone and requested removal of the pause/resume button. Removed its UI, React state and unused CSS; automatic reduced-motion support remains. Prior milestone review-only restrictions are superseded by this approval.
+
 ## Owner clarification (2026-10-23)
 
 Tier 2 promotion confirmed as July 2026. Existing site copy is correct; review notes updated. Other factual questions remain pending.

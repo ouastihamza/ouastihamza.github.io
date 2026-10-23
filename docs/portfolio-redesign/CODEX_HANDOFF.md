@@ -1,13 +1,13 @@
 # Codex handoff: woodland portfolio redesign
 
-## Current milestone — stop for owner review
+## Current milestone — approved for publication
 
-Branch: `feature/interactive-portfolio-redesign`. Milestone 4 refines the existing woodland identity and content hierarchy. The owner explicitly requested a feature-branch commit only: do not merge, push or deploy to main. Main remains at `ac15e03`. Previous publication approvals were for earlier milestones, not this one.
+Branch: `feature/interactive-portfolio-redesign`. Milestone 4 refines the existing woodland identity and content hierarchy. The owner approved publication on 23 October 2026 and requested removal of the pause/resume button. Merge this completed polish into main and publish via the existing GitHub Pages workflow.
 
 ## Implemented
 
 - Real centered portrait and kinetic identity ring preserved. Desktop stage is 520px maximum, portrait 80% of stage; ring typography 22 SVG units desktop / 24 mobile, full-circle spacing. Name/title colors preserved.
-- 60-second rotation, independent scroll offset up to 12 degrees and portrait translation up to 18px. Pause control moved to hero utility row to avoid obscuring letters. Reduced-motion and no-JS fallbacks preserved.
+- 60-second rotation, independent scroll offset up to 12 degrees and portrait translation up to 18px. Manual pause/resume control removed at the owner’s request. Reduced-motion and no-JS fallbacks preserved.
 - Introduction/metadata emphasize full-stack work, integrations and advanced troubleshooting. Existing apprenticeship claim and schedule remain as secondary content.
 - Three concise Judge.me highlights and a separate freelance card. All original experience details remain in a native disclosure.
 - Distinct Enterprise and Shopify/Sanity panels; full architecture, technologies, scope and caveats remain in disclosures / case study. New Shopify/Sanity visual is a labelled architecture diagram, not a screenshot. Existing Technical Studies screenshot and app unchanged.
@@ -43,4 +43,4 @@ Chromium widths 360, 390, 768 and 1440px passed overflow checks. Inspected deskt
 
 ## Boundaries
 
-Keep untracked `AGENTS.md`, `CLAUDE.md`, `public/fonts/` untouched and uncommitted. Do not modify portrait bytes, CVs, Shopify app source, project selection or deployment workflow. Stop for owner review of this milestone and factual correction list.
+Keep untracked `AGENTS.md`, `CLAUDE.md`, `public/fonts/` untouched and uncommitted. Do not modify portrait bytes, CVs, Shopify app source, project selection or deployment workflow. Other factual correction questions remain pending; do not change those claims without approval.

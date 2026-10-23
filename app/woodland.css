@@ -27,12 +27,6 @@ body { background-image: radial-gradient(ellipse at 0 0, rgba(165,168,151,.035),
 .identity-ring .identity-name { fill: var(--foreground); }
 .identity-ring .identity-developer { fill: var(--primary); }
 .identity-ring .identity-engineer { fill: #d6bd91; }
-.motion-toggle { display: inline-flex; visibility: hidden; position: relative; align-items: center; gap: 7px; padding: 8px 12px; min-height: 44px; border: 1px solid var(--border); border-radius: 24px; background: var(--background); color: var(--muted); font-size: 11px; cursor: pointer; white-space: nowrap; }
-.motion-toggle:hover { color: var(--foreground); border-color: var(--sage); }
-.motion-toggle:focus-visible { outline: 2px solid var(--primary); outline-offset: 4px; }
-.hero[data-motion-ready] .motion-toggle { visibility: visible; }
-.hero[data-motion-paused="true"] .identity-ring, .hero[data-motion-paused="true"] .portrait-float { animation-play-state: paused; }
-.hero[data-motion-paused="true"] .portrait-parallax, .hero[data-motion-paused="true"] .identity-orbit, .hero[data-motion-paused="true"] .hero-botanical { transform: none; }
 .lead-project, .case-architecture, .architecture-panel, .case-callout, .project-screenshot { border-radius: 12px; }
 .button { border-radius: 7px; }
 .experience-grid li::before { border-radius: 50%; background: var(--sage); }
@@ -40,11 +34,9 @@ body { background-image: radial-gradient(ellipse at 0 0, rgba(165,168,151,.035),
 .freelance { border-left: 2px solid var(--sage); padding-left: 20px; }
 @media (prefers-reduced-motion: no-preference) {
   .hero[data-motion-ready] .identity-ring { animation: identity-orbit 60s linear infinite; }
-  .hero[data-motion-ready][data-motion-paused="true"] .identity-ring { animation-play-state: paused; }
 }
 @media (prefers-reduced-motion: no-preference) and (min-width: 681px) {
   .hero[data-motion-ready] .portrait-float { animation: woodland-float 8s ease-in-out infinite; }
-  .hero[data-motion-ready][data-motion-paused="true"] .portrait-float { animation-play-state: paused; }
 }
 @keyframes woodland-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
 @keyframes identity-orbit { to { transform: rotate(360deg); } }
@@ -64,5 +56,4 @@ body { background-image: radial-gradient(ellipse at 0 0, rgba(165,168,151,.035),
 }
 @media (prefers-reduced-motion: reduce) {
   .portrait-parallax, .portrait-float, .identity-orbit, .identity-ring, .hero-botanical { transform: none !important; animation: none !important; transition: none !important; }
-  .hero[data-motion-ready] .motion-toggle { visibility: hidden; }
 }
