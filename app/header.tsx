@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { GITHUB_PROFILE } from "./data/projects";
+import { Monogram } from "./monogram";
 import { profile } from "./data/profile";
 
 export function Header() {
@@ -41,7 +42,7 @@ export function Header() {
       </a>
       <header className={`site-header wrap${scrolled ? " is-scrolled" : ""}`}>
         <a className="wordmark" href="/" aria-label="Hamza Ouasti, home">
-          h<span>↗</span>
+          <Monogram />
         </a>
         <span className="header-name">
           {profile.name.toUpperCase()}
