@@ -1,4 +1,4 @@
-/** Joined HO: the O’s left stem supplies the H’s right stem. */
+/** Approved minimalist HO: independent, bold H and circular O. */
 export function Monogram() {
-  return <svg className="personal-monogram" viewBox="0 0 64 64" width="48" height="48" aria-hidden="true" focusable="false"><path fill="currentColor" fillRule="evenodd" d="M6 10h8v18h14v-4a14 14 0 0 1 28 0v16a14 14 0 0 1-28 0v-4H14v18H6Zm30 14v16a6 6 0 0 0 12 0V24a6 6 0 0 0-12 0Z" /></svg>;
+  return <svg className="personal-monogram" viewBox="0 0 64 64" width="48" height="48" fill="currentColor" aria-hidden="true" focusable="false"><path d="M3 16h7v12h10V16h7v32h-7V36H10v12H3Z"/><path fillRule="evenodd" d="M46 15a17 17 0 1 0 0 34 17 17 0 0 0 0-34Zm0 8a9 9 0 1 1 0 18 9 9 0 0 1 0-18Z"/></svg>;
 }
