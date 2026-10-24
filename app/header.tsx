@@ -1,12 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { GITHUB_PROFILE } from "./data/projects";
+import { MobileNavigation } from "./mobile-navigation";
+import { navigationItems } from "./navigation-items";
 import { Monogram } from "./monogram";
 import { profile } from "./data/profile";
 
+const subscribeToHydration = () => () => {};
+
 export function Header() {
+  const ready = useSyncExternalStore(subscribeToHydration, () => true, () => false);
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState("");
 
@@ -14,6 +19,7 @@ export function Header() {
     let frame = 0;
     const updateScrolled = () => {
       frame = 0;
+      if (document.getElementById("mobile-navigation")?.hasAttribute("open")) return;
       setScrolled(window.scrollY > 8);
       const sections = ["experience", "projects", "skills", "about", "contact"];
       const current = sections.filter(id => (document.getElementById(id)?.getBoundingClientRect().top ?? Infinity) <= 180).at(-1);
@@ -40,7 +46,7 @@ export function Header() {
       <a className="skip-link" href="#main">
         Skip to content
       </a>
-      <header className={`site-header wrap${scrolled ? " is-scrolled" : ""}`}>
+      <header className={`site-header wrap${ready ? " has-mobile-menu" : ""}${scrolled ? " is-scrolled" : ""}`}>
         <a className="wordmark" href="/" aria-label="Hamza Ouasti, home">
           <Monogram />
         </a>
@@ -50,11 +56,12 @@ export function Header() {
           <span>{profile.title.toUpperCase()}</span>
         </span>
         <nav aria-label="Main navigation">
-          {[["experience", "Experience"], ["projects", "Projects"], ["skills", "Skills"], ["about", "About"], ["contact", "Contact"]].map(([id, label]) => <a key={id} href={`/#${id}`} aria-current={active === id ? "location" : undefined}>{label}</a>)}
+          {navigationItems.map(([id, label]) => <a key={id} href={`/#${id}`} aria-current={active === id ? "location" : undefined}>{label}</a>)}
           <a className="github-nav" href={GITHUB_PROFILE} target="_blank" rel="noreferrer">
             GitHub <ArrowUpRight size={16} />
           </a>
         </nav>
+        <MobileNavigation active={active} />
       </header>
     </>
   );
