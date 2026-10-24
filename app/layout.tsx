@@ -3,6 +3,7 @@ import "./globals.css";
 import "./tech-grid.css";
 import "./woodland.css";
 import "./editorial.css";
+import "./mobile-navigation.css";
 import { ScrollReveal } from "./scroll-reveal";
 export const metadata: Metadata = {
   metadataBase: new URL("https://ouastihamza.github.io"),

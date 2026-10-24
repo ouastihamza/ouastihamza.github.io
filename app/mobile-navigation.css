@@ -1,0 +1,23 @@
+.mobile-toggle { display:none; }
+.mobile-navigation { color:var(--foreground); background:var(--background); border:1px solid var(--border); border-radius:8px; width:min(560px,calc(100% - 32px)); max-height:calc(100dvh - 32px); margin:16px auto auto; padding:24px; overflow-y:auto; opacity:0; transform:translateY(-10px); transition:opacity .18s ease,transform .18s ease,display .18s allow-discrete,overlay .18s allow-discrete; }
+.mobile-navigation[open] { opacity:1; transform:translateY(0); }
+.mobile-navigation::backdrop { background:rgb(4 10 6 / .76); backdrop-filter:blur(5px); }
+@starting-style { .mobile-navigation[open] { opacity:0; transform:translateY(-10px); } }
+.mobile-menu-heading { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.mobile-menu-identity { display:flex; align-items:center; gap:12px; font-size:14px; }
+.mobile-menu-heading button { display:grid; place-items:center; width:44px; height:44px; background:transparent; cursor:pointer; border:1px solid var(--border); border-radius:50%; flex-shrink:0; }
+.mobile-menu-label { margin:30px 0 12px; font-size:11px; letter-spacing:.13em; text-transform:uppercase; color:var(--muted); }
+.mobile-navigation nav { display:flex; flex-direction:column; align-items:stretch; margin:0; gap:0; }
+.mobile-navigation nav a { display:flex; gap:18px; min-height:64px; padding:14px 0; border-bottom:1px solid var(--border); font-size:clamp(23px,6vw,30px); letter-spacing:-.025em; line-height:1.2; }
+.mobile-navigation nav a::after { display:none; }
+.mobile-menu-index { font:11px/1.4 ui-monospace,monospace; color:var(--primary); letter-spacing:0; }
+.mobile-menu-arrow { margin-left:auto; font-size:22px; color:var(--primary); }
+.mobile-navigation a:hover, .mobile-navigation a[aria-current] { color:var(--primary); }
+.mobile-navigation :focus-visible, .mobile-toggle:focus-visible { outline:2px solid var(--primary); outline-offset:4px; }
+@media(max-width:820px) {
+ .site-header.has-mobile-menu > nav { display:none; }
+ .site-header.has-mobile-menu .mobile-toggle { margin-left:auto; display:flex; align-items:center; gap:14px; min-height:48px; padding:8px 12px; border:1px solid var(--border); border-radius:4px; background:transparent; font-size:13px; cursor:pointer; }
+ .site-header.has-mobile-menu { min-height:80px; flex-wrap:nowrap; gap:12px; }
+ .site-header.has-mobile-menu .header-name { display:none; }
+}
+@media(prefers-reduced-motion:reduce) { .mobile-navigation { transition:none; transform:none; } }
